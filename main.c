@@ -1,7 +1,5 @@
 #include "basic.c"
 
-static char pwd[BUFFSIZE] = { [0]='P', [1]='W', [2]='D', [3]='='};
-static char oldPwd[BUFFSIZE] = {[0]='O', [1]='L', [2]='D', [3]='P', [4]='W', [5]='D', [6]='='};
 
 char* returnUpPath(const char* currentPath) 
 {
@@ -139,149 +137,124 @@ char* findPath_ColonSepDirectories(char* colonSepDirectories, const char* path)
     return NULL;
 }
 
-int updatePWD_OLDPWD(const char* newOLDPWD,const char* newPWD)
-{
-    size_t index = 0;
-    for(;newOLDPWD[index] != '\0'; ++index)
-        oldPwd[7+index] = newOLDPWD[index];
-    oldPwd[7+index] = '\0';
-    
-    index = 0;
-    for(; newPWD[index] != '\0'; ++index)
-        pwd[4+index] = newPWD[index];
-    pwd[4+index] = '\0';
-    
-    if(putenv(pwd) != 0)
-        errExit("putenv");
-    if(putenv(oldPwd) != 0)
-        errExit("putenv");
-    return 0;
-}
-
 int cd(int argc, char* argv[])
 {
     if(argv[1] == NULL) {
-        char* valueOfEnvVariable = getenv("HOME");
-        if(valueOfEnvVariable == NULL)
+        char* newPWD = getenv("HOME");
+        if(newPWD == NULL)
             return -1;
 
-        char* valueOfPWD = getenv("PWD");
-        if(valueOfPWD == NULL)
-            return -1;
-        
-        printf("%s\n", valueOfEnvVariable);
-        fflush(stdout);
-        updatePWD_OLDPWD(valueOfPWD, valueOfEnvVariable);
-        if(chdir(valueOfEnvVariable) == -1)
+        if(chdir(newPWD) == -1)
             errExit("chdir() in cd() in NULL case");
+
+        char* newOLDPWD = getenv("PWD");
+        if(newOLDPWD == NULL)
+            return -2;
+        
+        if(setenv("PWD", newPWD, 1) == -1)
+            errExit("setenv() in cd() in NULL case");
+        if(setenv("OLDPWD", newOLDPWD, 1) == -1)
+            errExit("setenv() in cd() in NULL case");
+
         return 0;
     }
 
     if(strcmp(argv[1], "..") == 0) {
-        char* pwd = getenv("PWD");
-        char* newPWD = returnUpPath(pwd);
-        updatePWD_OLDPWD(pwd, newPWD);
-        if(chdir(newPWD) == -1)
+        char* newOLDPWD = getenv("PWD");
+        if(newOLDPWD == NULL)
+            return -3;
+        char* newPWD = returnUpPath(newOLDPWD);
+        if(newPWD == NULL) {
+            printf("PWD variable was changed during the program and so cannot be used anymore\n");
+            fflush(stdout);
+            free(newPWD);
+            return -4;
+        }
+        if(chdir(newPWD) == -1) {
+            free(newPWD);
             errExit("chdir() in cd() in .. case");
+        }
+
+        if(setenv("PWD", newPWD, 1) == -1)
+            errExit("setenv() for PWD in cd() in case ..");
+
+        if(setenv("OLDPWD", newOLDPWD, 1) == -1)
+            errExit("setenv() for OLDPWD in cd() in case ..");
+        
         free(newPWD);
         return 0;
     }
 
     if(strcmp(argv[1], "-") == 0) {
-        char* newOLDPWD = getenv("PWD");
+
         char* newPWD = getenv("OLDPWD");
+        if(newPWD == NULL)
+            return -5;
+
+        if(chdir(newPWD) == -1) 
+            errExit("chdir() in cd() - case");
+
+        char* newOLDPWD = getenv("PWD");
+        if(newOLDPWD == NULL)
+            return -6;
+
         printf("%s\n", newPWD);
         fflush(stdout);
-        size_t lengthOfnewPWD = countLengthOfString(newPWD) + 1;
-
-        char* PWD = malloc(lengthOfnewPWD);
-        initializeCharBuffer(PWD, lengthOfnewPWD);
-
-        strncpy(PWD, newPWD, lengthOfnewPWD-1);
         
-        size_t index = 0;
-        for(;newOLDPWD[index] != '\0'; ++index)
-            oldPwd[7+index] = newOLDPWD[index];
-        oldPwd[7+index] = '\0';
-    
-        index = 0;
-        for(; PWD[index] != '\0'; ++index)
-            pwd[4+index] = PWD[index];
-        pwd[4+index] = '\0';
-    
-        if(putenv(pwd) != 0)
-            errExit("putenv");
-        if(putenv(oldPwd) != 0)
-            errExit("putenv");
-
-        if(chdir(newPWD) == -1) {
-            free(PWD);
-            errExit("chdir() in cd() - case");
-        }
-
-        free(PWD);
+        if(setenv("PWD", newPWD, 1) == -1)
+            errExit("setenv() for PWD in cd() in - case");
+        
+        if(setenv("OLDPWD", newOLDPWD, 1) == -1)
+            errExit("setenv() for OLDPWD in cd() in - case");
+        
         return 0;
     }
-    if(argv[1][0] == '/') {
-        char* newOLDPWD = getenv("PWD");
-        if(chdir(argv[1]) == -1)
-            errExit("chdir() in cd() / case");
-        updatePWD_OLDPWD(newOLDPWD, argv[1]);
-        return 0;
+    
+
+    //The relative path and absolute path cases are combined in one step
+    char* newOLDPWD = getenv("PWD");
+    if(newOLDPWD == NULL)
+        return -7;
+            
+    if(chdir(argv[1]) == -1) 
+        errExit("chdir() in cd() in relative/absolute path case");
+                
+    char* newPWD = getcwd(NULL, BUFFSIZE);
+    if(newPWD == NULL)
+        errExit("getcwd() in cd()");
+        
+    if(setenv("PWD", newPWD, 1) == -1) {
+        free(newPWD);
+        errExit("setenv() for PWD in cd() in relative/absolute path case");
     }
-
-    if(argv[1][0] != '/') {
-        char* cdPath = getenv("CDPATH");
-        if(cdPath == NULL) {
-        label:
-            if(chdir(argv[1]) == -1)
-                errExit("ERROR(1):chdir() in cd()");
-            char* newPWD = getcwd(NULL, BUFFSIZE);
-            if(newPWD == NULL)
-                errExit("ERROR(2):getcwd() in cd()");
-            char* newOLDPWD = getenv("PWD");
-            updatePWD_OLDPWD(newOLDPWD, newPWD);
-            free(newPWD);
-            return 0;
-        }
-
-        else {
-            char* newPWD = findPath_ColonSepDirectories(cdPath, argv[1]);
-            if(newPWD == NULL) {
-                goto label;
-            }
-            else {
-                if(chdir(newPWD) == -1) {
-                    free(newPWD);
-                    errExit("ERROR(3):chdir() in cd()");
-                }
-                char* newOLDPWD = getenv("PWD");
-                char* new_PWD = getcwd(NULL, BUFFSIZE);
-                updatePWD_OLDPWD(newOLDPWD, new_PWD);
-                printf("%s\n", new_PWD);
-                free(new_PWD);
-                free(newPWD);
-                return 0;
-            }
-
-        }
-
+    if(setenv("OLDPWD", newOLDPWD, 1) == -1) {
+        free(newPWD);
+        errExit("setenv() for OLDPWD in cd() in relative/absolute path case");
     }
-    return -1;
+    printf("%s\n", newPWD);
+    fflush(stdout);
+    free(newPWD);
+    return 0;
 }
+
+
+
+
+
+
+
+
 int main(void)
 {
+    
     while(1) {
-        char* CDPATH_name = "CDPATH";
-        char* CDPATH_value = cdPATH;
-        setenv(CDPATH_name, CDPATH_value, 1);
 
         readInput();
-        if(argv[0] == NULL)
+        if(strcmp(argv[0],"\n") == 0)
             continue;
-        if(strcmp(argv[0], "cd") == 0) {
+        if(strcmp(argv[0], "cd") == 0)
             cd(argc, argv);
-        }
     }
+
     
 }

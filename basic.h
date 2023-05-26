@@ -8,11 +8,12 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "error_functions.c"
+
+
 #define BUFFSIZE 4096
 
 int argc;
 char inputWords[BUFFSIZE];
-char cdPATH[BUFFSIZE] = "/home/feri/Desktop/repos:/home:/home/feri/Desktop/repos/shell:shell/Shell";
 char* argv[BUFFSIZE];
 
 static inline void errorHandling(const char* stringToPrint);
@@ -20,6 +21,8 @@ static inline void errorHandling(const char* stringToPrint);
 size_t countLengthOfString(const char* string);
 void initializeCharBuffer(char buffer[], size_t sizeOfBuffer);
 void initializePointerBuffer(void* buffer[], size_t sizeOfBuffer);
+
+char* findPath_ColonSepDirectories(char* colonSepDirectories, const char* path); //Free the memory after you are done with it
 
 void readInput();
 
