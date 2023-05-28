@@ -9,6 +9,6 @@
 #include <limits.h>
 
 char* returnUpPath(const char* currentPath); //Free the memory after done using it
-int cd(int argc, char* argv[]);
+int cd(char* argv[]);
 
 #endif

@@ -53,7 +53,15 @@ char* returnUpPath(const char* currentPath)
 
 }
 
-int cd(int argc, char* argv[])
+static inline void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD)
+{
+    if(setenv("PWD", newPWD, 1) == -1)
+        errExit("setenv() for PWD in update_PWD_OLDPWD()");
+    if(setenv("OLDPWD", newOLDPWD, 1) == -1)
+        errExit("setenv() for OLDPWD in update_PWD_OLDPWD()");
+}
+
+int cd(char* argv[])
 {
     if(argv[1] == NULL) {
         char* newPWD = getenv("HOME");
@@ -64,13 +72,10 @@ int cd(int argc, char* argv[])
             errExit("chdir() in cd() in NULL case");
 
         char* newOLDPWD = getenv("PWD");
-        if(valueOfPWD == NULL)
+        if(newOLDPWD == NULL)
             return -2;
         
-        if(setenv("PWD", newPWD, 1) == -1)
-            errExit("setenv() in cd() in NULL case");
-        if(setenv("OLDPWD", newOLDPWD, 1) == -1)
-            errExit("setenv() in cd() in NULL case");
+        update_PWD_OLDPWD(newPWD, newOLDPWD);
 
         return 0;
     }
@@ -91,11 +96,7 @@ int cd(int argc, char* argv[])
             errExit("chdir() in cd() in .. case");
         }
 
-        if(setenv("PWD", newPWD, 1) == -1)
-            errExit("setenv() for PWD in cd() in case ..");
-
-        if(setenv("OLDPWD", newOLDPWD, 1) == -1)
-            errExit("setenv() for OLDPWD in cd() in case ..");
+        update_PWD_OLDPWD(newPWD, newOLDPWD);
         
         free(newPWD);
         return 0;
@@ -117,11 +118,7 @@ int cd(int argc, char* argv[])
         printf("%s\n", newPWD);
         fflush(stdout);
         
-        if(setenv("PWD", newPWD, 1) == -1)
-            errExit("setenv() for PWD in cd() in - case");
-        
-        if(setenv("OLDPWD", newOLDPWD, 1) == -1)
-            errExit("setenv() for OLDPWD in cd() in - case");
+        update_PWD_OLDPWD(newPWD, newOLDPWD);
         
         return 0;
     }
@@ -152,5 +149,3 @@ int cd(int argc, char* argv[])
     free(newPWD);
     return 0;
 }
-
-

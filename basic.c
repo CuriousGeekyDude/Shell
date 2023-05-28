@@ -7,6 +7,18 @@ static inline void errorHandling(const char* stringToPrint)
     exit(EXIT_FAILURE);
 }
 
+static inline void clearCommandLine()
+{
+    printf("\r");
+    fflush(stdout);
+    for(size_t i = 0; i < BUFFSIZE; ++i) {
+        printf(" ");
+        fflush(stdout);
+    }
+    printf("\r");
+    fflush(stdout);
+}
+
 size_t countLengthOfString(const char* string)
 {
     size_t lengthOfString = 0;
@@ -116,6 +128,26 @@ char* findPath_ColonSepDirectories(char* colonSepDirectories, const char* path)
     return NULL;
 }
 
+char* commandToStoreInHistBlock()
+{
+    if(argv[0] == NULL)
+            return NULL;
+    size_t lengthOfCommand = 0;
+    for(size_t j = 0; j < argc; ++j) 
+        lengthOfCommand += (countLengthOfString(argv[j])+1);
+        
+    char* command = malloc(lengthOfCommand);
+    initializeCharBuffer(command, lengthOfCommand);
+    for(size_t j = 0; j < lengthOfCommand - 1 && j < BUFFSIZE ; ++j) {
+        if(inputWords[j] == '\0')
+            command[j] = ' ';
+        else
+            command[j] = inputWords[j];
+    }
+    
+    return command;
+}
+
 void readInput()
 
 {
@@ -133,7 +165,7 @@ void readInput()
     
     //Get all the input from the user into inputWords[], eliminating any consecutive 
     //spaces,except the first space, until a non-space character is found.
-    int spaceCounter = 0;
+    int spaceCounter = 0, loopCounter = 1;
     while((numRead = read(STDIN_FILENO, singleCharRead, 1)) > 0) {
         if(singleCharRead[0] == '\n') {
             index_inputWords = 0;   //Restart the index for the next while loop 
@@ -142,6 +174,11 @@ void readInput()
         else {
             if(index_inputWords < BUFFSIZE) {
                 if(singleCharRead[0] == ' ') {
+
+                    if(loopCounter == 1)
+                        continue;
+                    
+                    ++loopCounter;
                     ++spaceCounter;
                     if(spaceCounter < 2) {
                         inputWords[index_inputWords] = singleCharRead[0];
@@ -154,6 +191,7 @@ void readInput()
                     inputWords[index_inputWords] = singleCharRead[0];
                     ++index_inputWords;
                     spaceCounter = 0;
+                    ++loopCounter;
                 }
             }
             else
@@ -211,3 +249,10 @@ void readInput()
     
 }
 
+static inline char* read_storeCommands()
+{
+    readInput();
+    char* command = commandToStoreInHistBlock();
+    add(command);
+    return command;
+}
