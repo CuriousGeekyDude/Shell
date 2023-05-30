@@ -1,5 +1,64 @@
 #include "basic.c"
+void signalHandler(int signal)
+{
+    if(currentHistoryBlock == NULL)
+        return;
+    if(currentHistoryBlock->command == NULL) {
+        printf("\nnull!\n");
+        fflush(stdout);
+    }
+    else {
+        printf("\n%s\n", currentHistoryBlock->command);
+        fflush(stdout);
+    }
+    if(currentHistoryBlock->next == NULL) {
+        printShellSign();
+        return;
+    }
+    currentHistoryBlock = currentHistoryBlock->next;
+    printShellSign();
 
+}
+
+//--------------------------------------------------Test Here-------------------------------------
+
+void pwdCommand()
+{
+    char* PWD = getenv("PWD");
+    printf("%s\n", PWD);
+    fflush(stdout);   
+}
+
+void execCommand()
+{
+    if(argc < 3) {
+        if(argc == 2) {
+            if(execvp(argv[1], NULL) == -1) {
+                freeAllBlocks();
+                errExit("execvp");
+            }
+
+        }
+    }
+        
+    else {
+        size_t sizeOfNewArgv = argc;
+        char** newArgv = malloc(sizeOfNewArgv*(sizeof(char*)));
+        initializePointerBuffer((void*)newArgv, sizeOfNewArgv);
+
+        for(size_t i = 0; i < sizeOfNewArgv - 1 && i < BUFFSIZE; ++i)
+            newArgv[i] = argv[i+1];
+        if(execvp(argv[1], newArgv) == -1) {
+            freeAllBlocks();
+            free(newArgv);
+            newArgv = NULL;
+            errExit("execvp");
+        }
+        free(newArgv);
+        newArgv = NULL;
+    }
+
+}
 
 char* returnUpPath(const char* currentPath) 
 {
@@ -52,92 +111,15 @@ char* returnUpPath(const char* currentPath)
 
 }
 
-char* findPath_ColonSepDirectories(char* colonSepDirectories, const char* path)
+static inline void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD)
 {
-    size_t numOfColons = 0, length_ColonsepDirectories = countLengthOfString(colonSepDirectories) + 1;
-
-
-    if(colonSepDirectories == NULL || path == NULL)
-        return NULL;
-
-    for(size_t i = 0; i < length_ColonsepDirectories; ++i) {
-        if(colonSepDirectories[i] == ':')
-            ++numOfColons;
-    }
-
-    if(numOfColons == 0) {
-        if(strcmp(colonSepDirectories, path) == 0) {
-            char* pathCopyToReturn = malloc(length_ColonsepDirectories);
-            initializeCharBuffer(pathCopyToReturn, length_ColonsepDirectories);
-            strncpy(pathCopyToReturn, colonSepDirectories, length_ColonsepDirectories);            
-            return pathCopyToReturn;
-        }
-        else
-            return NULL;
-    }
-
-    ++numOfColons; //The number of directories seperated by colon
-
-    char** pointerToDirectories = malloc((numOfColons + 1) * (sizeof(char*)));
-    for(size_t i = 0; i < (numOfColons+1); ++i)
-        pointerToDirectories[i] = NULL;
-
-
-    size_t* lengthOfEachDirectory = malloc(numOfColons*sizeof(size_t));
-    for(size_t i = 0; i < numOfColons; ++i)
-        lengthOfEachDirectory[i] = 0;
-
-
-    //Finding the length of each directory seperated by colon
-    size_t index_lengthOfEachDirectory = 0;
-    for(size_t i = 0; i < length_ColonsepDirectories; ++i) {
-        size_t lengthOfDirectory = 0;
-
-        while(colonSepDirectories[i] != ':' && colonSepDirectories[i] != '\0') {
-            ++lengthOfDirectory;
-            ++i;
-        }
-        if(index_lengthOfEachDirectory < numOfColons) {
-            lengthOfEachDirectory[index_lengthOfEachDirectory] = lengthOfDirectory;
-            ++index_lengthOfEachDirectory;
-        }
-    }
-
-    char* directories = malloc(length_ColonsepDirectories*sizeof(char));
-    initializeCharBuffer(directories, length_ColonsepDirectories);
-
-    index_lengthOfEachDirectory = 0;
-    for(size_t i = 0; i < length_ColonsepDirectories; ++i) {
-        if(index_lengthOfEachDirectory < numOfColons)
-            pointerToDirectories[index_lengthOfEachDirectory] = &directories[i];
-
-        for(size_t j = 0; j < lengthOfEachDirectory[index_lengthOfEachDirectory]; ++j) {
-            directories[i] = colonSepDirectories[i];
-            ++i;
-        }
-        ++index_lengthOfEachDirectory;
-        directories[i] = '\0';
-    }
-    free(lengthOfEachDirectory);
-    
-    for(size_t i = 0; pointerToDirectories[i] != NULL; ++i) {
-        if(strcmp(pointerToDirectories[i], path) == 0) {
-            size_t lengthOfPathCopyToReturn = countLengthOfString(pointerToDirectories[i]);
-            char* pathCopyToReturn = malloc(lengthOfPathCopyToReturn + 1);
-            initializeCharBuffer(pathCopyToReturn, lengthOfPathCopyToReturn+1);
-            strncpy(pathCopyToReturn, pointerToDirectories[i], lengthOfPathCopyToReturn);
-            free(directories);
-            free(pointerToDirectories);
-            return pathCopyToReturn;
-        }
-    }
-
-    free(directories);
-    free(pointerToDirectories);
-    return NULL;
+    if(setenv("PWD", newPWD, 1) == -1)
+        errExit("setenv() for PWD in update_PWD_OLDPWD()");
+    if(setenv("OLDPWD", newOLDPWD, 1) == -1)
+        errExit("setenv() for OLDPWD in update_PWD_OLDPWD()");
 }
 
-int cd(int argc, char* argv[])
+int cdCommand(char* argv[])
 {
     if(argv[1] == NULL) {
         char* newPWD = getenv("HOME");
@@ -151,10 +133,7 @@ int cd(int argc, char* argv[])
         if(newOLDPWD == NULL)
             return -2;
         
-        if(setenv("PWD", newPWD, 1) == -1)
-            errExit("setenv() in cd() in NULL case");
-        if(setenv("OLDPWD", newOLDPWD, 1) == -1)
-            errExit("setenv() in cd() in NULL case");
+        update_PWD_OLDPWD(newPWD, newOLDPWD);
 
         return 0;
     }
@@ -175,11 +154,7 @@ int cd(int argc, char* argv[])
             errExit("chdir() in cd() in .. case");
         }
 
-        if(setenv("PWD", newPWD, 1) == -1)
-            errExit("setenv() for PWD in cd() in case ..");
-
-        if(setenv("OLDPWD", newOLDPWD, 1) == -1)
-            errExit("setenv() for OLDPWD in cd() in case ..");
+        update_PWD_OLDPWD(newPWD, newOLDPWD);
         
         free(newPWD);
         return 0;
@@ -201,11 +176,7 @@ int cd(int argc, char* argv[])
         printf("%s\n", newPWD);
         fflush(stdout);
         
-        if(setenv("PWD", newPWD, 1) == -1)
-            errExit("setenv() for PWD in cd() in - case");
-        
-        if(setenv("OLDPWD", newOLDPWD, 1) == -1)
-            errExit("setenv() for OLDPWD in cd() in - case");
+        update_PWD_OLDPWD(newPWD, newOLDPWD);
         
         return 0;
     }
@@ -237,24 +208,42 @@ int cd(int argc, char* argv[])
     return 0;
 }
 
+void exitCommand()
+{
+    freeAllBlocks();
+    exit(EXIT_SUCCESS);
+}
 
 
 
+//--------------------------------------------------Test End--------------------------------------
 
 
 
 
 int main(void)
 {
-    
-    while(1) {
+    struct sigaction sig;
+    memset(&sig, 0, sizeof(struct sigaction));
+    sig.sa_handler = &signalHandler;
+    sig.sa_flags = SA_RESTART;
 
-        readInput();
-        if(strcmp(argv[0],"\n") == 0)
-            continue;
+    sigaction(SIGTSTP, &sig, NULL);
+
+
+    while(1) {
+        char* command = read_storeCommands();
         if(strcmp(argv[0], "cd") == 0)
-            cd(argc, argv);
+            cdCommand(argv);
+        if(strcmp(argv[0], "exit") == 0)
+            exitCommand();
+        if(strcmp(argv[0], "exec") == 0)
+            execCommand();
+        if(strcmp(argv[0], "pwd") == 0)
+            pwdCommand();
+        
     }
 
-    
+    freeAllBlocks();
+    exit(EXIT_SUCCESS);
 }

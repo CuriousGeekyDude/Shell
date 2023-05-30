@@ -9,6 +9,9 @@
 #include <limits.h>
 
 char* returnUpPath(const char* currentPath); //Free the memory after done using it
-int cd(char* argv[]);
+
+static inline void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD);
+
+int cdCommand(char* argv[]);
 
 #endif

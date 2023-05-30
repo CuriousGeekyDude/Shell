@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <signal.h>
 #include "history.c"    //change .c to .h!
 #include "error_functions.c"
 
@@ -19,7 +20,7 @@ char* argv[BUFFSIZE];
 
 static inline void errorHandling(const char* stringToPrint);
 
-static inline void clearCommandLine();
+static inline void printShellSign();
 
 size_t countLengthOfString(const char* string);
 void initializeCharBuffer(char buffer[], size_t sizeOfBuffer);

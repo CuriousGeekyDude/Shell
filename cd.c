@@ -61,7 +61,7 @@ static inline void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD)
         errExit("setenv() for OLDPWD in update_PWD_OLDPWD()");
 }
 
-int cd(char* argv[])
+int cdCommand(char* argv[])
 {
     if(argv[1] == NULL) {
         char* newPWD = getenv("HOME");

@@ -7,15 +7,10 @@ static inline void errorHandling(const char* stringToPrint)
     exit(EXIT_FAILURE);
 }
 
-static inline void clearCommandLine()
+static inline void printShellSign()
 {
-    printf("\r");
-    fflush(stdout);
-    for(size_t i = 0; i < BUFFSIZE; ++i) {
-        printf(" ");
-        fflush(stdout);
-    }
-    printf("\r");
+    char* pwd = getenv("PWD");
+    printf("sh$%s:", pwd);
     fflush(stdout);
 }
 
@@ -149,7 +144,6 @@ char* commandToStoreInHistBlock()
 }
 
 void readInput()
-
 {
     char singleCharRead[1] = {'\0'};
     size_t index_inputWords = 0;
@@ -159,9 +153,7 @@ void readInput()
     initializeCharBuffer(inputWords, BUFFSIZE);
     initializePointerBuffer((void*)argv, BUFFSIZE);
 
-    const char* pwd = getenv("PWD");
-    printf("sh$%s:", pwd);
-    fflush(stdout);
+    printShellSign();
     
     //Get all the input from the user into inputWords[], eliminating any consecutive 
     //spaces,except the first space, until a non-space character is found.
@@ -254,5 +246,6 @@ static inline char* read_storeCommands()
     readInput();
     char* command = commandToStoreInHistBlock();
     add(command);
+    currentHistoryBlock = firstHistoryBlock;
     return command;
 }
