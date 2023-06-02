@@ -12,6 +12,6 @@ char* returnUpPath(const char* currentPath); //Free the memory after done using 
 
 static inline void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD);
 
-int cdCommand(char* argv[]);
+int cdCommand(size_t indexArgv, size_t argc);
 
 #endif

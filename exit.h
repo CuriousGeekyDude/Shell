@@ -3,6 +3,6 @@
 
 #include <stdlib.h>
 
-void exitCommand();
+static inline void exitCommand(size_t argc);
 
 #endif

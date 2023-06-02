@@ -61,35 +61,37 @@ static inline void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD)
         errExit("setenv() for OLDPWD in update_PWD_OLDPWD()");
 }
 
-int cdCommand(char* argv[])
+int cdCommand(size_t indexArgv, size_t argc)
 {
-    if(argv[1] == NULL) {
+    if(argc > 2)
+        return -1;
+    if(argv[indexArgv+1] == NULL) {
         char* newPWD = getenv("HOME");
         if(newPWD == NULL)
-            return -1;
+            return -2;
 
         if(chdir(newPWD) == -1)
             errExit("chdir() in cd() in NULL case");
 
         char* newOLDPWD = getenv("PWD");
         if(newOLDPWD == NULL)
-            return -2;
+            return -3;
         
         update_PWD_OLDPWD(newPWD, newOLDPWD);
 
         return 0;
     }
 
-    if(strcmp(argv[1], "..") == 0) {
+    if(strcmp(argv[indexArgv+1], "..") == 0) {
         char* newOLDPWD = getenv("PWD");
         if(newOLDPWD == NULL)
-            return -3;
+            return -4;
         char* newPWD = returnUpPath(newOLDPWD);
         if(newPWD == NULL) {
             printf("PWD variable was changed during the program and so cannot be used anymore\n");
             fflush(stdout);
             free(newPWD);
-            return -4;
+            return -5;
         }
         if(chdir(newPWD) == -1) {
             free(newPWD);
@@ -102,18 +104,18 @@ int cdCommand(char* argv[])
         return 0;
     }
 
-    if(strcmp(argv[1], "-") == 0) {
+    if(strcmp(argv[indexArgv+1], "-") == 0) {
 
         char* newPWD = getenv("OLDPWD");
         if(newPWD == NULL)
-            return -5;
+            return -6;
 
         if(chdir(newPWD) == -1) 
             errExit("chdir() in cd() - case");
 
         char* newOLDPWD = getenv("PWD");
         if(newOLDPWD == NULL)
-            return -6;
+            return -7;
 
         printf("%s\n", newPWD);
         fflush(stdout);
@@ -127,9 +129,9 @@ int cdCommand(char* argv[])
     //The relative path and absolute path cases are combined in one step
     char* newOLDPWD = getenv("PWD");
     if(newOLDPWD == NULL)
-        return -7;
+        return -8;
             
-    if(chdir(argv[1]) == -1) 
+    if(chdir(argv[indexArgv+1]) == -1) 
         errExit("chdir() in cd() in relative/absolute path case");
                 
     char* newPWD = getcwd(NULL, BUFFSIZE);

@@ -1,8 +1,10 @@
 #include "exit.h"
 #include "basic.h"
 
-void exitCommand()
+static inline void exitCommand(size_t argc)
 {
+    if(argc > 1)
+        return;
     freeAllBlocks();
     exit(EXIT_SUCCESS);
 }

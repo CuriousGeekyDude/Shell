@@ -4,6 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void pwdCommand();
+static inline void pwdCommand(size_t argc);
 
 #endif

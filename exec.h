@@ -1,10 +1,8 @@
 #ifndef EXEC_H
 #define EXEC_H
 
-#include <unistd.h>
 #include "basic.h"
-#include "error_functions.h"
 
-void execCommand();
+void execCommand(size_t indexArgv, size_t argc);
 
 #endif
