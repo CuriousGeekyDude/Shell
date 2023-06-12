@@ -483,7 +483,8 @@ void redirection(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommandBloc
 
     switch(fork()) {
         case 0:
-            close(filedes[0]);
+            if(close(filedes[0]) == -1)
+                errExit("close() in child redirection");
             if(dup2(filedes[1], 1) == -1)
                 errExit("dup2()");
             executeBlockCommand(BegIndexOfCommandBlock, numOfStringsInCommandBlock, false);
@@ -492,11 +493,14 @@ void redirection(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommandBloc
             errExit("fork() in redirection()");
             break;
         default:
-            close(filedes[1]);
+            if(close(filedes[1]) == -1)
+                errExit("close() in redirection()");
             if(wait(NULL) == -1)
                 errExit("Execution of the command block of redirection failed!");
 
             FILE* readEndOfPipe = fdopen(filedes[0], "r");
+            if(readEndOfPipe == NULL)
+                errExit("fdopen()");
             int c;
             while((c = fgetc(readEndOfPipe)) != EOF) {
                 if(fputc(c, file) == EOF)
@@ -506,6 +510,7 @@ void redirection(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommandBloc
                 errExit("fclose() readEndOfPipe!");
             if(fclose(file) == -1)
                 errExit("fclose() file!");
+                exit(EXIT_SUCCESS);
             break;
     }
 }

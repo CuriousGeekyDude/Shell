@@ -1,0 +1,5 @@
+total 12
+-rw-rw-r-- 1 feri feri    0 juin  12 14:28 farhan.txt
+-rw-rw-r-- 1 feri feri 1085 juin  12 14:27 launch.json
+-rw-rw-r-- 1 feri feri   42 mai   25 12:33 settings.json
+-rw-rw-r-- 1 feri feri  719 mai   28 18:10 tasks.json
