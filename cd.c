@@ -65,7 +65,7 @@ int cdCommand(size_t indexArgv, size_t argc)
 {
     if(argc > 2)
         return -1;
-    if(argv[indexArgv+1] == NULL) {
+    if(argc == 1) {
         char* newPWD = getenv("HOME");
         if(newPWD == NULL)
             return -2;

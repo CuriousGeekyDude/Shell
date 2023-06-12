@@ -1,15 +1,15 @@
 #ifndef LISTS_H
 #define LISTS_H
 
-#include "basic.h"
+#include "executeCommand.h"
 
-static size_t count = 0;
+static size_t countList = 0;
 
 static inline size_t specialCharCounter();
 size_t* specialCharIndexArray();
-size_t* numberOfStringsInEachBlock();
-void andList(char** specialCharArray, size_t* index_specialCharArray,size_t indexStartCommand, size_t indexEndCommand,pid_t waitReturn);
-void orList(char** specialCharArray, size_t* index_specialCharArray,size_t indexStartCommand, size_t indexEndCommand ,pid_t waitReturn);
-void semicolonList(char** specialCharArray, size_t* index_specialCharArray, size_t indexStartCommand, size_t indexEndCommand);
+size_t* numberOfStringsInEachBlock(size_t* SpecialCharIndexArray);
+pid_t andList(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommandBlock, pid_t waitReturn);
+pid_t orList(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommandBlock ,pid_t waitReturn);
+static inline pid_t semicolonList(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommandBlock);
 
 #endif

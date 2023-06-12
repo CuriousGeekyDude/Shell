@@ -1,74 +1,74 @@
 #include "lists.h"
-#include "basic.h"
 
-static inline size_t specialCharCounter()
+static inline void specialCharCounter()
 {
-    count = 0;
+    countList = 0;
     for(size_t i = 0; i < argc; ++i) {
-        if(strcmp(argv[i], "||") == 0 || strcmp(argv[i], "&&") == 0 || strcmp(argv[i], ";") == 0)
-            ++count;
+        if((strcmp(argv[i], "||") == 0 ) || (strcmp(argv[i], "&&") == 0) || (strcmp(argv[i], ";") == 0) || (strcmp(argv[i], "|") == 0))
+            ++countList;
     }
 
-    return count;
 }
 
 size_t* specialCharIndexArray()
 {
-    count = specialCharCounter();
-    if(count == 0)
+    if(countList == 0)
         return NULL;
 
-    size_t*  specialCharIndexArray = calloc(count, sizeof(size_t));
+    size_t*  SpecialCharIndexArray = calloc(countList, sizeof(size_t));
     
     size_t index_specialCharArray = 0;
     for(size_t i = 0; i < argc; ++i) {
-        if(strcmp(argv[i], "||") == 0 || strcmp(argv[i], "&&") == 0 || strcmp(argv[i], ";") == 0) {
-            specialCharIndexArray[index_specialCharArray] = i
+        if(strcmp(argv[i], "||") == 0 || strcmp(argv[i], "&&") == 0 || strcmp(argv[i], ";") == 0 || strcmp(argv[i], "|") == 0) {
+            SpecialCharIndexArray[index_specialCharArray] = i;
             ++index_specialCharArray;
         }
     }
 
-    return specialCharIndexArray;
+    return SpecialCharIndexArray;
 }
 
 size_t* numberOfStringsInEachBlock(size_t* SpecialCharIndexArray)
 {
-    if(count == 0)
+    if(countList == 0 || SpecialCharIndexArray == NULL)
         return NULL;
 
-    size_t* numOfStringArray = calloc(count+1, sizeof(size_t));
+    size_t* numOfStringArray = calloc(countList+1, sizeof(size_t));
 
-    for(size_t i = 0; i < count+1; ++i) {
+    for(size_t i = 0; i < countList+1; ++i) {
         if(i == 0) {
             numOfStringArray[i] = SpecialCharIndexArray[i];
             continue;
         }
-        if(i == count) {
-            numOfStringArray[count] = (argc-1) - SpecialCharIndexArray[count-1];
+        if(i == countList) {
+            numOfStringArray[countList] = (argc-1) - SpecialCharIndexArray[countList-1];
             continue;
         }
+
         
-        numOfStringArray[i] = SpecialCharIndexArray[i+1] - SpecialCharIndexArray[i] - 1;
+        numOfStringArray[i] = SpecialCharIndexArray[i] - SpecialCharIndexArray[i-1] - 1;
     }
     return numOfStringArray;
 }
 
-void andList(char** specialCharArray, size_t* index_specialCharArray,size_t indexStartCommand, size_t indexEndCommand,pid_t waitReturn)
+pid_t andList(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommandBlock, pid_t waitReturn)
 {
-    if(specialCharArray == NULL || waitReturn == -1)
-        return;
+    if(countList == 0 || waitReturn < 0)
+        return -1;
     
-
-    
+    return executeBlockCommand(BegIndexOfCommandBlock, numOfStringsInCommandBlock, true);
 
 }
 
-void orList(char specialCharArray[], size_t index_specialCharArray,pid_t waitReturn)
+pid_t orList(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommandBlock, pid_t waitReturn)
 {
-
+    if(countList == 0 || waitReturn >= 0)
+        return -1;
+    
+    return executeBlockCommand(BegIndexOfCommandBlock, numOfStringsInCommandBlock, true);
 }
 
-void semicolonList(char specialCharArray[], size_t index_specialCharArray)
+static inline pid_t semicolonList(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommandBlock)
 {
-
+    return executeBlockCommand(BegIndexOfCommandBlock, numOfStringsInCommandBlock, true);
 }

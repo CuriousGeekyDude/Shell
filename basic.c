@@ -126,15 +126,15 @@ char* findPath_ColonSepDirectories(char* colonSepDirectories, const char* path)
 char* commandToStoreInHistBlock()
 {
     if(argv[0] == NULL)
-            return NULL;
+        return NULL;
     size_t lengthOfCommand = 0;
     for(size_t j = 0; j < argc; ++j) 
         lengthOfCommand += (countLengthOfString(argv[j])+1);
         
     char* command = malloc(lengthOfCommand);
     initializeCharBuffer(command, lengthOfCommand);
-    for(size_t j = 0; j < lengthOfCommand - 1 && j < BUFFSIZE ; ++j) {
-        if(inputWords[j] == '\0')
+    for(size_t j = 0; j < lengthOfCommand && j < BUFFSIZE ; ++j) {
+        if(inputWords[j] == '\0' && j != lengthOfCommand-1)
             command[j] = ' ';
         else
             command[j] = inputWords[j];
@@ -143,102 +143,115 @@ char* commandToStoreInHistBlock()
     return command;
 }
 
-void readInput()
+
+
+void storeInputWords()
 {
-    char singleCharRead[1] = {'\0'};
-    size_t index_inputWords = 0;
-    int numRead;
+    size_t spaceCount = 0, loopCount = 1, index_inputWords = 0;
+    char c;
+    while((c = fgetc(stdin)) != '\n') {
 
-    argc = 0;
-    initializeCharBuffer(inputWords, BUFFSIZE);
-    initializePointerBuffer((void*)argv, BUFFSIZE);
+        if(index_inputWords < BUFFSIZE - 1) {
 
-    printShellSign();
-    
-    //Get all the input from the user into inputWords[], eliminating any consecutive 
-    //spaces,except the first space, until a non-space character is found.
-    int spaceCounter = 0, loopCounter = 1;
-    while((numRead = read(STDIN_FILENO, singleCharRead, 1)) > 0) {
-        if(singleCharRead[0] == '\n') {
-            index_inputWords = 0;   //Restart the index for the next while loop 
-            break;
-        }
-        else {
-            if(index_inputWords < BUFFSIZE) {
-                if(singleCharRead[0] == ' ') {
-
-                    if(loopCounter == 1)
-                        continue;
-                    
-                    ++loopCounter;
-                    ++spaceCounter;
-                    if(spaceCounter < 2) {
-                        inputWords[index_inputWords] = singleCharRead[0];
-                        ++index_inputWords;
-                    }
-                    else
-                        continue;
-                }
-                else {
-                    inputWords[index_inputWords] = singleCharRead[0];
+    //loopCounter is used to eliminate all the spaces at the beginning of input when c
+    //has not yet had the chance to be any other character except space. After it is
+    //incremented once, it outlives its usefulness COMPLETELY.
+            if(c == ' ') {
+                if(loopCount == 1)
+                    continue;
+                ++spaceCount;
+                if(spaceCount < 2) {
+                    inputWords[index_inputWords] = c;
                     ++index_inputWords;
-                    spaceCounter = 0;
-                    ++loopCounter;
                 }
+                else
+                    continue;
             }
-            else
-                errorHandling("ERROR: index_inputWords went out of bounds in readInput()!\n");
+            else {
+                inputWords[index_inputWords] = c;
+                ++index_inputWords;
+                spaceCount = 0;
+                ++loopCount;
+            }
         }
+        else
+            return;
     }
+}
 
-    if(numRead == -1)
-        errExit("read() in readInput()");
-
-    //Counts words seperated by space in inputWords[]
+//Counts words seperated by space in inputWords[]
+static inline size_t countArgc()
+{
+    size_t index_inputWords = 0;
+    argc = 0;
     while(index_inputWords < BUFFSIZE && inputWords[index_inputWords] != '\0') {
         if(inputWords[index_inputWords] == ' ')
             ++index_inputWords;
-
         else {
-            while(index_inputWords < BUFFSIZE && inputWords[index_inputWords] != ' ' && inputWords[index_inputWords] != '\0') 
+            while(inputWords[index_inputWords] != ' ' && inputWords[index_inputWords] != '\0') 
                 ++index_inputWords;
             ++argc;
         }
     }
+    return argc;
+}
 
-    if(index_inputWords >= BUFFSIZE)
-        errorHandling("ERROR: index_inputWords went out of bounds in readInput() while trying to count the words of inputWords[]!\n");
-    
+static inline int nullifyAllSpacesOfInputWords()
+{
+    //Making sure that inputWords[] does contain at least one non-null char before traversing it
+    if(inputWords[0] != '\0') {
+        for(size_t i = 0; i < BUFFSIZE; ++i) {
+            if(inputWords[i] == ' ')
+                inputWords[i] = '\0';
+        }
+        return 0;
+    }
+    else
+        return -1;
+}
 
+//Make pointers in argv[] point to the beginning characters
+//of their respective words in inputWords[].
+void initializeArgv(int Argc)
+{
+    size_t index_argv = 0, index_inputWords = 0;
 
-    //Make pointers in argv[] point to the beginning characters
-    //of their respective words in inputWords[].
-    int argcDummy = argc; 
-    size_t index_argv = 0;
-    index_inputWords = 0;
-    while(argcDummy != 0) {
+    if(nullifyAllSpacesOfInputWords() == -1)
+        return;
 
-        while(index_inputWords < BUFFSIZE && inputWords[index_inputWords] == ' ')
+    argv[0] = &inputWords[0];
+    while(Argc != 0) {
+
+        //Traverse non-empty word to reach the first null character that comes immediately after the word
+        while(index_inputWords < BUFFSIZE && inputWords[index_inputWords] != '\0')
+            ++index_inputWords;
+        
+        if(index_inputWords >= BUFFSIZE)
+            return;
+
+        //Traverse null chars to reach the first non-null in order to point argv[index_argv] to it
+        while(index_inputWords < BUFFSIZE && inputWords[index_inputWords] == '\0')
             ++index_inputWords;
 
         if(index_inputWords >= BUFFSIZE)
-            errorHandling("ERROR1: index_inputWords went out of bounds in readInput() while trying to point the pointers of argv[] to their words!\n");
-        
-        argv[index_argv] = &inputWords[index_inputWords];
+            return;
 
-        while(index_inputWords < BUFFSIZE && inputWords[index_inputWords] != ' ' && inputWords[index_inputWords] != '\0')
-            ++index_inputWords;
-        
-        if(index_inputWords >= BUFFSIZE)
-            errorHandling("ERROR2: index_inputWords went out of bounds in readInput() while trying to point the pointers of argv[] to their words!\n");
-
-        inputWords[index_inputWords] = '\0';
-        ++index_inputWords;
         ++index_argv;
-        --argcDummy;
+        argv[index_argv] = &inputWords[index_inputWords];
+        --Argc;
     }
 
-    
+}
+
+static inline void readInput()
+{
+    initializeCharBuffer(inputWords, BUFFSIZE);
+    initializePointerBuffer((void*)argv, BUFFSIZE);
+
+    printShellSign();
+    storeInputWords();
+    argc = countArgc();
+    initializeArgv(argc);
 }
 
 static inline char* read_storeCommands()
@@ -249,3 +262,4 @@ static inline char* read_storeCommands()
     currentHistoryBlock = firstHistoryBlock;
     return command;
 }
+
