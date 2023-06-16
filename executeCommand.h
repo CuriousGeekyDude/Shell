@@ -2,12 +2,13 @@
 #define EXECUTECOMMAND_H
 
 #include "basic.h"
+#include "commandBlock.h"
 #include "cd.h"
 #include "exec.h"
 #include "exit.h"
 #include "nonBuiltInC.h"
 #include "pwd.h"
 
-void executeBlockCommand(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommandBlock,bool toFork);
+pid_t executeCommandBlock(struct CommandBlock* commandBlock, bool toFork);
 
 #endif
