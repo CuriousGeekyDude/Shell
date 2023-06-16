@@ -1,5 +1,6 @@
 #include "basic.c"
 #include <assert.h>
+#include <termios.h>
 
 static size_t counting = 0;
 
@@ -86,7 +87,7 @@ static inline size_t* GlobalSpecialCharIndexArray(void)
 
 /*Takes care of the empty command block case.
  The array is assumed to be non-null as the null case is taken care of before this function is called.*/
-static inline size_t emptyCommandBlockErrorHandling(size_t GlobalSpecialCharIndexArray[], size_t commandBlockNumber, size_t sizeOfGlobalSpecialCharIndexArray)
+size_t emptyCommandBlockErrorHandling(size_t GlobalSpecialCharIndexArray[], size_t commandBlockNumber, size_t sizeOfGlobalSpecialCharIndexArray)
 {
     if(sizeOfGlobalSpecialCharIndexArray < commandBlockNumber)
         return 0;
@@ -107,7 +108,7 @@ static inline size_t emptyCommandBlockErrorHandling(size_t GlobalSpecialCharInde
 }
 
 
-static inline size_t findBegIndexCommandBlock(size_t GlobalSpecialCharIndexArray[], size_t commandBlockNumber, size_t sizeOfGlobalSpecialCharIndexArray)
+size_t findBegIndexCommandBlock(size_t GlobalSpecialCharIndexArray[], size_t commandBlockNumber, size_t sizeOfGlobalSpecialCharIndexArray)
 {
 
     if(argc == 0 || GlobalSpecialCharIndexArray == NULL || commandBlockNumber == 0)
@@ -120,7 +121,7 @@ static inline size_t findBegIndexCommandBlock(size_t GlobalSpecialCharIndexArray
     return GlobalSpecialCharIndexArray[commandBlockNumber - 1] + 1;
 }
 
-static inline size_t findEndIndexCommandBlock(size_t GlobalSpecialCharIndexArray[], size_t commandBlockNumber, size_t sizeOfGlobalSpecialCharIndexArray)
+size_t findEndIndexCommandBlock(size_t GlobalSpecialCharIndexArray[], size_t commandBlockNumber, size_t sizeOfGlobalSpecialCharIndexArray)
 {
     if(argc == 0)
         return 0;
@@ -137,7 +138,7 @@ static inline size_t findEndIndexCommandBlock(size_t GlobalSpecialCharIndexArray
         return GlobalSpecialCharIndexArray[commandBlockNumber] - 1;
 }
 
-static inline size_t numOfStringsInCommandBlock(size_t begIndexCommandBlock, size_t endIndexCommandBlock, size_t commandBlockNumber)
+size_t numOfStringsInCommandBlock(size_t begIndexCommandBlock, size_t endIndexCommandBlock, size_t commandBlockNumber)
 {
     //The case where begIndex = endIndex and begIndex == 0 where it could be a valid command like ls or an invalid one like NULL
     if(begIndexCommandBlock == endIndexCommandBlock && begIndexCommandBlock == 0) {
@@ -157,7 +158,7 @@ static inline size_t numOfStringsInCommandBlock(size_t begIndexCommandBlock, siz
         return endIndexCommandBlock - begIndexCommandBlock + 1;
 }
 
-static inline size_t numOfSpecialCharsInCommandBlock(size_t begIndexCommandBlock, size_t endIndexCommandBlock)
+size_t numOfSpecialCharsInCommandBlock(size_t begIndexCommandBlock, size_t endIndexCommandBlock)
 {
     if(begIndexCommandBlock == endIndexCommandBlock)
         return 0;
@@ -195,7 +196,7 @@ size_t* numberOfStringsInEachPipe(struct CommandBlock* commandBlock)
     return numOfStringArray;
 }
 
-static inline size_t* initializeLocalSpecialCharIndexArray(size_t begIndexCommandBlock, size_t endIndexCommandBlock, size_t SizeOfLocalSpecialCharIndexArray)
+size_t* initializeLocalSpecialCharIndexArray(size_t begIndexCommandBlock, size_t endIndexCommandBlock, size_t SizeOfLocalSpecialCharIndexArray)
 {
     if(SizeOfLocalSpecialCharIndexArray == 0)
         return NULL;
@@ -212,7 +213,7 @@ static inline size_t* initializeLocalSpecialCharIndexArray(size_t begIndexComman
 
     return LocalSpecialCharIndexArray;
 }
-static inline struct CommandBlock* constructCommandBlock(size_t* _GlobalSpecialCharIndexArray, size_t commandBlockNumber, char* CommandType)
+struct CommandBlock* constructCommandBlock(size_t* _GlobalSpecialCharIndexArray, size_t commandBlockNumber, char* CommandType)
 {
     struct CommandBlock* commandBlock = calloc(1, sizeof(struct CommandBlock));
 
@@ -226,11 +227,12 @@ static inline struct CommandBlock* constructCommandBlock(size_t* _GlobalSpecialC
     commandBlock->numOfStringsInEachPipe = numberOfStringsInEachPipe(commandBlock);
     commandBlock->commandType = CommandType;
     return commandBlock;
-}
-static inline int destroyCommandBlock(struct CommandBlock* commandBlock)
+} 
+
+void destroyCommandBlock(struct CommandBlock* commandBlock)
 {
     if(commandBlock == NULL)
-        return 0;
+        return;
     
     if(commandBlock->localSpecialCharIndexArray != NULL) {
         if(commandBlock->numOfStringsInEachPipe != NULL) {
@@ -250,7 +252,7 @@ static inline int destroyCommandBlock(struct CommandBlock* commandBlock)
     commandBlock = NULL;
 }
 
-static inline void destroyArrayOfCommandBlocks(struct CommandBlock** commandBlocks, size_t sizeOfCommandBlocks)
+void destroyArrayOfCommandBlocks(struct CommandBlock** commandBlocks, size_t sizeOfCommandBlocks)
 {
     if(commandBlocks == NULL || sizeOfCommandBlocks == 0)
         return;
@@ -317,7 +319,7 @@ void parseCommandBlock(struct CommandBlock* commandBlock)
             break;
     }
 }
-static inline void printCommandBlock(struct CommandBlock* commandBlock)
+void printCommandBlock(struct CommandBlock* commandBlock)
 {
     size_t x = commandBlock->begIndex;
     size_t y = commandBlock->endIndex;
@@ -367,7 +369,7 @@ static inline void printCommandBlock(struct CommandBlock* commandBlock)
 
 //---------------------------------------BUILT_INS---------------------------------------------------------
 
-static inline void pwdCommand(size_t argc)
+void pwdCommand(size_t argc)
 {
     if(argc > 1)
         return;
@@ -463,7 +465,7 @@ char* returnUpPath(const char* currentPath)
 
 }
 
-static inline void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD)
+void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD)
 {
     if(setenv("PWD", newPWD, 1) == -1)
         errExit("setenv() for PWD in update_PWD_OLDPWD()");
@@ -563,7 +565,7 @@ int cdCommand(size_t indexArgv, size_t argc)
 }
 
 
-static inline void exitCommand(size_t argc)
+void exitCommand(size_t argc)
 {
     if(argc > 1)
         return;
@@ -604,7 +606,7 @@ void exec_nonBuiltInCommand(size_t indexArgv, size_t argc)
         }
     }
 }
-static inline pid_t nonBuiltInCommand(size_t indexArgv, size_t argc)
+pid_t nonBuiltInCommand(size_t indexArgv, size_t argc)
 {
     pid_t childPID = 0;
     switch(fork()) {
@@ -724,6 +726,24 @@ pid_t start_pipeline(struct CommandBlock* commandBlock)
 }
 
 
+void readToFileFromPipe(int fd_readEndOfPipe, FILE* file)
+{
+    if(file == NULL)
+        errExit("file is NULL in readToFileFromPipe()");
+    FILE* readEndOfPipe = fdopen(fd_readEndOfPipe , "r");
+    if(readEndOfPipe == NULL)
+        errExit("fdopen()");
+    int c;
+    while((c = fgetc(readEndOfPipe)) != EOF) {
+        if(fputc(c, file) == EOF)
+            errExit("fputc");
+    }
+    if(fclose(readEndOfPipe) == -1)
+        errExit("fclose() readEndOfPipe!");
+    if(fclose(file) == -1)
+        errExit("fclose() file!");
+}
+
 void redirection(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommand, FILE* file)
 {
     int filedes[2];
@@ -751,18 +771,7 @@ void redirection(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommand, FI
             if(wait(NULL) == -1)
                 errExit("Execution of the command block of redirection failed!");
 
-            FILE* readEndOfPipe = fdopen(filedes[0], "r");
-            if(readEndOfPipe == NULL)
-                errExit("fdopen()");
-            int c;
-            while((c = fgetc(readEndOfPipe)) != EOF) {
-                if(fputc(c, file) == EOF)
-                    errExit("fputc");
-            }
-            if(fclose(readEndOfPipe) == -1)
-                errExit("fclose() readEndOfPipe!");
-            if(fclose(file) == -1)
-                errExit("fclose() file!");
+            readToFileFromPipe(filedes[0], file);
             exit(EXIT_SUCCESS);
             break;
     }
@@ -845,19 +854,7 @@ pid_t pipelineRedirection(size_t BegIndexOfCommandBlock, size_t NumberOfStringsI
             
             //File redirection at the end of pipeline happens here
             if(baseCaseRecursion == numOfPipesInCommandBlock) {
-
-                FILE* readEndOfPipe = fdopen(filedes[0], "r");
-                if(readEndOfPipe == NULL)
-                    errExit("fdopen()");
-                int c;
-                while((c = fgetc(readEndOfPipe)) != EOF) {
-                    if(fputc(c, file) == EOF)
-                        errExit("fputc");
-                }
-                if(fclose(readEndOfPipe) == -1)
-                    errExit("fclose() readEndOfPipe!");
-                if(fclose(file) == -1)
-                    errExit("fclose() file!");
+                readToFileFromPipe(filedes[0], file);
                 exit(EXIT_SUCCESS);
             }
             else
@@ -961,7 +958,7 @@ pid_t orList(struct CommandBlock* commandBlock, pid_t waitReturn)
     return executeCommandBlock(commandBlock);
 }
 
-static inline pid_t semicolonList(struct CommandBlock* commandBlock, pid_t waitReturn)
+pid_t semicolonList(struct CommandBlock* commandBlock, pid_t waitReturn)
 {
     if(waitReturn == -1)
         return -1;
