@@ -10,7 +10,6 @@ void exec_nonBuiltInCommand(size_t indexArgv, size_t argc)
             }
 
         }
-
         
     else {
         size_t sizeOfNewArgv = argc+1;
@@ -27,7 +26,8 @@ void exec_nonBuiltInCommand(size_t indexArgv, size_t argc)
         }
     }
 }
-static inline pid_t nonBuiltInCommand(size_t indexArgv, size_t argc)
+
+pid_t nonBuiltInCommand(size_t indexArgv, size_t argc)
 {
     pid_t childPID = 0;
     switch(fork()) {

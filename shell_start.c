@@ -1,81 +1,82 @@
 #include "shell_start.h"
 
-void start_shell()
+
+struct CommandBlock** initializeArrayOfCommandBlocks(void)
 {
-    if(read_storeCommands() == NULL)
-        return;
-    
-    int IndexOfFirstPipeSignInPipeline = 0;
-    pid_t childPID = 0;
-    specialCharCounter();
+    struct CommandBlock** commandBlockArray = calloc(countList+1, sizeof(struct CommandBlock*));
 
-    size_t* SpecialCharIndexArray = specialCharIndexArray();
-    size_t* numOfStringsInEachBlock = numberOfStringsInEachBlock(SpecialCharIndexArray);
-        
-    
-    IndexOfFirstPipeSignInPipeline = indexOfFirstPipeSignInPipeline(SpecialCharIndexArray,0);
-    size_t NumOfPipesInPipeline = numOfPipesInPipeline(SpecialCharIndexArray, IndexOfFirstPipeSignInPipeline);
+    if(commandBlockArray == NULL)
+        return NULL;
 
-    if(numOfStringsInEachBlock != NULL) {
-        
-        size_t i;   //used in the next for loop
-
-    //Checks to see if there is a pipeline at the beginning and adjust the value of i accordingly
-        if(IndexOfFirstPipeSignInPipeline == SpecialCharIndexArray[0]) {
-            childPID = start_pipeline(0, numOfStringsInEachBlock, 0, NumOfPipesInPipeline);
-            if(NumOfPipesInPipeline == countList)
-                return;
-            else {
-                i = NumOfPipesInPipeline;
-                IndexOfFirstPipeSignInPipeline = findNextPipeSignIndex(SpecialCharIndexArray, i);
-            }
-        }
-        else {
-                childPID = executeBlockCommand(0, numOfStringsInEachBlock[0], true);
-                i = 0;
-            }
-
-        
-        for(; i < countList; ++i) {
-            
-            if(IndexOfFirstPipeSignInPipeline == SpecialCharIndexArray[i]) {
-                NumOfPipesInPipeline = numOfPipesInPipeline(SpecialCharIndexArray, IndexOfFirstPipeSignInPipeline);
-                childPID = start_pipeline(SpecialCharIndexArray[i-1] + 1, numOfStringsInEachBlock, i, NumOfPipesInPipeline);
-                i += (NumOfPipesInPipeline-1);
-                
-        //updates IndexOfFirstPipeSignInPipeline to the first pipe sign index that appears after the pipeline
-                IndexOfFirstPipeSignInPipeline = indexOfFirstPipeSignInPipeline(SpecialCharIndexArray, i+1);
-                continue;
-            }
-
-            if(strcmp(argv[SpecialCharIndexArray[i]], "&&") == 0) {
-
-                if(numOfStringsInEachBlock[i+1] != 0 && SpecialCharIndexArray[i+1] != IndexOfFirstPipeSignInPipeline)
-                   childPID =  andList(SpecialCharIndexArray[i] + 1, numOfStringsInEachBlock[i+1], childPID);
-                else
-                    continue;
-                }
-            if(strcmp(argv[SpecialCharIndexArray[i]], "||") == 0) {
-
-                if(numOfStringsInEachBlock[i+1] != 0 && SpecialCharIndexArray[i+1] != IndexOfFirstPipeSignInPipeline)
-                    childPID = orList(SpecialCharIndexArray[i] + 1, numOfStringsInEachBlock[i+1], childPID);
-                else
-                    continue;
-            }
-            if(strcmp(argv[SpecialCharIndexArray[i]], ";") == 0) {
-                if(numOfStringsInEachBlock[i+1] != 0 && SpecialCharIndexArray[i+1] != IndexOfFirstPipeSignInPipeline)
-                    childPID  = semicolonList(SpecialCharIndexArray[i] + 1, numOfStringsInEachBlock[i+1]);
-                
-            }
-
-        }
-
-        free(SpecialCharIndexArray);
-        free(numOfStringsInEachBlock);
+    for(size_t i = 0; i < countList+1; ++i) {
+        commandBlockArray[i] = constructCommandBlock(globalSpecialCharIndexArray, i, NULL);
+        parseCommandBlock(commandBlockArray[i]);
     }
 
-    else
-        executeBlockCommand(0, argc, true);
+    return commandBlockArray;
+}
+
+void destroyArrayOfCommandBlocks(struct CommandBlock** commandBlocks, size_t sizeOfCommandBlocks)
+{
+    if(commandBlocks == NULL || sizeOfCommandBlocks == 0)
+        return;
+
+    for(size_t i = 0; i < sizeOfCommandBlocks; ++i) {
+        destroyCommandBlock(commandBlocks[i]);
+    }
+
+    free(commandBlocks);
+    commandBlocks = NULL;
+}
+
+void start_shell(void)
+{
+    char* command = read_storeCommands();
+    if(command == NULL)
+        return;
+
+    pid_t childPID = 0;
+    GlobalSpecialCharCounter();
+
+    size_t* globalSpecialCharIndexArray = GlobalSpecialCharIndexArray();
+
+    struct CommandBlock** commandBlockArray = initializeArrayOfCommandBlocks();
+
+    if(commandBlockArray == NULL)
+        return;
+
+    if(globalSpecialCharIndexArray != NULL) {
         
+        childPID = executeCommandBlock(commandBlockArray[0]);
+
+        for(size_t i = 0; i < countList; ++i) {
+
+            if(strcmp(argv[globalSpecialCharIndexArray[i]], "&&") == 0) {
+                   if(childPID == -1)
+                        break;
+                   childPID =  andList(commandBlockArray[i+1], childPID);
+                   continue;
+                }
+
+            if(strcmp(argv[globalSpecialCharIndexArray[i]], "||") == 0) {
+                    if(childPID == -1)
+                        break;
+                    childPID = orList(commandBlockArray[i+1], childPID);
+                    continue;
+            }
+            if(strcmp(argv[globalSpecialCharIndexArray[i]], ";") == 0) {
+                    if(childPID == -1)
+                        break;
+                    childPID  = semicolonList(commandBlockArray[i+1], childPID);
+            }
+        }
+        
+    }
+
+    else 
+        executeCommandBlock(commandBlockArray[0]);
     
+        
+    free(globalSpecialCharIndexArray);
+    destroyArrayOfCommandBlocks(commandBlockArray, countList + 1);
 }

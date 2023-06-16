@@ -1,34 +1,55 @@
 #include "lists.h"
 
-static inline void specialCharCounter()
+void GlobalSpecialCharCounter(void) 
 {
     countList = 0;
     for(size_t i = 0; i < argc; ++i) {
-        if((strcmp(argv[i], "||") == 0 ) || (strcmp(argv[i], "&&") == 0) || (strcmp(argv[i], ";") == 0) || (strcmp(argv[i], "|") == 0))
+        if((strcmp(argv[i], "||") == 0 ) || (strcmp(argv[i], "&&") == 0) || (strcmp(argv[i], ";") == 0))
             ++countList;
     }
 
 }
 
+size_t* GlobalSpecialCharIndexArray(void) 
+{
 
-pid_t andList(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommandBlock, pid_t waitReturn)
+    if(countList == 0)
+        return NULL;
+
+    size_t*  SpecialCharIndexArray = calloc(countList, sizeof(size_t));
+    
+    size_t index_specialCharArray = 0;
+    for(size_t i = 0; i < argc; ++i) {
+        if(strcmp(argv[i], "||") == 0 || strcmp(argv[i], "&&") == 0 || strcmp(argv[i], ";") == 0) {
+            SpecialCharIndexArray[index_specialCharArray] = i;
+            ++index_specialCharArray;
+        }
+    }
+
+    return SpecialCharIndexArray;
+}
+
+
+pid_t andList(struct CommandBlock* commandBlock, pid_t waitReturn)
 {
     if(countList == 0 || waitReturn < 0)
         return -1;
     
-    return executeBlockCommand(BegIndexOfCommandBlock, numOfStringsInCommandBlock, true);
+    return executeCommandBlock(commandBlock);
 
 }
 
-pid_t orList(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommandBlock, pid_t waitReturn)
+pid_t orList(struct CommandBlock* commandBlock, pid_t waitReturn)
 {
     if(countList == 0 || waitReturn >= 0)
         return -1;
     
-    return executeBlockCommand(BegIndexOfCommandBlock, numOfStringsInCommandBlock, true);
+    return executeCommandBlock(commandBlock);
 }
 
-static inline pid_t semicolonList(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommandBlock)
+pid_t semicolonList(struct CommandBlock* commandBlock, pid_t waitReturn)
 {
-    return executeBlockCommand(BegIndexOfCommandBlock, numOfStringsInCommandBlock, true);
+    if(waitReturn == -1)
+        return -1;
+    return executeCommandBlock(commandBlock);
 }

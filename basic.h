@@ -1,6 +1,6 @@
 #ifndef BASIC_H
 #define BASIC_H
-
+#define _POSIX_SOURCE
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <limits.h>
 #include "history.c"    //change .c to .h!
 #include "error_functions.c"
 

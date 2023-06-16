@@ -1,5 +1,4 @@
-#include "cd.h"
-#include "basic.h"
+#include "builtInC.h"
 
 
 char* returnUpPath(const char* currentPath) 
@@ -53,7 +52,7 @@ char* returnUpPath(const char* currentPath)
 
 }
 
-static inline void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD)
+void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD)
 {
     if(setenv("PWD", newPWD, 1) == -1)
         errExit("setenv() for PWD in update_PWD_OLDPWD()");
@@ -150,4 +149,65 @@ int cdCommand(size_t indexArgv, size_t argc)
     fflush(stdout);
     free(newPWD);
     return 0;
+}
+
+
+
+
+void execCommand(size_t indexArgv, size_t argc)
+{
+    if(argc < 3) {
+        if(argc == 2) {
+            if(execvp(argv[indexArgv+1], NULL) == -1) {
+                freeAllBlocks();
+                errExit("execvp");
+            }
+
+        }
+    }
+        
+    else {
+        size_t sizeOfNewArgv = argc;
+        char** newArgv = malloc(sizeOfNewArgv*(sizeof(char*)));
+        initializePointerBuffer((void*)newArgv, sizeOfNewArgv);
+
+        for(size_t i = 0; i < sizeOfNewArgv-1 && i < BUFFSIZE; ++i)
+            newArgv[i] = argv[indexArgv+ i + 1];
+        if(execvp(argv[indexArgv+1], newArgv) == -1) {
+            freeAllBlocks();
+            free(newArgv);
+            newArgv = NULL;
+            errExit("execvp");
+        }
+        free(newArgv);
+        newArgv = NULL;
+    }
+
+}
+
+
+
+
+
+void pwdCommand(size_t argc)
+{
+    if(argc > 1)
+        return;
+
+    char* PWD = getenv("PWD");
+    printf("%s\n", PWD);
+    fflush(stdout);   
+}
+
+
+
+
+
+
+void exitCommand(size_t argc)
+{
+    if(argc > 1)
+        return;
+    freeAllBlocks();
+    exit(EXIT_SUCCESS);
 }

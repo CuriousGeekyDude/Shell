@@ -14,21 +14,24 @@ struct CommandBlock
     char* commandType;
 };
 
-static inline size_t emptyCommandBlockErrorHandling(size_t GlobalSpecialCharIndexArray[], size_t commandBlockNumber, size_t sizeOfGlobalSpecialCharIndexArray);
+size_t emptyCommandBlockErrorHandling(size_t GlobalSpecialCharIndexArray[], size_t commandBlockNumber, size_t sizeOfGlobalSpecialCharIndexArray);
 
-static inline size_t findBegIndexCommandBlock(size_t GlobalSpecialCharIndexArray[], size_t commandBlockNumber, size_t sizeOfGlobalSpecialCharIndexArray);
-static inline size_t findEndIndexCommandBlock(size_t GlobalSpecialCharIndexArray[], size_t commandBlockNumber, size_t sizeOfGlobalSpecialCharIndexArray);
-static inline size_t numOfStringsInCommandBlock(size_t begIndexCommandBlock, size_t endIndexCommandBlock, size_t commandBlockNumber);
-static inline size_t numOfSpecialCharsInCommandBlock(size_t begIndexCommandBlock, size_t endIndexCommandBlock);
-static inline size_t* initializeLocalSpecialCharIndexArray(size_t begIndexCommandBlock, size_t endIndexCommandBlock, size_t SizeOfLocalSpecialCharIndexArray);
+size_t findBegIndexCommandBlock(size_t GlobalSpecialCharIndexArray[], size_t commandBlockNumber, size_t sizeOfGlobalSpecialCharIndexArray);
+size_t findEndIndexCommandBlock(size_t GlobalSpecialCharIndexArray[], size_t commandBlockNumber, size_t sizeOfGlobalSpecialCharIndexArray);
+size_t numOfStringsInCommandBlock(size_t begIndexCommandBlock, size_t endIndexCommandBlock, size_t commandBlockNumber);
+size_t numOfSpecialCharsInCommandBlock(size_t begIndexCommandBlock, size_t endIndexCommandBlock);
+size_t* numberOfStringsInEachPipe(struct CommandBlock* commandBlock);
+size_t* initializeLocalSpecialCharIndexArray(size_t begIndexCommandBlock, size_t endIndexCommandBlock, size_t SizeOfLocalSpecialCharIndexArray);
 
-static inline struct CommandBlock* constructCommandBlock(size_t* _GlobalSpecialCharIndexArray, size_t commandBlockNumber, char* CommandType);
+struct CommandBlock* constructCommandBlock(size_t* _GlobalSpecialCharIndexArray, size_t commandBlockNumber, char* CommandType);
+void destroyCommandBlock(struct CommandBlock* commandBlock);
 
+bool brokenPipeRedirection(struct CommandBlock* commandBlock);
 void parseCommandBlock(struct CommandBlock* commandBlock);
 
-static inline void printCommandBlock(struct CommandBlock* commandBlock);    //Used to print CommandBlock structures for debugging only
 
-static inline int destroyCommandBlock(struct CommandBlock* commandBlock);
+
+void printCommandBlock(struct CommandBlock* commandBlock);    //Used to print CommandBlock structures for debugging only
 
 
 #endif
