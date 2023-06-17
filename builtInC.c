@@ -154,7 +154,7 @@ int cdCommand(size_t indexArgv, size_t argc)
 
 
 
-void run_execvp(size_t indexArgv, char* const * newArgv)
+void run_execvp(size_t indexArgv, char** newArgv)
 {
     if(newArgv == NULL) {
         if(execvp(argv[indexArgv+1], newArgv) == -1)
@@ -212,7 +212,6 @@ void pwdCommand(size_t argc)
     printf("%s\n", PWD);
     fflush(stdout);   
 }
-
 
 
 

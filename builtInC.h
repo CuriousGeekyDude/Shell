@@ -13,7 +13,7 @@ int cdCommand(size_t indexArgv, size_t argc);
 
 
 //-----------------------------EXEC_COMMAND---------------------------------
-void run_execvp(size_t indexArgv, char* const * newArgv);
+void run_execvp(size_t indexArgv, char**newArgv);
 void execCommand(size_t indexArgv, size_t argc);
 //-----------------------------EXEC_COMMAND---------------------------------
 

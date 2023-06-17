@@ -1,6 +1,6 @@
 #ifndef BASIC_H
 #define BASIC_H
-#define _POSIX_SOURCE
+/*#define _POSIX_SOURCE*/       //check if there is any need for this or not!
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -12,6 +12,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <limits.h>
+#include "color.c"  //chandge .c to .h!
 #include "history.c"    //change .c to .h!
 #include "error_functions.c"
 
@@ -22,9 +23,9 @@ int argc;
 char inputWords[BUFFSIZE];
 char* argv[BUFFSIZE];
 
-static inline void errorHandling(const char* stringToPrint);
+void errorHandling(const char* stringToPrint);
 
-static inline void printShellSign();
+void printShellSign();
 
 size_t countLengthOfString(const char* string);
 void initializeCharBuffer(char buffer[], size_t sizeOfBuffer);
@@ -37,10 +38,10 @@ char* commandToStoreInHistBlock();
 
 
 void storeInputWords();
-static inline size_t countArgc();
+size_t countArgc();
 void initializeArgv(int Argc);
-static inline void readInput();
-static inline char* read_storeCommands();
+void readInput();
+char* read_storeCommands();
 
 
 

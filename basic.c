@@ -1,16 +1,23 @@
 #include "basic.h"
 
-static inline void errorHandling(const char* stringToPrint)
+void errorHandling(const char* stringToPrint)
 {
     printf("%s", stringToPrint);
     fflush(stdout);
     exit(EXIT_FAILURE);
 }
 
-static inline void printShellSign()
+void printShellSign()
 {
     char* pwd = getenv("PWD");
-    printf("sh$%s:", pwd);
+    if(pwd == NULL)
+        return;
+
+    green();
+    printf("sh$");
+    randomColorGenerator();
+    printf("%s:", pwd);
+    resetColor();
     fflush(stdout);
 }
 
@@ -180,7 +187,7 @@ void storeInputWords()
 }
 
 //Counts words seperated by space in inputWords[]
-static inline size_t countArgc()
+size_t countArgc()
 {
     size_t index_inputWords = 0;
     argc = 0;
@@ -196,7 +203,7 @@ static inline size_t countArgc()
     return argc;
 }
 
-static inline int nullifyAllSpacesOfInputWords()
+int nullifyAllSpacesOfInputWords()
 {
     //Making sure that inputWords[] does contain at least one non-null char before traversing it
     if(inputWords[0] != '\0') {
@@ -243,7 +250,7 @@ void initializeArgv(int Argc)
 
 }
 
-static inline void readInput()
+void readInput()
 {
     initializeCharBuffer(inputWords, BUFFSIZE);
     initializePointerBuffer((void*)argv, BUFFSIZE);
@@ -254,7 +261,7 @@ static inline void readInput()
     initializeArgv(argc);
 }
 
-static inline char* read_storeCommands()
+char* read_storeCommands()
 {
     readInput();
     char* command = commandToStoreInHistBlock();
