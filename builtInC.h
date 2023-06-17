@@ -13,17 +13,22 @@ int cdCommand(size_t indexArgv, size_t argc);
 
 
 //-----------------------------EXEC_COMMAND---------------------------------
+void run_execvp(size_t indexArgv, char* const * newArgv);
 void execCommand(size_t indexArgv, size_t argc);
 //-----------------------------EXEC_COMMAND---------------------------------
 
 
 //-----------------------------PWD_COMMAND---------------------------------
+
+//argc must not exceed 1
 void pwdCommand(size_t argc);
 //-----------------------------PWD_COMMAND---------------------------------
 
 
 
 //-----------------------------EXIT_COMMAND---------------------------------
+
+//argc must not exceed 1
 void exitCommand(size_t argc);
 //-----------------------------EXIT_COMMAND---------------------------------
 

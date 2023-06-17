@@ -64,6 +64,7 @@ int cdCommand(size_t indexArgv, size_t argc)
 {
     if(argc > 2)
         return -1;
+        
     if(argc == 1) {
         char* newPWD = getenv("HOME");
         if(newPWD == NULL)
@@ -153,17 +154,29 @@ int cdCommand(size_t indexArgv, size_t argc)
 
 
 
-
+void run_execvp(size_t indexArgv, char* const * newArgv)
+{
+    if(newArgv == NULL) {
+        if(execvp(argv[indexArgv+1], newArgv) == -1)
+            freeAllBlocks();
+            errExit("execvp");
+    }
+    else {
+        if(execvp(argv[indexArgv+1], newArgv) == -1) {
+            freeAllBlocks();
+            free(newArgv);
+            newArgv = NULL;
+            errExit("execvp");
+        }
+    }
+}
 void execCommand(size_t indexArgv, size_t argc)
 {
-    if(argc < 3) {
-        if(argc == 2) {
-            if(execvp(argv[indexArgv+1], NULL) == -1) {
-                freeAllBlocks();
-                errExit("execvp");
-            }
+    if(argc == 0 || argc == 1)
+        return;
 
-        }
+    if(argc == 2) {
+        run_execvp(indexArgv, NULL);
     }
         
     else {
@@ -173,14 +186,8 @@ void execCommand(size_t indexArgv, size_t argc)
 
         for(size_t i = 0; i < sizeOfNewArgv-1 && i < BUFFSIZE; ++i)
             newArgv[i] = argv[indexArgv+ i + 1];
-        if(execvp(argv[indexArgv+1], newArgv) == -1) {
-            freeAllBlocks();
-            free(newArgv);
-            newArgv = NULL;
-            errExit("execvp");
-        }
-        free(newArgv);
-        newArgv = NULL;
+
+        run_execvp(indexArgv, newArgv);
     }
 
 }
@@ -195,6 +202,13 @@ void pwdCommand(size_t argc)
         return;
 
     char* PWD = getenv("PWD");
+
+    if(PWD == NULL) {
+        printf("PWD does not exit!\n");
+        fflush(stdout);
+        return;
+    }
+
     printf("%s\n", PWD);
     fflush(stdout);   
 }
@@ -208,6 +222,7 @@ void exitCommand(size_t argc)
 {
     if(argc > 1)
         return;
+
     freeAllBlocks();
     exit(EXIT_SUCCESS);
 }
