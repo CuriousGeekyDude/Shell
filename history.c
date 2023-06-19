@@ -1,6 +1,6 @@
 #include "history.h"
 
-historyBlock* deleteLastBlock()
+historyBlock* deleteLastBlock(void)
 {
     if(lastHistoryBlock == NULL) {
         count = 0;
@@ -43,32 +43,50 @@ historyBlock* deleteLastBlock()
 
 }
 
-historyBlock* add(char* command)
+
+
+void makeSpaceForNewHisBlock(void)
 {
     while(count >= COUNTER_LIMIT)
         deleteLastBlock();
+}
+
+historyBlock* initializeNewHisBlock(char* command)
+{
+    makeSpaceForNewHisBlock();
 
     historyBlock* historyBlockToAdd = malloc(sizeof(historyBlock));
     historyBlockToAdd->before = NULL;
     historyBlockToAdd->next = firstHistoryBlock;
     historyBlockToAdd->command = command;
     historyBlockToAdd->counter = &count;
-    ++count;
+
+    return historyBlockToAdd;
+}
+
+historyBlock* add(char* command)
+{
+    historyBlock* historyBlockToAdd = initializeNewHisBlock(command);   
 
     if(firstHistoryBlock == NULL) {
         firstHistoryBlock = historyBlockToAdd;
         lastHistoryBlock = firstHistoryBlock;
         currentHistoryBlock = firstHistoryBlock;
+        ++count;
         return firstHistoryBlock;
     }
-    firstHistoryBlock = historyBlockToAdd;
-    currentHistoryBlock = firstHistoryBlock;
-    firstHistoryBlock->next->before = historyBlockToAdd;
-
-    return firstHistoryBlock;
+    else {
+        firstHistoryBlock = historyBlockToAdd;
+        currentHistoryBlock = firstHistoryBlock;
+        firstHistoryBlock->next->before = historyBlockToAdd;
+        ++count;
+        return firstHistoryBlock;
+    }
 }
 
-char* showPreviousCommand()
+
+
+char* showPreviousCommand(void)
 {
     if(currentHistoryBlock == NULL)
         return NULL;
@@ -83,7 +101,7 @@ char* showPreviousCommand()
 
 }
 
-void freeAllBlocks()
+void freeAllBlocks(void)
 {
     if(firstHistoryBlock == NULL)
         return;
