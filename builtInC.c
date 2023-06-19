@@ -1,9 +1,43 @@
 #include "builtInC.h"
 
 
+
+size_t numOfAllTheSlashesInPath(const char* currentPath)
+{
+    size_t numOfAllTheSlashes = 0;
+    for(size_t i = 0; currentPath[i] != '\0'; ++i) {
+        if(currentPath[i] == '/')
+            ++numOfAllTheSlashes;
+    }
+    return numOfAllTheSlashes;
+}
+
+size_t findIndexOfLastSlash(const char* currentPath)
+{
+    size_t indexOfLastSlash = 0;
+    size_t numOfAllTheSlashes = numOfAllTheSlashesInPath(currentPath);
+    size_t lengthOfCurrentPath = countLengthOfString(currentPath) + 1;
+
+    while(numOfAllTheSlashes != 0) {
+        if(indexOfLastSlash >= lengthOfCurrentPath) {
+            printf("ERROR: indexOfLastSlash went over bound!\n");
+            return NULL;
+        }
+        if(currentPath[indexOfLastSlash] == '/') {
+            --numOfAllTheSlashes;
+            ++indexOfLastSlash;
+            continue;
+        }
+        ++indexOfLastSlash;
+    }
+
+    return indexOfLastSlash;
+
+}
+
 char* returnUpPath(const char* currentPath) 
 {
-    size_t numOfLastSlash = 0, lengthOfCurrentPath = countLengthOfString(currentPath) + 1, indexOfLastSlash = 0;
+    size_t  indexOfLastSlash = 0;
 
     if(strcmp("", currentPath) == 0)
         return NULL;
@@ -19,24 +53,9 @@ char* returnUpPath(const char* currentPath)
         pathToReturn[1] = '\0';
         return pathToReturn;
     }
-
-    for(size_t i = 0; currentPath[i] != '\0'; ++i) {
-        if(currentPath[i] == '/')
-            ++numOfLastSlash;
-    }
-
-    while(numOfLastSlash != 0) {
-        if(indexOfLastSlash >= lengthOfCurrentPath) {
-            printf("ERROR: indexOfLastSlash went over bound!\n");
-            return NULL;
-        }
-        if(currentPath[indexOfLastSlash] == '/') {
-            --numOfLastSlash;
-            ++indexOfLastSlash;
-            continue;
-        }
-        ++indexOfLastSlash;
-    }
+  
+    indexOfLastSlash = findIndexOfLastSlash(currentPath);
+    
     if(indexOfLastSlash == 1) {
         char* newPathToReturn = malloc(indexOfLastSlash+1);
         initializeCharBuffer(newPathToReturn, indexOfLastSlash+1);

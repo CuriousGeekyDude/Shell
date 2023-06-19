@@ -5,6 +5,8 @@
 
 
 //-----------------------------CD_COMMAND---------------------------------
+size_t numOfAllTheSlashesInPath(const char* currentPath);
+size_t findIndexOfLastSlash(const char* currentPath);
 char* returnUpPath(const char* currentPath);
 void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD);
 int cdCommand(size_t indexArgv, size_t argc);
