@@ -12,20 +12,23 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <limits.h>
-#include "color.c"  //chandge .c to .h!
-#include "history.c"    //change .c to .h!
-#include "error_functions.c"
+#include <assert.h>
+#include <malloc.h>
+#include "color.h"  //chandge .c to .h!
+#include "history.h"    //change .c to .h!
+#include "error_functions.h"
 
 
 #define BUFFSIZE 4096
 
 int argc;
+static size_t countList = 0;
 char inputWords[BUFFSIZE];
 char* argv[BUFFSIZE];
 
 void errorHandling(const char* stringToPrint);
 
-void printShellSign();
+void printShellSign(void);
 
 size_t countLengthOfString(const char* string);
 void initializeCharBuffer(char buffer[], size_t sizeOfBuffer);
@@ -34,14 +37,15 @@ void initializePointerBuffer(void* buffer[], size_t sizeOfBuffer);
 char* findPath_ColonSepDirectories(char* colonSepDirectories, const char* path); 
 
 
-char* commandToStoreInHistBlock(); 
+size_t countLengthOfCommand(void);
+char* commandToStoreInHistBlock(void); 
 
 
-void storeInputWords();
-size_t countArgc();
+void storeInputWords(void);
+size_t countArgc(void);
 void initializeArgv(int Argc);
-void readInput();
-char* read_storeCommands();
+void readInput(void);
+char* read_storeCommands(void);
 
 
 

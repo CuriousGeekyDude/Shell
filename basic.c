@@ -7,14 +7,14 @@ void errorHandling(const char* stringToPrint)
     exit(EXIT_FAILURE);
 }
 
-void printShellSign()
+void printShellSign(void)
 {
     char* pwd = getenv("PWD");
     if(pwd == NULL)
         return;
 
     green();
-    printf("sh$");
+    printf("FAN$");
     randomColorGenerator();
     printf("%s:", pwd);
     resetColor();
@@ -130,16 +130,25 @@ char* findPath_ColonSepDirectories(char* colonSepDirectories, const char* path)
     return NULL;
 }
 
-char* commandToStoreInHistBlock()
+
+
+
+size_t countLengthOfCommand(void)
 {
-    if(argv[0] == NULL)
-        return NULL;
     size_t lengthOfCommand = 0;
     for(size_t j = 0; j < argc; ++j) 
         lengthOfCommand += (countLengthOfString(argv[j])+1);
-        
+    return lengthOfCommand;
+}
+char* commandToStoreInHistBlock(void)
+{
+    if(argv[0] == NULL)
+        return NULL;
+
+    size_t lengthOfCommand = countLengthOfCommand();
     char* command = malloc(lengthOfCommand);
     initializeCharBuffer(command, lengthOfCommand);
+
     for(size_t j = 0; j < lengthOfCommand && j < BUFFSIZE ; ++j) {
         if(inputWords[j] == '\0' && j != lengthOfCommand-1)
             command[j] = ' ';
@@ -152,7 +161,7 @@ char* commandToStoreInHistBlock()
 
 
 
-void storeInputWords()
+void storeInputWords(void)
 {
     size_t spaceCount = 0, loopCount = 1, index_inputWords = 0;
     char c;
@@ -187,7 +196,7 @@ void storeInputWords()
 }
 
 //Counts words seperated by space in inputWords[]
-size_t countArgc()
+size_t countArgc(void)
 {
     size_t index_inputWords = 0;
     argc = 0;
@@ -203,7 +212,7 @@ size_t countArgc()
     return argc;
 }
 
-int nullifyAllSpacesOfInputWords()
+int nullifyAllSpacesOfInputWords(void)
 {
     //Making sure that inputWords[] does contain at least one non-null char before traversing it
     if(inputWords[0] != '\0') {
@@ -250,7 +259,7 @@ void initializeArgv(int Argc)
 
 }
 
-void readInput()
+void readInput(void)
 {
     initializeCharBuffer(inputWords, BUFFSIZE);
     initializePointerBuffer((void*)argv, BUFFSIZE);
@@ -261,7 +270,7 @@ void readInput()
     initializeArgv(argc);
 }
 
-char* read_storeCommands()
+char* read_storeCommands(void)
 {
     readInput();
     char* command = commandToStoreInHistBlock();
