@@ -85,6 +85,13 @@ historyBlock* add(char* command)
 }
 
 
+char* storeCommands(const char* commandToStore)
+{
+    add(commandToStore);
+    currentHistoryBlock = firstHistoryBlock;
+    return commandToStore;
+}
+
 
 char* showPreviousCommand(void)
 {

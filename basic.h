@@ -1,28 +1,10 @@
 #ifndef BASIC_H
 #define BASIC_H
-/*#define _POSIX_SOURCE*/       //check if there is any need for this or not!
-
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <signal.h>
-#include <sys/wait.h>
-#include <limits.h>
-#include <assert.h>
-#include <malloc.h>
-#include "color.h"  //chandge .c to .h!
-#include "history.h"    //change .c to .h!
-#include "error_functions.h"
-
 
 #define BUFFSIZE 4096
 
 int argc;
-static size_t countList = 0;
+size_t countList;
 char inputWords[BUFFSIZE];
 char* argv[BUFFSIZE];
 
@@ -45,7 +27,7 @@ void storeInputWords(void);
 size_t countArgc(void);
 void initializeArgv(int Argc);
 void readInput(void);
-char* read_storeCommands(void);
+
 
 
 

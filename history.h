@@ -23,6 +23,8 @@ void makeSpaceForNewHisBlock(void);
 historyBlock* initializeNewHisBlock(char* command);
 historyBlock* add(char* command);
 
+char* storeCommands(const char* commandToStore);
+
 char* showPreviousCommand(void);
 void freeAllBlocks(void);
 

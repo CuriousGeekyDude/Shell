@@ -1,4 +1,14 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "color.h"  
+#include "history.h"  
 #include "basic.h"
+
+int argc;
+size_t countList;
+char inputWords[BUFFSIZE];
+char* argv[BUFFSIZE];
 
 void errorHandling(const char* stringToPrint)
 {
@@ -169,7 +179,7 @@ void storeInputWords(void)
 
         if(index_inputWords < BUFFSIZE - 1) {
 
-    //loopCounter is used to eliminate all the spaces at the beginning of input when c
+    //loopCounter is only used to eliminate all the spaces at the beginning of input when c
     //has not yet had the chance to be any other character except space. After it is
     //incremented once, it outlives its usefulness COMPLETELY.
             if(c == ' ') {
@@ -270,12 +280,12 @@ void readInput(void)
     initializeArgv(argc);
 }
 
-char* read_storeCommands(void)
+/*char* read_storeCommands(void)
 {
     readInput();
     char* command = commandToStoreInHistBlock();
     add(command);
     currentHistoryBlock = firstHistoryBlock;
     return command;
-}
+}*/
 
