@@ -1,9 +1,6 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-#include <stdio.h>
-#include <stdlib.h>
-
 
 void black(void);
 void red(void);
