@@ -1,4 +1,4 @@
-#ifdef EXECUTE_COMMAND_H
+#ifndef EXECUTE_COMMAND_H
 #define EXECUTE_COMMAND_H
 
 #include <stdbool.h>

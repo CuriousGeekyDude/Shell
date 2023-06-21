@@ -23,7 +23,7 @@ size_t numOfSpecialCharsInCommandBlock(char* argv, size_t begIndexCommandBlock, 
 size_t* numberOfStringsInEachPipe(struct CommandBlock* commandBlock);
 size_t* initializeLocalSpecialCharIndexArray(char* argv, size_t begIndexCommandBlock, size_t endIndexCommandBlock, size_t SizeOfLocalSpecialCharIndexArray);
 
-struct CommandBlock* constructCommandBlock(size_t* _GlobalSpecialCharIndexArray, size_t commandBlockNumber, char* CommandType, size_t countList);
+struct CommandBlock* constructCommandBlock(char* argv ,size_t argc, size_t* _GlobalSpecialCharIndexArray, size_t commandBlockNumber, char* CommandType, size_t countList);
 void destroyCommandBlock(struct CommandBlock* commandBlock);
 
 bool brokenPipeRedirection(struct CommandBlock* commandBlock);

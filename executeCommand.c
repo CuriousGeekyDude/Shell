@@ -33,5 +33,5 @@ pid_t executeCommand(char* argv, size_t begIndexOfCommand, size_t numOfStringsIn
         return nonBuiltInCommand(begIndexOfCommand, numOfStringsInCommand);
 
     else
-        exec_nonBuiltInCommand(begIndexOfCommand, numOfStringsInCommand);
+        exec_nonBuiltInCommand(begIndexOfCommand, numOfStringsInCommand, argv);
 }

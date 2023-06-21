@@ -33,12 +33,12 @@ void exec_nonBuiltInCommand(size_t indexArgv, size_t argc, char* argv)
     }
 }
 
-pid_t nonBuiltInCommand(size_t indexArgv, size_t argc)
+pid_t nonBuiltInCommand(size_t indexArgv, size_t argc, char* argv)
 {
     pid_t childPID = 0;
     switch(fork()) {
         case 0:
-            exec_nonBuiltInCommand(indexArgv, argc);
+            exec_nonBuiltInCommand(indexArgv, argc, argv);
             break;
         default:
             childPID = wait(NULL);

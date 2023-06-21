@@ -3,7 +3,7 @@
 
 #include "commandBlock.h"
 
-struct CommandBlock** initializeArrayOfCommandBlocks(size_t* globalSpecialCharIndexArray);
+struct CommandBlock** initializeArrayOfCommandBlocks(size_t countList ,size_t* globalSpecialCharIndexArray);
 void destroyArrayOfCommandBlocks(struct CommandBlock** commandBlocks, size_t sizeOfCommandBlocks);
 
 

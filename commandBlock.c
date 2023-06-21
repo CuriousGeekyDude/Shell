@@ -35,7 +35,7 @@ size_t findBegIndexCommandBlock(size_t argc,size_t GlobalSpecialCharIndexArray[]
     if(argc == 0 || GlobalSpecialCharIndexArray == NULL || commandBlockNumber == 0)
         return 0;
 
-    if(emptyCommandBlockErrorHandling(GlobalSpecialCharIndexArray, commandBlockNumber, sizeOfGlobalSpecialCharIndexArray) == 0)
+    if(emptyCommandBlockErrorHandling(argc ,GlobalSpecialCharIndexArray, commandBlockNumber, sizeOfGlobalSpecialCharIndexArray) == 0)
         return 0;
 
 
@@ -50,7 +50,7 @@ size_t findEndIndexCommandBlock(size_t argc, size_t GlobalSpecialCharIndexArray[
     if(GlobalSpecialCharIndexArray == NULL)
         return argc - 1;
 
-    if(emptyCommandBlockErrorHandling(GlobalSpecialCharIndexArray, commandBlockNumber, sizeOfGlobalSpecialCharIndexArray) == 0)
+    if(emptyCommandBlockErrorHandling(argc ,GlobalSpecialCharIndexArray, commandBlockNumber, sizeOfGlobalSpecialCharIndexArray) == 0)
         return 0;
 
     if(commandBlockNumber == sizeOfGlobalSpecialCharIndexArray)
@@ -134,17 +134,17 @@ size_t* initializeLocalSpecialCharIndexArray(char* argv, size_t begIndexCommandB
 
     return LocalSpecialCharIndexArray;
 }
-struct CommandBlock* constructCommandBlock(size_t* _GlobalSpecialCharIndexArray, size_t commandBlockNumber, char* CommandType, size_t countList)
+struct CommandBlock* constructCommandBlock(char* argv, size_t argc,size_t* _GlobalSpecialCharIndexArray, size_t commandBlockNumber, char* CommandType, size_t countList)
 {
     struct CommandBlock* commandBlock = calloc(1, sizeof(struct CommandBlock));
 
     assert(commandBlock != NULL && "calloc failed!");
 
-    commandBlock->begIndex = findBegIndexCommandBlock(_GlobalSpecialCharIndexArray, commandBlockNumber, countList);
-    commandBlock->endIndex = findEndIndexCommandBlock(_GlobalSpecialCharIndexArray, commandBlockNumber, countList);
-    commandBlock->numOfStrings = numOfStringsInCommandBlock(commandBlock->begIndex, commandBlock->endIndex, commandBlockNumber);
-    commandBlock->sizeOfLocalSpecialCharIndexArray = numOfSpecialCharsInCommandBlock(commandBlock->begIndex, commandBlock->endIndex);
-    commandBlock->localSpecialCharIndexArray = initializeLocalSpecialCharIndexArray(commandBlock->begIndex, commandBlock->endIndex, commandBlock->sizeOfLocalSpecialCharIndexArray);
+    commandBlock->begIndex = findBegIndexCommandBlock(argc ,_GlobalSpecialCharIndexArray, commandBlockNumber, countList);
+    commandBlock->endIndex = findEndIndexCommandBlock(argc, _GlobalSpecialCharIndexArray, commandBlockNumber, countList);
+    commandBlock->numOfStrings = numOfStringsInCommandBlock(argv,argc,commandBlock->begIndex, commandBlock->endIndex, commandBlockNumber);
+    commandBlock->sizeOfLocalSpecialCharIndexArray = numOfSpecialCharsInCommandBlock(argv,commandBlock->begIndex, commandBlock->endIndex);
+    commandBlock->localSpecialCharIndexArray = initializeLocalSpecialCharIndexArray(argv,commandBlock->begIndex, commandBlock->endIndex, commandBlock->sizeOfLocalSpecialCharIndexArray);
     commandBlock->numOfStringsInEachPipe = numberOfStringsInEachPipe(commandBlock);
     commandBlock->commandType = CommandType;
     return commandBlock;

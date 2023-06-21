@@ -36,26 +36,26 @@ size_t* GlobalSpecialCharIndexArray(int argc, char* argv)
 }
 
 
-pid_t andList(struct CommandBlock* commandBlock, size_t countList,pid_t waitReturn)
+pid_t andList(struct CommandBlock* commandBlock, char* argv,size_t countList,pid_t waitReturn)
 {
     if(countList == 0 || waitReturn < 0)
         return -1;
     
-    return executeCommandBlock(commandBlock);
+    return executeCommandBlock(commandBlock, argv);
 
 }
 
-pid_t orList(struct CommandBlock* commandBlock, size_t countList,pid_t waitReturn)
+pid_t orList(struct CommandBlock* commandBlock, char* argv,size_t countList,pid_t waitReturn)
 {
     if(countList == 0 || waitReturn >= 0)
         return -1;
     
-    return executeCommandBlock(commandBlock);
+    return executeCommandBlock(commandBlock, argv);
 }
 
-pid_t semicolonList(struct CommandBlock* commandBlock, pid_t waitReturn)
+pid_t semicolonList(struct CommandBlock* commandBlock, char* argv, pid_t waitReturn)
 {
     if(waitReturn == -1)
         return -1;
-    return executeCommandBlock(commandBlock);
+    return executeCommandBlock(commandBlock, argv);
 }

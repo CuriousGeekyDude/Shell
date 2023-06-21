@@ -11,7 +11,7 @@ pid_t executeCommandBlock(struct CommandBlock* commandBlock, char* argv)
         return -1;
 
     if(strcmp(commandBlock->commandType, "N") == 0) {
-        childPID =  executeCommand(commandBlock->begIndex, commandBlock->numOfStrings, true);   
+        childPID =  executeCommand(argv,commandBlock->begIndex, commandBlock->numOfStrings, true);   
         return childPID;
     }    
 
