@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "history.h"
 
 int count = 0;

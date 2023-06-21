@@ -1,18 +1,24 @@
+#include <stdlib.h>
+#include <string.h>
+#include "executeCommandBlock.h"
 #include "lists.h"
 
-void GlobalSpecialCharCounter(void) 
+
+
+
+size_t GlobalSpecialCharCounter(int argc, char* argv) 
 {
-    countList = 0;
+    size_t countList = 0;
     for(size_t i = 0; i < argc; ++i) {
         if((strcmp(argv[i], "||") == 0 ) || (strcmp(argv[i], "&&") == 0) || (strcmp(argv[i], ";") == 0))
             ++countList;
     }
-
+    return countList;
 }
 
-size_t* GlobalSpecialCharIndexArray(void) 
+size_t* GlobalSpecialCharIndexArray(int argc, char* argv) 
 {
-
+    size_t countList = GlobalSpecialCharCounter(argc, argv);
     if(countList == 0)
         return NULL;
 
@@ -30,7 +36,7 @@ size_t* GlobalSpecialCharIndexArray(void)
 }
 
 
-pid_t andList(struct CommandBlock* commandBlock, pid_t waitReturn)
+pid_t andList(struct CommandBlock* commandBlock, size_t countList,pid_t waitReturn)
 {
     if(countList == 0 || waitReturn < 0)
         return -1;
@@ -39,7 +45,7 @@ pid_t andList(struct CommandBlock* commandBlock, pid_t waitReturn)
 
 }
 
-pid_t orList(struct CommandBlock* commandBlock, pid_t waitReturn)
+pid_t orList(struct CommandBlock* commandBlock, size_t countList,pid_t waitReturn)
 {
     if(countList == 0 || waitReturn >= 0)
         return -1;

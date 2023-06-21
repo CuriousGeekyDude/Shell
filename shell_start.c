@@ -1,7 +1,11 @@
+#include <stdlib.h>
+#include <string.h>
+#include "executeCommandBlock.h"
+#include "lists.h"
 #include "shell_start.h"
 
 
-struct CommandBlock** initializeArrayOfCommandBlocks(void)
+struct CommandBlock** initializeArrayOfCommandBlocks(size_t countList, size_t* globalSpecialCharIndexArray)
 {
     struct CommandBlock** commandBlockArray = calloc(countList+1, sizeof(struct CommandBlock*));
 
@@ -29,7 +33,7 @@ void destroyArrayOfCommandBlocks(struct CommandBlock** commandBlocks, size_t siz
     commandBlocks = NULL;
 }
 
-void start_shell(void)
+void start_shell(char* argv, size_t countList)
 {
     char* command = read_storeCommands();
     if(command == NULL)
@@ -40,7 +44,7 @@ void start_shell(void)
 
     size_t* globalSpecialCharIndexArray = GlobalSpecialCharIndexArray();
 
-    struct CommandBlock** commandBlockArray = initializeArrayOfCommandBlocks();
+    struct CommandBlock** commandBlockArray = initializeArrayOfCommandBlocks(globalSpecialCharIndexArray);
 
     if(commandBlockArray == NULL)
         return;

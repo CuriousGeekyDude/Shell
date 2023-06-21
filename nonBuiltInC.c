@@ -1,7 +1,13 @@
-#include "nonBuiltIn.h"
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include "error_functions.h"
+#include "history.h"
+#include "nonBuiltInC.h"
 #include "basic.h"
 
-void exec_nonBuiltInCommand(size_t indexArgv, size_t argc)
+
+void exec_nonBuiltInCommand(size_t indexArgv, size_t argc, char* argv)
 {
     if(argc == 1) {
             if(execvp(argv[indexArgv], NULL) == -1) {

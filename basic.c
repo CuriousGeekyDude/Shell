@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "color.h"  
-#include "history.h"  
 #include "basic.h"
 
 int argc;

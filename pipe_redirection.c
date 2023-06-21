@@ -1,4 +1,13 @@
+
+#include <unistd.h>
+#include <sys/wait.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "executeCommand.h"
+#include "error_functions.h"
 #include "pipe_redirection.h"
+
+
 
 pid_t pipeline(size_t BegIndexOfCommandBlock, size_t NumberOfStringsInEachPipe[], size_t baseCaseRecursion)
 {

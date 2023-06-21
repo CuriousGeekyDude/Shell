@@ -1,7 +1,8 @@
 #ifndef PIPE_H
 #define PIPE_H
 
-#include "executeCommandBlock.h"
+#include <stdio.h>
+#include "commandBlock.h"
 
 pid_t pipeline(size_t BegIndexOfCommandBlock, size_t NumberOfStringsInEachPipe[], size_t baseCaseRecursion);
 pid_t start_pipeline(struct CommandBlock* commandBlock);

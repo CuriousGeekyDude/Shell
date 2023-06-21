@@ -1,15 +1,14 @@
 #ifndef LISTS_H
 #define LISTS_H
 
-#include "executeCommandBlock.h"
+#include "commandBlock.h"
 
-static size_t countList = 0;
 
-void GlobalSpecialCharCounter(void);
-size_t* GlobalSpecialCharIndexArray(void);
+size_t GlobalSpecialCharCounter(int argc, char* argv);
+size_t* GlobalSpecialCharIndexArray(int argc, char* argv);
 
-pid_t andList(struct CommandBlock* commandBlock, pid_t waitReturn);
-pid_t orList(struct CommandBlock* commandBlock, pid_t waitReturn);
+pid_t andList(struct CommandBlock* commandBlock, size_t countList, pid_t waitReturn);
+pid_t orList(struct CommandBlock* commandBlock, size_t countList, pid_t waitReturn);
 pid_t semicolonList(struct CommandBlock* commandBlock, pid_t waitReturn);
 
 #endif
