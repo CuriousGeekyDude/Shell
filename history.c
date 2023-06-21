@@ -1,5 +1,12 @@
 #include "history.h"
 
+int count = 0;
+
+historyBlock* lastHistoryBlock = NULL;
+historyBlock* firstHistoryBlock = NULL;
+historyBlock* currentHistoryBlock = NULL;
+
+
 historyBlock* deleteLastBlock(void)
 {
     if(lastHistoryBlock == NULL) {
