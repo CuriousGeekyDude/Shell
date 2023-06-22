@@ -9,7 +9,7 @@
 
 
 
-pid_t pipeline(size_t BegIndexOfCommandBlock, size_t NumberOfStringsInEachPipe[], size_t baseCaseRecursion)
+pid_t pipeline(char** argv,size_t BegIndexOfCommandBlock, size_t NumberOfStringsInEachPipe[], size_t baseCaseRecursion)
 {
     if(NumberOfStringsInEachPipe == NULL)
         return -1;
@@ -35,7 +35,7 @@ pid_t pipeline(size_t BegIndexOfCommandBlock, size_t NumberOfStringsInEachPipe[]
             if(baseCaseRecursion > 0) 
                childPID =  pipeline(BegIndexOfCommandBlock, NumberOfStringsInEachPipe, baseCaseRecursion);
             else 
-               childPID = executeCommand(BegIndexOfCommandBlock, NumberOfStringsInEachPipe[0], false);
+               childPID = executeCommand(argv,BegIndexOfCommandBlock, NumberOfStringsInEachPipe[0], false);
             break;
 
         case -1:
@@ -51,18 +51,18 @@ pid_t pipeline(size_t BegIndexOfCommandBlock, size_t NumberOfStringsInEachPipe[]
             for(size_t j = 0; j < baseCaseRecursion ; ++j)
                 i += NumberOfStringsInEachPipe[j]+1;
 
-            childPID = executeCommand(BegIndexOfCommandBlock + i, NumberOfStringsInEachPipe[baseCaseRecursion], false);
+            childPID = executeCommand(argv, BegIndexOfCommandBlock + i, NumberOfStringsInEachPipe[baseCaseRecursion], false);
             break;
     }
     
     return childPID;
 }
-pid_t start_pipeline(struct CommandBlock* commandBlock)
+pid_t start_pipeline(struct CommandBlock* commandBlock, char** argv)
 {
     pid_t childPID = 0;
     switch(fork()) {
         case 0:
-            childPID = pipeline(commandBlock->begIndex, commandBlock->numOfStringsInEachPipe, commandBlock->sizeOfLocalSpecialCharIndexArray);
+            childPID = pipeline(argv,commandBlock->begIndex, commandBlock->numOfStringsInEachPipe, commandBlock->sizeOfLocalSpecialCharIndexArray);
         break;
 
         case -1:
