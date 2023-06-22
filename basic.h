@@ -26,7 +26,7 @@ size_t countArgc(void);
 void initializeArgv(int Argc);
 char** readInput(void);
 
-
+char** returnArgv(void);
 
 
 #endif

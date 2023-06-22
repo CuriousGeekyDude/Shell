@@ -262,6 +262,13 @@ char** readInput(void)
     return argv;
 }
 
+
+char** returnArgv(void)
+{
+    char** argv = readInput();
+    return argv;
+}
+
 /*char* read_storeCommands(void)
 {
     readInput();
