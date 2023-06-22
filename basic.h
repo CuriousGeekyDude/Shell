@@ -24,7 +24,7 @@ size_t countLengthOfCommand(void);
 void storeInputWords(void);
 size_t countArgc(void);
 void initializeArgv(int Argc);
-char** readInput(void);
+void readInput(void);
 
 char** returnArgv(void);
 

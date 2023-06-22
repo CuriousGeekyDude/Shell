@@ -250,7 +250,7 @@ void initializeArgv(int Argc)
 
 }
 
-char** readInput(void)
+void readInput(void)
 {
     initializeCharBuffer(inputWords, BUFFSIZE);
     initializePointerBuffer((void*)argv, BUFFSIZE);
@@ -259,13 +259,12 @@ char** readInput(void)
     storeInputWords();
     argc = countArgc();
     initializeArgv(argc);
-    return argv;
 }
 
 
 char** returnArgv(void)
 {
-    char** argv = readInput();
+    readInput();
     return argv;
 }
 
