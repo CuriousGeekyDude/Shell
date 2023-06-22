@@ -63,6 +63,9 @@ char* returnUpPath(const char* currentPath)
   
     indexOfLastSlash = findIndexOfLastSlash(currentPath);
     
+    if(indexOfLastSlash == -1)
+        return NULL;
+    
     if(indexOfLastSlash == 1) {
         char* newPathToReturn = malloc(indexOfLastSlash+1);
         initializeCharBuffer(newPathToReturn, indexOfLastSlash+1);
