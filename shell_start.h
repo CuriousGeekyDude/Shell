@@ -3,10 +3,10 @@
 
 #include "commandBlock.h"
 
-struct CommandBlock** initializeArrayOfCommandBlocks(size_t countList ,size_t* globalSpecialCharIndexArray);
+struct CommandBlock** initializeArrayOfCommandBlocks(char** argv, size_t argc,size_t countList ,size_t* globalSpecialCharIndexArray);
 void destroyArrayOfCommandBlocks(struct CommandBlock** commandBlocks, size_t sizeOfCommandBlocks);
 
 
-void start_shell(void);
+void start_shell(char** argv, size_t argc, size_t countList);
 
 #endif

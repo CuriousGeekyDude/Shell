@@ -3,7 +3,7 @@
 #include "executeCommand.h"
 #include "executeCommandBlock.h"
 
-pid_t executeCommandBlock(struct CommandBlock* commandBlock, char* argv)
+pid_t executeCommandBlock(struct CommandBlock* commandBlock, char** argv)
 {
     pid_t childPID = -1;
 

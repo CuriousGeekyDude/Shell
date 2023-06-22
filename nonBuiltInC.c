@@ -7,7 +7,7 @@
 #include "basic.h"
 
 
-void exec_nonBuiltInCommand(size_t indexArgv, size_t argc, char* argv)
+void exec_nonBuiltInCommand(size_t indexArgv, size_t argc, char** argv)
 {
     if(argc == 1) {
             if(execvp(argv[indexArgv], NULL) == -1) {
@@ -33,7 +33,7 @@ void exec_nonBuiltInCommand(size_t indexArgv, size_t argc, char* argv)
     }
 }
 
-pid_t nonBuiltInCommand(size_t indexArgv, size_t argc, char* argv)
+pid_t nonBuiltInCommand(size_t indexArgv, size_t argc, char** argv)
 {
     pid_t childPID = 0;
     switch(fork()) {

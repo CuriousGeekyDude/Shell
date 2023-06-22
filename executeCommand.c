@@ -5,7 +5,7 @@
 
 
 
-pid_t executeCommand(char* argv, size_t begIndexOfCommand, size_t numOfStringsInCommand, bool toFork)
+pid_t executeCommand(char** argv, size_t begIndexOfCommand, size_t numOfStringsInCommand, bool toFork)
 {
     if(strcmp(argv[begIndexOfCommand], "cd") == 0) {
         if(cdCommand(begIndexOfCommand, numOfStringsInCommand) == -1)

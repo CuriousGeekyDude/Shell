@@ -59,7 +59,7 @@ size_t findEndIndexCommandBlock(size_t argc, size_t GlobalSpecialCharIndexArray[
         return GlobalSpecialCharIndexArray[commandBlockNumber] - 1;
 }
 
-size_t numOfStringsInCommandBlock(char* argv, size_t argc, size_t begIndexCommandBlock, size_t endIndexCommandBlock, size_t commandBlockNumber)
+size_t numOfStringsInCommandBlock(char** argv, size_t argc, size_t begIndexCommandBlock, size_t endIndexCommandBlock, size_t commandBlockNumber)
 {
     //The case where begIndex = endIndex and begIndex == 0 where it could be a valid command like ls or an invalid one like NULL
     if(begIndexCommandBlock == endIndexCommandBlock && begIndexCommandBlock == 0) {
@@ -79,7 +79,7 @@ size_t numOfStringsInCommandBlock(char* argv, size_t argc, size_t begIndexComman
         return endIndexCommandBlock - begIndexCommandBlock + 1;
 }
 
-size_t numOfSpecialCharsInCommandBlock(char* argv, size_t begIndexCommandBlock, size_t endIndexCommandBlock)
+size_t numOfSpecialCharsInCommandBlock(char** argv, size_t begIndexCommandBlock, size_t endIndexCommandBlock)
 {
     if(begIndexCommandBlock == endIndexCommandBlock)
         return 0;
@@ -117,7 +117,7 @@ size_t* numberOfStringsInEachPipe(struct CommandBlock* commandBlock)
     return numOfStringArray;
 }
 
-size_t* initializeLocalSpecialCharIndexArray(char* argv, size_t begIndexCommandBlock, size_t endIndexCommandBlock, size_t SizeOfLocalSpecialCharIndexArray)
+size_t* initializeLocalSpecialCharIndexArray(char** argv, size_t begIndexCommandBlock, size_t endIndexCommandBlock, size_t SizeOfLocalSpecialCharIndexArray)
 {
     if(SizeOfLocalSpecialCharIndexArray == 0)
         return NULL;
@@ -134,7 +134,7 @@ size_t* initializeLocalSpecialCharIndexArray(char* argv, size_t begIndexCommandB
 
     return LocalSpecialCharIndexArray;
 }
-struct CommandBlock* constructCommandBlock(char* argv, size_t argc,size_t* _GlobalSpecialCharIndexArray, size_t commandBlockNumber, char* CommandType, size_t countList)
+struct CommandBlock* constructCommandBlock(char** argv, size_t argc,size_t* _GlobalSpecialCharIndexArray, size_t commandBlockNumber, char* CommandType, size_t countList)
 {
     struct CommandBlock* commandBlock = calloc(1, sizeof(struct CommandBlock));
 
@@ -188,7 +188,7 @@ bool brokenPipeRedirection(struct CommandBlock* commandBlock)
 }
 
 
-void parseCommandBlock(struct CommandBlock* commandBlock, char* argv)
+void parseCommandBlock(struct CommandBlock* commandBlock, char** argv)
 {
     size_t lastIndex = commandBlock->sizeOfLocalSpecialCharIndexArray - 1;
 

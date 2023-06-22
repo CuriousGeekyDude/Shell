@@ -62,7 +62,7 @@ char* returnUpPath(const char* currentPath)
     }
   
     indexOfLastSlash = findIndexOfLastSlash(currentPath);
-    
+
     if(indexOfLastSlash == -1)
         return NULL;
     
@@ -93,7 +93,7 @@ void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD)
         errExit("setenv() for OLDPWD in update_PWD_OLDPWD()");
 }
 
-int cdCommand(char* argv,size_t indexArgv, size_t argc)
+int cdCommand(char** argv,size_t indexArgv, size_t argc)
 {
     if(argc > 2)
         return -1;
@@ -187,7 +187,7 @@ int cdCommand(char* argv,size_t indexArgv, size_t argc)
 
 
 
-void run_execvp(char* argv, size_t indexArgv, char** newArgv)
+void run_execvp(char** argv, size_t indexArgv, char** newArgv)
 {
     if(newArgv == NULL) {
         if(execvp(argv[indexArgv+1], newArgv) == -1)
@@ -203,7 +203,7 @@ void run_execvp(char* argv, size_t indexArgv, char** newArgv)
         }
     }
 }
-void execCommand(char* argv ,size_t indexArgv, size_t argc)
+void execCommand(char** argv ,size_t indexArgv, size_t argc)
 {
     if(argc == 0 || argc == 1)
         return;

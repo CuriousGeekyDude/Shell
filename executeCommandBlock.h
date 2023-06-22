@@ -1,8 +1,12 @@
 #ifndef EXECUTECOMMAND_H
 #define EXECUTECOMMAND_H
 
+
+
 #include "commandBlock.h"
 
-pid_t executeCommandBlock(struct CommandBlock* commandBlock, char* argv);
+
+
+pid_t executeCommandBlock(struct CommandBlock* commandBlock, char** argv);
 
 #endif
