@@ -95,6 +95,8 @@ historyBlock* add(char* command)
 
 char* storeCommands(const char* commandToStore)
 {
+    if(commandToStore == NULL)
+        return NULL;
     add(commandToStore);
     currentHistoryBlock = firstHistoryBlock;
     return commandToStore;
