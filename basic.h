@@ -20,8 +20,6 @@ char* findPath_ColonSepDirectories(char* colonSepDirectories, const char* path);
 
 
 size_t countLengthOfCommand(void);
-char* commandToStoreInHistBlock(void); 
-
 
 void storeInputWords(void);
 size_t countArgc(void);

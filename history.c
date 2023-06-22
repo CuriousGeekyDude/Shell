@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include "basic.h"
 #include "history.h"
 
 int count = 0;
@@ -71,6 +72,26 @@ historyBlock* initializeNewHisBlock(char* command)
 
     return historyBlockToAdd;
 }
+
+char* commandToStoreInHistBlock(char** argv)
+{
+    if(argv[0] == NULL)
+        return NULL;
+
+    size_t lengthOfCommand = countLengthOfCommand();
+    char* command = malloc(lengthOfCommand);
+    initializeCharBuffer(command, lengthOfCommand);
+
+    for(size_t j = 0; j < lengthOfCommand && j < BUFFSIZE ; ++j) {
+        if(inputWords[j] == '\0' && j != lengthOfCommand-1)
+            command[j] = ' ';
+        else
+            command[j] = inputWords[j];
+    }
+    
+    return command;
+}
+
 
 historyBlock* add(char* command)
 {
