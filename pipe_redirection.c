@@ -33,7 +33,7 @@ pid_t pipeline(char** argv,size_t BegIndexOfCommandBlock, size_t NumberOfStrings
 
             --baseCaseRecursion;
             if(baseCaseRecursion > 0) 
-               childPID =  pipeline(BegIndexOfCommandBlock, NumberOfStringsInEachPipe, baseCaseRecursion);
+               childPID =  pipeline(argv,BegIndexOfCommandBlock, NumberOfStringsInEachPipe, baseCaseRecursion);
             else 
                childPID = executeCommand(argv,BegIndexOfCommandBlock, NumberOfStringsInEachPipe[0], false);
             break;
@@ -95,7 +95,7 @@ void readToFileFromPipe(int fd_readEndOfPipe, FILE* file)
         errExit("fclose() file!");
 }
 
-void redirection(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommand, FILE* file)
+void redirection(char** argv, size_t BegIndexOfCommandBlock, size_t numOfStringsInCommand, FILE* file)
 {
     int filedes[2];
 
@@ -111,7 +111,7 @@ void redirection(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommand, FI
                 errExit("close() in child redirection");
             if(dup2(filedes[1], 1) == -1)
                 errExit("dup2()");
-            executeCommand(BegIndexOfCommandBlock, numOfStringsInCommand, false);
+            executeCommand(argv, BegIndexOfCommandBlock, numOfStringsInCommand, false);
             break;
         case -1:
             errExit("fork() in redirection()");
