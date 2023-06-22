@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
+#include "basic.h"
+#include "history.h"
 #include "executeCommandBlock.h"
 #include "lists.h"
 #include "shell_start.h"
@@ -35,10 +37,11 @@ void destroyArrayOfCommandBlocks(struct CommandBlock** commandBlocks, size_t siz
 
 void start_shell(char* argv, size_t argc,size_t countList)
 {
-    char* command = read_storeCommands();
+    char* command = readInput();
     if(command == NULL)
         return;
-
+    command = storeCommands(command);
+    
     pid_t childPID = 0;
 
     size_t* globalSpecialCharIndexArray = GlobalSpecialCharIndexArray(argc, argv);
