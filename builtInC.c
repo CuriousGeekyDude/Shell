@@ -19,7 +19,7 @@ size_t numOfAllTheSlashesInPath(const char* currentPath)
     return numOfAllTheSlashes;
 }
 
-size_t findIndexOfLastSlash(const char* currentPath)
+int findIndexOfLastSlash(const char* currentPath)
 {
     size_t indexOfLastSlash = 0;
     size_t numOfAllTheSlashes = numOfAllTheSlashesInPath(currentPath);
@@ -28,7 +28,7 @@ size_t findIndexOfLastSlash(const char* currentPath)
     while(numOfAllTheSlashes != 0) {
         if(indexOfLastSlash >= lengthOfCurrentPath) {
             printf("ERROR: indexOfLastSlash went over bound!\n");
-            return NULL;
+            return -1;
         }
         if(currentPath[indexOfLastSlash] == '/') {
             --numOfAllTheSlashes;
