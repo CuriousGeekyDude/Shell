@@ -1,7 +1,7 @@
 #ifndef COMMANDBLOCK_H
 #define COMMANDBLOCK_H
 
-
+#include <stdbool.h>
 
 struct CommandBlock
 {
