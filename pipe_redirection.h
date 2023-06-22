@@ -2,6 +2,7 @@
 #define PIPE_H
 
 #include <stdio.h>
+#include <sys/types.h>
 #include "commandBlock.h"
 
 pid_t pipeline(size_t BegIndexOfCommandBlock, size_t NumberOfStringsInEachPipe[], size_t baseCaseRecursion);

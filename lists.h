@@ -2,6 +2,7 @@
 #define LISTS_H
 
 #include "commandBlock.h"
+#include <sys/types.h>
 
 
 size_t GlobalSpecialCharCounter(int argc, char** argv);
