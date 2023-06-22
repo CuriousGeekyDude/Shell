@@ -26,7 +26,7 @@ char* commandToStoreInHistBlock(void);
 void storeInputWords(void);
 size_t countArgc(void);
 void initializeArgv(int Argc);
-char* readInput(void);
+char** readInput(void);
 
 
 

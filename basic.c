@@ -268,7 +268,7 @@ void initializeArgv(int Argc)
 
 }
 
-char* readInput(void)
+char** readInput(void)
 {
     initializeCharBuffer(inputWords, BUFFSIZE);
     initializePointerBuffer((void*)argv, BUFFSIZE);
