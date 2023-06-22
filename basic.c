@@ -268,6 +268,16 @@ char** returnArgv(void)
     return argv;
 }
 
+size_t returnCountList(void)
+{
+    return countList;
+}
+
+int returnArgc(void)
+{
+    return argc;
+}
+
 /*char* read_storeCommands(void)
 {
     readInput();
