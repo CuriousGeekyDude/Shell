@@ -19,7 +19,7 @@ pid_t executeCommandBlock(struct CommandBlock* commandBlock, char** argv)
         return childPID;
     else {
         if(strcmp(commandBlock->commandType, "P") == 0) {         
-            childPID =  start_pipeline(commandBlock);
+            childPID =  start_pipeline(commandBlock, argv);
             return childPID;
         }
     
