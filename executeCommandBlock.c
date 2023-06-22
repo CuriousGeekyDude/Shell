@@ -24,12 +24,12 @@ pid_t executeCommandBlock(struct CommandBlock* commandBlock, char** argv)
         }
     
         if(strcmp(commandBlock->commandType, "R") == 0) {
-            childPID =  start_redirection(commandBlock, argv[commandBlock->localSpecialCharIndexArray[0] + 1]);
+            childPID =  start_redirection(commandBlock, argv[commandBlock->localSpecialCharIndexArray[0] + 1], argv);
             return childPID;
         }
 
         if(strcmp(commandBlock->commandType, "P+R") == 0) {
-            childPID = start_pipelineRedirection(commandBlock, argv[commandBlock->localSpecialCharIndexArray[commandBlock->sizeOfLocalSpecialCharIndexArray - 1] + 1]);
+            childPID = start_pipelineRedirection(commandBlock, argv[commandBlock->localSpecialCharIndexArray[commandBlock->sizeOfLocalSpecialCharIndexArray - 1] + 1], argv);
             return childPID;
         }
     }
