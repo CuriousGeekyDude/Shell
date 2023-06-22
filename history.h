@@ -1,7 +1,7 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-#define COUNTER_LIMIT 100
+#define COUNTER_LIMIT 100   //Max number of commands to store in history blocks
 
 extern int count;
 
