@@ -127,7 +127,7 @@ void redirection(char** argv, size_t BegIndexOfCommandBlock, size_t numOfStrings
             break;
     }
 }
-pid_t start_redirection(struct CommandBlock* commandBlock, const char* filePathName)
+pid_t start_redirection(struct CommandBlock* commandBlock, const char* filePathName, char** argv)
 {
 
     if(filePathName == NULL || commandBlock->numOfStringsInEachPipe == NULL)
@@ -143,7 +143,7 @@ pid_t start_redirection(struct CommandBlock* commandBlock, const char* filePathN
 
     switch(fork()) {
         case 0:
-            redirection(commandBlock->begIndex , commandBlock->numOfStringsInEachPipe[0], file);
+            redirection(argv ,commandBlock->begIndex , commandBlock->numOfStringsInEachPipe[0], file);
             break;
 
         case -1:
