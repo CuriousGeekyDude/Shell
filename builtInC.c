@@ -190,9 +190,10 @@ int cdCommand(char** argv,size_t indexArgv, size_t argc)
 void run_execvp(char** argv, size_t indexArgv, char** newArgv)
 {
     if(newArgv == NULL) {
-        if(execvp(argv[indexArgv+1], newArgv) == -1)
+        if(execvp(argv[indexArgv+1], newArgv) == -1) {
             freeAllBlocks();
             errExit("execvp");
+        }
     }
     else {
         if(execvp(argv[indexArgv+1], newArgv) == -1) {
