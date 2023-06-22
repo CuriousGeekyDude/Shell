@@ -8,7 +8,7 @@
 pid_t executeCommand(char** argv, size_t begIndexOfCommand, size_t numOfStringsInCommand, bool toFork)
 {
     if(strcmp(argv[begIndexOfCommand], "cd") == 0) {
-        if(cdCommand(begIndexOfCommand, numOfStringsInCommand) == -1)
+        if(cdCommand(argv ,begIndexOfCommand, numOfStringsInCommand) == -1)
             return -1;
         return 0;
     }
@@ -19,7 +19,7 @@ pid_t executeCommand(char** argv, size_t begIndexOfCommand, size_t numOfStringsI
     }
 
     if(strcmp(argv[begIndexOfCommand], "exec") == 0) {
-        execCommand(begIndexOfCommand, numOfStringsInCommand);
+        execCommand(argv, begIndexOfCommand, numOfStringsInCommand);
         return 0;
     }
     
@@ -30,7 +30,7 @@ pid_t executeCommand(char** argv, size_t begIndexOfCommand, size_t numOfStringsI
         
 
     if(toFork == true)
-        return nonBuiltInCommand(begIndexOfCommand, numOfStringsInCommand);
+        return nonBuiltInCommand(begIndexOfCommand, numOfStringsInCommand, argv);
 
     else
         exec_nonBuiltInCommand(begIndexOfCommand, numOfStringsInCommand, argv);
