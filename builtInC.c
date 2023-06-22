@@ -209,7 +209,7 @@ void execCommand(char** argv ,size_t indexArgv, size_t argc)
         return;
 
     if(argc == 2) {
-        run_execvp(indexArgv, NULL);
+        run_execvp(argv ,indexArgv, NULL);
     }
         
     else {
@@ -220,7 +220,7 @@ void execCommand(char** argv ,size_t indexArgv, size_t argc)
         for(size_t i = 0; i < sizeOfNewArgv-1 && i < BUFFSIZE; ++i)
             newArgv[i] = argv[indexArgv+ i + 1];
 
-        run_execvp(indexArgv, newArgv);
+        run_execvp(argv, indexArgv, newArgv);
     }
 
 }
