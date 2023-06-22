@@ -59,7 +59,7 @@ void makeSpaceForNewHisBlock(void)
         deleteLastBlock();
 }
 
-historyBlock* initializeNewHisBlock(const char* command)
+historyBlock* initializeNewHisBlock(char* command)
 {
     makeSpaceForNewHisBlock();
 
@@ -72,7 +72,7 @@ historyBlock* initializeNewHisBlock(const char* command)
     return historyBlockToAdd;
 }
 
-historyBlock* add(const char* command)
+historyBlock* add(char* command)
 {
     historyBlock* historyBlockToAdd = initializeNewHisBlock(command);   
 
@@ -93,7 +93,7 @@ historyBlock* add(const char* command)
 }
 
 
-char* storeCommands(const char* commandToStore)
+char* storeCommands(char* commandToStore)
 {
     if(commandToStore == NULL)
         return NULL;
