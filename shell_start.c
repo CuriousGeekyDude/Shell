@@ -7,16 +7,17 @@
 #include "shell_start.h"
 
 
-struct CommandBlock** initializeArrayOfCommandBlocks(char** argv, size_t argc,size_t countList, size_t* globalSpecialCharIndexArray)
+struct CommandBlock** initializeArrayOfCommandBlocks(size_t* globalSpecialCharIndexArray)
 {
+
     struct CommandBlock** commandBlockArray = calloc(countList+1, sizeof(struct CommandBlock*));
 
     if(commandBlockArray == NULL)
         return NULL;
 
     for(size_t i = 0; i < countList+1; ++i) {
-        commandBlockArray[i] = constructCommandBlock(argv, argc, globalSpecialCharIndexArray, i, NULL, countList);
-        parseCommandBlock(commandBlockArray[i], argv);
+        commandBlockArray[i] = constructCommandBlock(globalSpecialCharIndexArray, i, NULL);
+        parseCommandBlock(commandBlockArray[i]);
     }
 
     return commandBlockArray;
@@ -35,52 +36,53 @@ void destroyArrayOfCommandBlocks(struct CommandBlock** commandBlocks, size_t siz
     commandBlocks = NULL;
 }
 
-void start_shell(char** argv, size_t argc, size_t countList)
+void start_shell()
 {
-    char* command = readInput();
-    if(command == NULL)
+    readInput();
+    if(argv == NULL)
         return;
+    char* command = commandToStoreInHistBlock();
     command = storeCommands(command);
-    
+
     pid_t childPID = 0;
+    GlobalSpecialCharCounter();
+    size_t* globalSpecialCharIndexArray = GlobalSpecialCharIndexArray();
 
-    size_t* globalSpecialCharIndexArray = GlobalSpecialCharIndexArray(argc, argv);
-
-    struct CommandBlock** commandBlockArray = initializeArrayOfCommandBlocks(argv, argc, countList,globalSpecialCharIndexArray);
+    struct CommandBlock** commandBlockArray = initializeArrayOfCommandBlocks(globalSpecialCharIndexArray);
 
     if(commandBlockArray == NULL)
         return;
 
     if(globalSpecialCharIndexArray != NULL) {
         
-        childPID = executeCommandBlock(commandBlockArray[0], argv);
+        childPID = executeCommandBlock(commandBlockArray[0]);
 
         for(size_t i = 0; i < countList; ++i) {
 
             if(strcmp(argv[globalSpecialCharIndexArray[i]], "&&") == 0) {
                    if(childPID == -1)
                         break;
-                   childPID =  andList(commandBlockArray[i+1],argv, countList, childPID);
+                   childPID =  andList(commandBlockArray[i+1], childPID);
                    continue;
                 }
 
             if(strcmp(argv[globalSpecialCharIndexArray[i]], "||") == 0) {
                     if(childPID == -1)
                         break;
-                    childPID = orList(commandBlockArray[i+1],argv, countList childPID);
+                    childPID = orList(commandBlockArray[i+1],childPID);
                     continue;
             }
             if(strcmp(argv[globalSpecialCharIndexArray[i]], ";") == 0) {
                     if(childPID == -1)
                         break;
-                    childPID  = semicolonList(commandBlockArray[i+1], argv,childPID);
+                    childPID  = semicolonList(commandBlockArray[i+1], childPID);
             }
         }
         
     }
 
     else 
-        executeCommandBlock(commandBlockArray[0], argv);
+        executeCommandBlock(commandBlockArray[0]);
     
         
     free(globalSpecialCharIndexArray);
