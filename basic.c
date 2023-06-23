@@ -187,7 +187,7 @@ void storeInputWords(void)
 }
 
 //Counts words seperated by space in inputWords[]
-size_t countArgc(void)
+void countArgc(void)
 {
     size_t index_inputWords = 0;
     argc = 0;
@@ -200,7 +200,6 @@ size_t countArgc(void)
             ++argc;
         }
     }
-    return argc;
 }
 
 int nullifyAllSpacesOfInputWords(void)
@@ -257,26 +256,10 @@ void readInput(void)
 
     printShellSign();
     storeInputWords();
-    argc = countArgc();
+    countArgc();
     initializeArgv(argc);
 }
 
-
-char** returnArgv(void)
-{
-    readInput();
-    return argv;
-}
-
-size_t returnCountList(void)
-{
-    return countList;
-}
-
-int returnArgc(void)
-{
-    return argc;
-}
 
 /*char* read_storeCommands(void)
 {

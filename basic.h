@@ -3,10 +3,12 @@
 
 #define BUFFSIZE 4096
 
-int argc;
-size_t countList;
-char inputWords[BUFFSIZE];
-char* argv[BUFFSIZE];
+
+extern int argc;
+extern size_t countList;
+extern char inputWords[BUFFSIZE];
+extern char* argv[BUFFSIZE];
+
 
 void errorHandling(const char* stringToPrint);
 
@@ -22,13 +24,10 @@ char* findPath_ColonSepDirectories(char* colonSepDirectories, const char* path);
 size_t countLengthOfCommand(void);
 
 void storeInputWords(void);
-size_t countArgc(void);
+void countArgc(void);
 void initializeArgv(int Argc);
 void readInput(void);
 
-char** returnArgv(void);
-size_t returnCountList(void);
-int returnArgc(void);
 
 
 #endif
