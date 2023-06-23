@@ -8,7 +8,6 @@
 #include "builtInC.h"
 
 
-
 size_t numOfAllTheSlashesInPath(const char* currentPath)
 {
     size_t numOfAllTheSlashes = 0;
@@ -93,7 +92,7 @@ void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD)
         errExit("setenv() for OLDPWD in update_PWD_OLDPWD()");
 }
 
-int cdCommand(char** argv,size_t indexArgv, size_t argc)
+int cdCommand(char** argv,size_t indexArgv, int argc)
 {
     if(argc > 2)
         return -1;
@@ -204,7 +203,7 @@ void run_execvp(char** argv, size_t indexArgv, char** newArgv)
         }
     }
 }
-void execCommand(char** argv ,size_t indexArgv, size_t argc)
+void execCommand(char** argv ,size_t indexArgv, int argc)
 {
     if(argc == 0 || argc == 1)
         return;
@@ -230,7 +229,7 @@ void execCommand(char** argv ,size_t indexArgv, size_t argc)
 
 
 
-void pwdCommand(size_t argc)
+void pwdCommand(int argc)
 {
     if(argc > 1)
         return;
@@ -251,7 +250,7 @@ void pwdCommand(size_t argc)
 
 
 
-void exitCommand(size_t argc)
+void exitCommand(int argc)
 {
     if(argc > 1)
         return;

@@ -1,13 +1,14 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include "basic.h"
 #include "error_functions.h"
 #include "history.h"
 #include "nonBuiltInC.h"
-#include "basic.h"
 
 
-void exec_nonBuiltInCommand(size_t indexArgv, size_t argc, char** argv)
+
+void exec_nonBuiltInCommand(size_t indexArgv, int argc)
 {
     if(argc == 1) {
             if(execvp(argv[indexArgv], NULL) == -1) {
@@ -33,12 +34,12 @@ void exec_nonBuiltInCommand(size_t indexArgv, size_t argc, char** argv)
     }
 }
 
-pid_t nonBuiltInCommand(size_t indexArgv, size_t argc, char** argv)
+pid_t nonBuiltInCommand(size_t indexArgv, int argc)
 {
     pid_t childPID = 0;
     switch(fork()) {
         case 0:
-            exec_nonBuiltInCommand(indexArgv, argc, argv);
+            exec_nonBuiltInCommand(indexArgv, argc);
             break;
         default:
             childPID = wait(NULL);

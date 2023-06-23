@@ -20,7 +20,7 @@ historyBlock* deleteLastBlock(void);
 
 void makeSpaceForNewHisBlock(void);
 historyBlock* initializeNewHisBlock(char* command);
-char* commandToStoreInHistBlock(char** argv);
+char* commandToStoreInHistBlock(void);
 historyBlock* add(char* command);
 
 char* storeCommands(char* commandToStore);

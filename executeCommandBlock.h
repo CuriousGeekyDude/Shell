@@ -8,6 +8,6 @@
 
 
 
-pid_t executeCommandBlock(struct CommandBlock* commandBlock, char** argv);
+pid_t executeCommandBlock(struct CommandBlock* commandBlock);
 
 #endif

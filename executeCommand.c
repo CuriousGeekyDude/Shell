@@ -1,11 +1,12 @@
 #include <string.h>
+#include "basic.h"
 #include "builtInC.h"
 #include "nonBuiltInC.h"
 #include "executeCommand.h"
 
 
 
-pid_t executeCommand(char** argv, size_t begIndexOfCommand, size_t numOfStringsInCommand, bool toFork)
+pid_t executeCommand(size_t begIndexOfCommand, size_t numOfStringsInCommand, bool toFork)
 {
     if(strcmp(argv[begIndexOfCommand], "cd") == 0) {
         if(cdCommand(argv ,begIndexOfCommand, numOfStringsInCommand) == -1)
@@ -30,8 +31,8 @@ pid_t executeCommand(char** argv, size_t begIndexOfCommand, size_t numOfStringsI
         
 
     if(toFork == true)
-        return nonBuiltInCommand(begIndexOfCommand, numOfStringsInCommand, argv);
+        return nonBuiltInCommand(begIndexOfCommand, numOfStringsInCommand);
 
     else
-        exec_nonBuiltInCommand(begIndexOfCommand, numOfStringsInCommand, argv);
+        exec_nonBuiltInCommand(begIndexOfCommand, numOfStringsInCommand);
 }

@@ -73,7 +73,7 @@ historyBlock* initializeNewHisBlock(char* command)
     return historyBlockToAdd;
 }
 
-char* commandToStoreInHistBlock(char** argv)
+char* commandToStoreInHistBlock(void)
 {
     if(argv[0] == NULL)
         return NULL;
