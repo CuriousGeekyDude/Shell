@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <string.h>
-#include "basic.h"
-#include "history.h"
-#include "executeCommandBlock.h"
-#include "lists.h"
-#include "shell_start.h"
+#include <basic.h>
+#include <history.h>
+#include <executeCommandBlock.h>
+#include <lists.h>
+#include <shell_start.h>
 
 
 struct CommandBlock** initializeArrayOfCommandBlocks(size_t* globalSpecialCharIndexArray)

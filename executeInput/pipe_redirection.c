@@ -3,9 +3,9 @@
 #include <sys/wait.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "executeCommand.h"
-#include "error_functions.h"
-#include "pipe_redirection.h"
+#include <executeCommand.h>
+#include <error_functions.h>
+#include <pipe_redirection.h>
 
 
 

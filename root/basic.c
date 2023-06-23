@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "color.h"  
-#include "basic.h"
+#include <color.h>
+#include <basic.h>
 
 int argc;
 size_t countList;

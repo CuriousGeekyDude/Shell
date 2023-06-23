@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include "basic.h"
-#include "error_functions.h"
-#include "history.h"
-#include "nonBuiltInC.h"
+#include <basic.h>
+#include <error_functions.h>
+#include <history.h>
+#include <nonBuiltInC.h>
 
 
 

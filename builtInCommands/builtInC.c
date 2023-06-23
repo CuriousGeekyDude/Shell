@@ -2,10 +2,10 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "basic.h"
-#include "history.h"
-#include "error_functions.h"
-#include "builtInC.h"
+#include <basic.h>
+#include <history.h>
+#include <error_functions.h>
+#include <builtInC.h>
 
 
 size_t numOfAllTheSlashesInPath(const char* currentPath)

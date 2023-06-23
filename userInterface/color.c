@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "color.h"
+#include <color.h>
 
 void black(void)
 {

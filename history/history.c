@@ -1,6 +1,6 @@
 #include <stdlib.h>
-#include "basic.h"
-#include "history.h"
+#include <basic.h>
+#include <history.h>
 
 int count = 0;
 

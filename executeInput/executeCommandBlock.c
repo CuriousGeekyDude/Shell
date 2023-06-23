@@ -1,8 +1,8 @@
 #include <string.h>
-#include "basic.h"
-#include "pipe_redirection.h"
-#include "executeCommand.h"
-#include "executeCommandBlock.h"
+#include <basic.h>
+#include <pipe_redirection.h>
+#include <executeCommand.h>
+#include <executeCommandBlock.h>
 
 pid_t executeCommandBlock(struct CommandBlock* commandBlock)
 {
