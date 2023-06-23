@@ -5,11 +5,11 @@
 #include <sys/types.h>
 
 
-size_t GlobalSpecialCharCounter(int argc, char** argv);
-size_t* GlobalSpecialCharIndexArray(int argc, char** argv);
+void GlobalSpecialCharCounter(void);
+size_t* GlobalSpecialCharIndexArray(void);
 
-pid_t andList(struct CommandBlock* commandBlock, char** argv, size_t countList, pid_t waitReturn);
-pid_t orList(struct CommandBlock* commandBlock, char** argv, size_t countList, pid_t waitReturn);
-pid_t semicolonList(struct CommandBlock* commandBlock, char** argv,pid_t waitReturn);
+pid_t andList(struct CommandBlock* commandBlock, pid_t waitReturn);
+pid_t orList(struct CommandBlock* commandBlock, pid_t waitReturn);
+pid_t semicolonList(struct CommandBlock* commandBlock, pid_t waitReturn);
 
 #endif
