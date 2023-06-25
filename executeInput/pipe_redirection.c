@@ -9,7 +9,7 @@
 
 
 
-pid_t pipeline(size_t BegIndexOfCommandBlock, size_t NumberOfStringsInEachPipe[], size_t baseCaseRecursion)
+pid_t pipeline(size_t BegIndexOfCommandBlock, size_t NumberOfStringsInEachPipe[], size_t baseCaseRecursion, const char* commandType)
 {
     if(NumberOfStringsInEachPipe == NULL)
         return -1;
@@ -33,9 +33,9 @@ pid_t pipeline(size_t BegIndexOfCommandBlock, size_t NumberOfStringsInEachPipe[]
 
             --baseCaseRecursion;
             if(baseCaseRecursion > 0) 
-               childPID =  pipeline(BegIndexOfCommandBlock, NumberOfStringsInEachPipe, baseCaseRecursion);
+               childPID =  pipeline(BegIndexOfCommandBlock, NumberOfStringsInEachPipe, baseCaseRecursion, commandType);
             else 
-               childPID = executeCommand(BegIndexOfCommandBlock, NumberOfStringsInEachPipe[0], false);
+               childPID = executeCommand(BegIndexOfCommandBlock, NumberOfStringsInEachPipe[0], commandType,false);
             break;
 
         case -1:
@@ -51,7 +51,7 @@ pid_t pipeline(size_t BegIndexOfCommandBlock, size_t NumberOfStringsInEachPipe[]
             for(size_t j = 0; j < baseCaseRecursion ; ++j)
                 i += NumberOfStringsInEachPipe[j]+1;
 
-            childPID = executeCommand(BegIndexOfCommandBlock + i, NumberOfStringsInEachPipe[baseCaseRecursion], false);
+            childPID = executeCommand(BegIndexOfCommandBlock + i, NumberOfStringsInEachPipe[baseCaseRecursion], commandType,false);
             break;
     }
     
@@ -62,7 +62,7 @@ pid_t start_pipeline(struct CommandBlock* commandBlock)
     pid_t childPID = 0;
     switch(fork()) {
         case 0:
-            childPID = pipeline(commandBlock->begIndex, commandBlock->numOfStringsInEachPipe, commandBlock->sizeOfLocalSpecialCharIndexArray);
+            childPID = pipeline(commandBlock->begIndex, commandBlock->numOfStringsInEachPipe, commandBlock->sizeOfLocalSpecialCharIndexArray, commandBlock->commandType);
         break;
 
         case -1:
@@ -95,7 +95,7 @@ void readToFileFromPipe(int fd_readEndOfPipe, FILE* file)
         errExit("fclose() file!");
 }
 
-void redirection(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommand, FILE* file)
+void redirection(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommand, const char* commandType,FILE* file)
 {
     int filedes[2];
 
@@ -111,7 +111,7 @@ void redirection(size_t BegIndexOfCommandBlock, size_t numOfStringsInCommand, FI
                 errExit("close() in child redirection");
             if(dup2(filedes[1], 1) == -1)
                 errExit("dup2()");
-            executeCommand(BegIndexOfCommandBlock, numOfStringsInCommand, false);
+            executeCommand(BegIndexOfCommandBlock, numOfStringsInCommand, commandType,false);
             break;
         case -1:
             errExit("fork() in redirection()");
@@ -143,7 +143,7 @@ pid_t start_redirection(struct CommandBlock* commandBlock, const char* filePathN
 
     switch(fork()) {
         case 0:
-            redirection(commandBlock->begIndex , commandBlock->numOfStringsInEachPipe[0], file);
+            redirection(commandBlock->begIndex , commandBlock->numOfStringsInEachPipe[0], commandBlock->commandType,file);
             break;
 
         case -1:
@@ -159,7 +159,7 @@ pid_t start_redirection(struct CommandBlock* commandBlock, const char* filePathN
 
 
 //Pipeline with a file redirection at the end of it
-pid_t pipelineRedirection(size_t BegIndexOfCommandBlock, size_t NumberOfStringsInEachPipe[], size_t baseCaseRecursion,size_t numOfPipesInCommandBlock ,FILE* file)
+pid_t pipelineRedirection(size_t BegIndexOfCommandBlock, size_t NumberOfStringsInEachPipe[], size_t baseCaseRecursion,size_t numOfPipesInCommandBlock , const char* commandType,FILE* file)
 {
 
     if(NumberOfStringsInEachPipe == NULL)
@@ -184,9 +184,9 @@ pid_t pipelineRedirection(size_t BegIndexOfCommandBlock, size_t NumberOfStringsI
 
             --baseCaseRecursion;
             if(baseCaseRecursion > 0) 
-               childPID = pipelineRedirection(BegIndexOfCommandBlock, NumberOfStringsInEachPipe, baseCaseRecursion, numOfPipesInCommandBlock, file);
+               childPID = pipelineRedirection(BegIndexOfCommandBlock, NumberOfStringsInEachPipe, baseCaseRecursion, numOfPipesInCommandBlock, commandType,file);
             else 
-               childPID = executeCommand(BegIndexOfCommandBlock, NumberOfStringsInEachPipe[0], false);
+               childPID = executeCommand(BegIndexOfCommandBlock, NumberOfStringsInEachPipe[0], commandType,false);
             break;
 
         case -1:
@@ -209,7 +209,7 @@ pid_t pipelineRedirection(size_t BegIndexOfCommandBlock, size_t NumberOfStringsI
                 exit(EXIT_SUCCESS);
             }
             else
-                childPID = executeCommand(BegIndexOfCommandBlock + i, NumberOfStringsInEachPipe[baseCaseRecursion], false);
+                childPID = executeCommand(BegIndexOfCommandBlock + i, NumberOfStringsInEachPipe[baseCaseRecursion], commandType,false);
             break;
     }
     
@@ -230,7 +230,7 @@ pid_t start_pipelineRedirection(struct CommandBlock* commandBlock, const char* f
 
     switch(fork()) {
         case 0:
-            pipelineRedirection(commandBlock->begIndex , commandBlock->numOfStringsInEachPipe, commandBlock->sizeOfLocalSpecialCharIndexArray, commandBlock->sizeOfLocalSpecialCharIndexArray, file);
+            pipelineRedirection(commandBlock->begIndex , commandBlock->numOfStringsInEachPipe, commandBlock->sizeOfLocalSpecialCharIndexArray, commandBlock->sizeOfLocalSpecialCharIndexArray, commandBlock->commandType,file);
             break;
 
         case -1:
