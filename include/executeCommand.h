@@ -5,7 +5,7 @@
 #include <sys/types.h>
 
 
-pid_t executeCommand(size_t begIndexOfCommand, size_t numOfStringsInCommand, bool toFork);
+pid_t executeCommand(size_t begIndexOfCommand, size_t numOfStringsInCommand, const char* commandType, bool toFork);
 
 
 #endif

@@ -2,11 +2,13 @@
 #include <basic.h>
 #include <builtInC.h>
 #include <nonBuiltInC.h>
+#include <weather.h>
 #include <executeCommand.h>
 
 
 
-pid_t executeCommand(size_t begIndexOfCommand, size_t numOfStringsInCommand, bool toFork)
+
+pid_t executeCommand(size_t begIndexOfCommand, size_t numOfStringsInCommand, const char* commandType, bool toFork)
 {
     if(strcmp(argv[begIndexOfCommand], "cd") == 0) {
         if(cdCommand(argv ,begIndexOfCommand, numOfStringsInCommand) == -1)
@@ -27,6 +29,10 @@ pid_t executeCommand(size_t begIndexOfCommand, size_t numOfStringsInCommand, boo
     if(strcmp(argv[begIndexOfCommand], "pwd") == 0) {
         pwdCommand(numOfStringsInCommand);
         return 0;
+    }
+
+    if(strcmp(argv[begIndexOfCommand], "weather") == 0) {
+        return weatherCommand(begIndexOfCommand, numOfStringsInCommand, commandType);
     }
         
 
