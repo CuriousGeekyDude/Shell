@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overview Of FAN</title>
+</head>
+<body>
+    <ul>
+        <li>How FAN processes input</li>
+        <ul>
+            <li>Initializing argc and argv</li>    
+        </ul>
+    </ul>
+
+    <h1>How FAN processes input</h1>
+        <h2>Initializing argc and argv</h2>
+            <p>When the user runs FAN, the sign <b>FAN$</b> followed by the value of PATH is printed to 
+                the screen. For example, if you are in <b>/home</b> directory and you run FAN, you 
+                will get the following printed to the screen:</p><br>
+
+                <b>FAN$/home:</b><br><br>
+
+                <p>After the user has entered input, FAN stores it in <b>inputWords[]</b>.
+                However if the input contains spaces at the beginning, it will ignore them until it
+                reaches the first non-space character in the input. If there is no non-space character
+                in the input; it does not store anything in <b>inputWords[]</b>. The first non-space character
+                that it encounters, it shall store it in <b>inputWords[]</b> all the way until the first space 
+                character that it encounters again. The first space character encountered after traversing and storing
+                the non-space characters shall also be stored in <b>inputWords[]</b>, but any other spaces after that
+                shall be ignored until we reach the first non-space character again or the end of the input. For example:
+                </p>
+
+                <div>Input:<b>---Hi-World---!</b></div><br>
+
+                <div>Stored in <b>inputWords[]</b> as follows:<b>Hi World !</b></div><br>
+
+                <div>where <b>-</b> represents space in this example.</div><br>
+
+                <p>FAN then traverses <b>inputWords[]</b> and replaces all the spaces will \0 characters. Afterwards,
+                   <b>argc</b>,which represents the total number of words, is counted. Finally, <b>argv</b> will have its 
+                   members point to the beginning of each of the words stored in <b>inputWords[]</b>. It is worth
+                   mentioning that there was no need for FAN to traverse <b>inputWords[]</b> just to eliminate the 
+                   space characters; I could have replaced them while reading user's input. But at the time
+                   ,for some reason, traversing the array the second time seemed easier.
+                </p>
+
+        <h2>Storing commands</h2>
+                <p>
+                    Whenever <b>argv</b> is initialized and is non-NULL, that input is stored in a
+                    <b>historyBlock struct</b>. The structure is defined as follows:
+                </p><br>
+
+                <div>
+                    <b>typedef struct historyBlock</b>{<br>
+                        &emsp;char* command;<br>
+                        &emsp;int* counter;  &emsp;//Points to number of commands currently stored<br>
+                        &emsp;struct historyBlock* next;<br>
+                        &emsp;struct historyBlock* before;<br>
+                    } <b>historyBlock</b>;
+                </div><br>
+                
+                
+                
+</body>
+</html>
