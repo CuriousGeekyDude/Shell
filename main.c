@@ -44,7 +44,6 @@ int main(void)
     sig.sa_flags = SA_RESTART;
 
     sigaction(SIGTSTP, &sig, NULL);
-    sigaction(SIGINT, &sig, NULL);
 
     while(1) {
         start_shell();
