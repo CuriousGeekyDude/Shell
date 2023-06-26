@@ -35,7 +35,7 @@
 
                 <div>Stored in <b>inputWords[]</b> as follows:<b>Hi World !</b></div><br>
 
-                <div>where <b>-</b> represents space in this example.</div><br>
+                <div>where <b>-</b> represents space.</div><br>
 
                 <p>FAN then traverses <b>inputWords[]</b> and replaces all the spaces will \0 characters. Afterwards,
                    <b>argc</b>,which represents the total number of words, is counted. Finally, <b>argv</b> will have its 
@@ -47,8 +47,20 @@
 
         <h2>Storing commands</h2>
                 <p>
-                    Whenever <b>argv</b> is initialized and is non-NULL, that input is stored in a
-                    <b>historyBlock struct</b>. The structure is defined as follows:
+                    Whenever <b>argv</b> is initialized and is non-NULL, the length of the input is 
+                    calculated. Then an array of char is dynamically allocated on the heap. Then the 
+                    command is copied from <b>inputWords[]</b> to this array. We shall then turn all
+                    the <b>\0</b> characters to space character except the last <b>\0</b>. The whole 
+                    point of dynamic memory allocation in our case is to have a command whose words 
+                    are not seperated by <b>\0</b> characters but by spaces. <b>inputWords[]</b> words
+                    are seperated by <b>\0</b> so that <b>argv</b> members can point to the beginning 
+                    of these words. The reason for this is that, we can safely pass around <b>argv</b>
+                    pointers as they are null terminating strings. If they were not null terminating, 
+                    then we would have out of bound errors. So since we cannot change the nulls in 
+                    <b>inputWords[]</b>, we have no choice but to dynamically allocate an array for 
+                    each command. Another reason for such design is to be able to store the commands.
+                    For storing the commands we use <b>historyBlock struct</b>. The structure is 
+                    defined as follows:
                 </p><br>
 
                 <div>
@@ -60,7 +72,26 @@
                     } <b>historyBlock</b>;
                 </div><br>
                 
-                
+                <p>
+                    The <b>command</b> member of historyBlock shall now point to the dynamically allocated array.
+                    Each time a new command is pointed to by <b>command</b>, a statically allocated variable that 
+                    <b>counter</b> points to shall be incremented. The purpose of other members is obvious based
+                    on their names and types. Therefore the commands are stored by structures that are linked 
+                    together like double linked lists. At some point(not yet implemented) whenever the user presses
+                    up or down, the previous commands will be printed on the screen. We can have at most 100 of these
+                    structures stored on the heap. Consequently, only the last 100 previous commands will be stored. 
+                    Whenever the maximum limit is reached, the 100th command is deleted so that we open up space for 
+                    the newly typed command.
+                </p>
+
+        <h2>Counting &&, ||, ; characters</h2>
+
+                <p>
+                    Both here and in the code, I refer to <b>&&</b>, <b>||</b>, <b>;</b> as special characters. I also refer to <b>|</b> and <b>></b> as 
+                    special characters as well. But for this section special character is only meant to refer to <b>&&</b>, <b>||</b>,
+                    and <b>;</b>. After storing the command in a historyBlock structure, we shall scan it in order to count               
+                    how many special characters are present in it.
+                </p>
                 
 </body>
 </html>
