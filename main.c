@@ -8,30 +8,24 @@
 
 void signalHandler(int signal)
 {
-    if(signal == SIGINT){
-        freeAllBlocks();
-        printf("\n");
-        fflush(stdout);
-        exit(EXIT_SUCCESS);
-    }
 
     if(signal == SIGTSTP) {
-    if(currentHistoryBlock == NULL)
-        return;
-    if(currentHistoryBlock->command == NULL) {
-        printf("\nnull!\n");
-        fflush(stdout);
-    }
-    else {
-        printf("\n%s\n", currentHistoryBlock->command);
-        fflush(stdout);
-    }
-    if(currentHistoryBlock->next == NULL) {
+        if(currentHistoryBlock == NULL)
+            return;
+        if(currentHistoryBlock->command == NULL) {
+            printf("\nnull!\n");
+            fflush(stdout);
+        }
+        else {
+            printf("\n%s\n", currentHistoryBlock->command);
+            fflush(stdout);
+        }
+        if(currentHistoryBlock->next == NULL) {
+            printShellSign();
+            return;
+        }
+        currentHistoryBlock = currentHistoryBlock->next;
         printShellSign();
-        return;
-    }
-    currentHistoryBlock = currentHistoryBlock->next;
-    printShellSign();
 
     }
 
