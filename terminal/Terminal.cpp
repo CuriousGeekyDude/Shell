@@ -10,7 +10,7 @@
 #include <system_error>
 #include <array>
 #include <list>
-#include "Terminal.hpp"
+#include <Terminal.hpp>
 
 
 
@@ -42,6 +42,11 @@ void Terminal::enterRawMode()
     if(tcsetattr(fd, TCSAFLUSH, &raw) == -1)
         throw std::system_error(errno, std::generic_category());
             
+}
+
+std::list<unsigned char> Terminal::getInput()
+{
+    return input;
 }
 
         
@@ -469,7 +474,7 @@ void Terminal::printPrintableKeys(const char key)
 
 
 
-int main()
+/*int main()
 {
     
     try {
@@ -490,4 +495,4 @@ int main()
     
 
     return 0;
-}
+}*/

@@ -12,6 +12,8 @@ class Terminal
 
         void enterRawMode();
 
+        std::list<unsigned char> getInput();
+
         void processKeyPress();
 
         ~Terminal();
