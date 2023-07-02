@@ -10,6 +10,10 @@
 #include <system_error>
 #include <array>
 #include <list>
+extern "C" {
+#include <color.h>
+}
+#include <string.h>
 #include <Terminal.hpp>
 
 
@@ -134,11 +138,20 @@ std::string Terminal::getenviron(const std::string& env)
 
 std::string Terminal::printCurrentDir()
 {
-    std::string pwd = getenviron("PWD");
-    std::cout << "FAN$" << pwd << ": ";
-    std::flush(std::cout);
+    char* pwd = getenv("PWD");
+    if(pwd == NULL)
+        throw "PWD was not found!";
+
+    green();
+    printf("FAN$");
+    randomColorGenerator();
+    printf("%s:", pwd);
+    resetColor();
+    fflush(stdout);
+    std::string PWD = pwd;
     return pwd;
 }
+
 void Terminal::updateBegin_cursorY(const std::string& pwd)
 {
     cursorY = 7 + pwd.size();   //FAN$ and : along with necessary spaces amount to 7 chars
