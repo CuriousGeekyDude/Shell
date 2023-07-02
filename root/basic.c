@@ -54,92 +54,6 @@ void initializePointerBuffer(void* buffer[], size_t sizeOfBuffer)
         buffer[i] = NULL;
 }
 
-char* findPath_ColonSepDirectories(char* colonSepDirectories, const char* path)
-{
-    size_t numOfColons = 0, length_ColonsepDirectories = countLengthOfString(colonSepDirectories) + 1;
-
-
-    if(colonSepDirectories == NULL || path == NULL)
-        return NULL;
-
-    for(size_t i = 0; i < length_ColonsepDirectories; ++i) {
-        if(colonSepDirectories[i] == ':')
-            ++numOfColons;
-    }
-
-    if(numOfColons == 0) {
-        if(strcmp(colonSepDirectories, path) == 0) {
-            char* pathCopyToReturn = malloc(length_ColonsepDirectories);
-            initializeCharBuffer(pathCopyToReturn, length_ColonsepDirectories);
-            strncpy(pathCopyToReturn, colonSepDirectories, length_ColonsepDirectories);            
-            return pathCopyToReturn;
-        }
-        else
-            return NULL;
-    }
-
-    ++numOfColons; //The number of directories seperated by colon
-
-    char** pointerToDirectories = malloc((numOfColons + 1) * (sizeof(char*)));
-    for(size_t i = 0; i < (numOfColons+1); ++i)
-        pointerToDirectories[i] = NULL;
-
-
-    size_t* lengthOfEachDirectory = malloc(numOfColons*sizeof(size_t));
-    for(size_t i = 0; i < numOfColons; ++i)
-        lengthOfEachDirectory[i] = 0;
-
-
-    //Finding the length of each directory seperated by colon
-    size_t index_lengthOfEachDirectory = 0;
-    for(size_t i = 0; i < length_ColonsepDirectories; ++i) {
-        size_t lengthOfDirectory = 0;
-
-        while(colonSepDirectories[i] != ':' && colonSepDirectories[i] != '\0') {
-            ++lengthOfDirectory;
-            ++i;
-        }
-        if(index_lengthOfEachDirectory < numOfColons) {
-            lengthOfEachDirectory[index_lengthOfEachDirectory] = lengthOfDirectory;
-            ++index_lengthOfEachDirectory;
-        }
-    }
-
-    char* directories = malloc(length_ColonsepDirectories*sizeof(char));
-    initializeCharBuffer(directories, length_ColonsepDirectories);
-
-    index_lengthOfEachDirectory = 0;
-    for(size_t i = 0; i < length_ColonsepDirectories; ++i) {
-        if(index_lengthOfEachDirectory < numOfColons)
-            pointerToDirectories[index_lengthOfEachDirectory] = &directories[i];
-
-        for(size_t j = 0; j < lengthOfEachDirectory[index_lengthOfEachDirectory]; ++j) {
-            directories[i] = colonSepDirectories[i];
-            ++i;
-        }
-        ++index_lengthOfEachDirectory;
-        directories[i] = '\0';
-    }
-    free(lengthOfEachDirectory);
-    
-    for(size_t i = 0; pointerToDirectories[i] != NULL; ++i) {
-        if(strcmp(pointerToDirectories[i], path) == 0) {
-            size_t lengthOfPathCopyToReturn = countLengthOfString(pointerToDirectories[i]);
-            char* pathCopyToReturn = malloc(lengthOfPathCopyToReturn + 1);
-            initializeCharBuffer(pathCopyToReturn, lengthOfPathCopyToReturn+1);
-            strncpy(pathCopyToReturn, pointerToDirectories[i], lengthOfPathCopyToReturn);
-            free(directories);
-            free(pointerToDirectories);
-            return pathCopyToReturn;
-        }
-    }
-
-    free(directories);
-    free(pointerToDirectories);
-    return NULL;
-}
-
-
 
 
 size_t countLengthOfCommand(void)
@@ -255,7 +169,7 @@ void readInput(void)
     initializePointerBuffer((void*)argv, BUFFSIZE);
 
     printShellSign();
-    storeInputWords();
+ // storeInputWords();
     countArgc();
     initializeArgv(argc);
 }

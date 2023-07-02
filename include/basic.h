@@ -18,7 +18,6 @@ size_t countLengthOfString(const char* string);
 void initializeCharBuffer(char buffer[], size_t sizeOfBuffer);
 void initializePointerBuffer(void* buffer[], size_t sizeOfBuffer);
 
-char* findPath_ColonSepDirectories(char* colonSepDirectories, const char* path); 
 
 
 size_t countLengthOfCommand(void);
