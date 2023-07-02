@@ -12,7 +12,6 @@ extern char* argv[BUFFSIZE];
 
 void errorHandling(const char* stringToPrint);
 
-void printShellSign(void);
 
 size_t countLengthOfString(const char* string);
 void initializeCharBuffer(char buffer[], size_t sizeOfBuffer);

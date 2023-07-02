@@ -16,19 +16,7 @@ void errorHandling(const char* stringToPrint)
     exit(EXIT_FAILURE);
 }
 
-void printShellSign(void)
-{
-    char* pwd = getenv("PWD");
-    if(pwd == NULL)
-        return;
 
-    green();
-    printf("FAN$");
-    randomColorGenerator();
-    printf("%s:", pwd);
-    resetColor();
-    fflush(stdout);
-}
 
 size_t countLengthOfString(const char* string)
 {
@@ -168,7 +156,6 @@ void readInput(void)
     initializeCharBuffer(inputWords, BUFFSIZE);
     initializePointerBuffer((void*)argv, BUFFSIZE);
 
-    printShellSign();
  // storeInputWords();
     countArgc();
     initializeArgv(argc);
