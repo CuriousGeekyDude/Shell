@@ -83,7 +83,7 @@ void Terminal::processKeyPress()
 }
 
 
-void Temrinal::disableRawMode()
+void Terminal::disableRawMode()
 {
     errno = 0;
     if(tcsetattr(fd, TCSAFLUSH, &original_termios) == -1)
