@@ -18,6 +18,8 @@ class Terminal
 
         void disableRawMode();
 
+        ~Terminal();
+
     private:
 
         enum ArrowKeys

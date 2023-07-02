@@ -30,6 +30,7 @@ Terminal::Terminal(const int Fd) : fd(Fd)
 void Terminal::enterRawMode()
 {
     struct termios raw;
+    clearScreen();
 
     errno = 0;
     if(tcgetattr(fd, &raw) == -1)
@@ -64,7 +65,8 @@ void Terminal::processKeyPress()
 
             if(c == Ctrl_Key('q')) {
                 clearScreen();
-                throw "Ctrl-q was pressed.";
+                std::string error = "Ctrl-q was pressed.";
+                throw error;
             }
 
             if(c == Ctrl_Key('j')) {
@@ -90,7 +92,11 @@ void Terminal::disableRawMode()
         perror("tcsetattr()");
     std::cout << std::endl;
 }
-        
+
+Terminal::~Terminal()
+{
+    disableRawMode();
+}
 
 
 void Terminal::updateScreenSize()    //Main use in constructor and also when screen size is updated
