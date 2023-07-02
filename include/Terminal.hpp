@@ -16,7 +16,7 @@ class Terminal
 
         void processKeyPress();
 
-        ~Terminal();
+        void disableRawMode();
 
     private:
 

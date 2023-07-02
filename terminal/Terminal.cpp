@@ -64,7 +64,7 @@ void Terminal::processKeyPress()
 
             if(c == Ctrl_Key('q')) {
                 clearScreen();
-                return;
+                throw "Ctrl-q was pressed.";
             }
 
             if(c == Ctrl_Key('j')) {
@@ -82,14 +82,15 @@ void Terminal::processKeyPress()
 
 }
 
-        
-Terminal::~Terminal()
-{ 
+
+void Temrinal::disableRawMode()
+{
     errno = 0;
     if(tcsetattr(fd, TCSAFLUSH, &original_termios) == -1)
         perror("tcsetattr()");
     std::cout << std::endl;
 }
+        
 
 
 void Terminal::updateScreenSize()    //Main use in constructor and also when screen size is updated
