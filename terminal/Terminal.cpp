@@ -311,6 +311,8 @@ void Terminal::enterKeyAction()
     printCurrentDir();
     updateBegin_cursorY(pwd);
     printCursor();
+
+    throw 13;
 }
 
 void Terminal::printInputAfterInsertion(std::list<unsigned char>::iterator iter)
