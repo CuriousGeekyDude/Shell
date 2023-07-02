@@ -52,24 +52,30 @@ std::list<unsigned char> Terminal::getInput()
         
 void Terminal::processKeyPress()
 {
-    while(1) {
-        updateScreenSize();
-        char c = readKeyPress();
-        updateScreenSize();
+    try {   //Exception handling is not the goal here. Breaking out of the while loop when enter is pressed is the goal of try/catch
+        while(1) {
+            updateScreenSize();
+            char c = readKeyPress();
+            updateScreenSize();
 
-        if(c == Ctrl_Key('q')) {
-            clearScreen();
-            return;
-        }
+            if(c == Ctrl_Key('q')) {
+                clearScreen();
+                return;
+            }
 
-        if(c == Ctrl_Key('j')) {
-            clearScreen();
-            return;
-        }
+            if(c == Ctrl_Key('j')) {
+                clearScreen();
+                return;
+            }
                 
-        if(checkForArrowKeys(c) == -1)
-            printPrintableKeys(c);
+            if(checkForArrowKeys(c) == -1)
+                printPrintableKeys(c);
         }
+    }
+    catch(int enterASCII_Code) {
+        
+    }
+
 }
 
         
