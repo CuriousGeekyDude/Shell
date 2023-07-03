@@ -135,9 +135,12 @@ char Terminal::readKeyPress()
 
 void Terminal::WRITE(const char* string, const int count) //Helper for clearScreen()
 {   
+
     errno = 0;
     if(write(STDOUT_FILENO, string, count) == -1 || fflush(stdout) == EOF)
         throw std::system_error(errno, std::generic_category());
+    updateCursorPos();
+    printCursor();
 }
         
 std::string Terminal::getenviron(const std::string& env)
@@ -148,7 +151,7 @@ std::string Terminal::getenviron(const std::string& env)
     return envirValue;
 }
 
-std::string Terminal::printCurrentDir()
+void Terminal::printCurrentDir()
 {
     char* pwd = getenv("PWD");
     if(pwd == NULL)
@@ -160,8 +163,11 @@ std::string Terminal::printCurrentDir()
     printf("%s:", pwd);
     resetColor();
     fflush(stdout);
-    std::string PWD = pwd;
-    return pwd;
+}
+
+void Terminal::updateBegin_cursorX()
+{
+    cursorX_begin = cursorX;
 }
 
 void Terminal::updateBegin_cursorY(const std::string& pwd)
@@ -177,28 +183,18 @@ void Terminal::clearScreen()
 {
     WRITE("\x1b[2J", 5);
     WRITE("\x1b[H", 4);
-    std::string pwd = printCurrentDir();
-    updateBegin_cursorY(pwd);
+    std::string pwd = getenviron("PWD");
     cursorX = 1;
+    cursorY = 1;
+    printCursor();
+    printCurrentDir();
+    updateBegin_cursorY(pwd);
+    updateBegin_cursorX();
+    printCursor();
+    
 }
 
 
-/*void Terminal::scrollingDown()
-{
-    if(cursorX == screenRow+1) {
-        if(ENTER_KEY_PRESSED == true) {
-            cursorX = 0;
-            WRITE("\x1b[2J", 5);
-        }
-
-        else {
-            WRITE("\x1b[2J", 5);
-            cursorX = 1;
-            cursorY = 1;
-            WRITE("\x1b[H", 4);
-        }
-    }
-}*/
 
 void Terminal::updateCursorPos()
 {
@@ -335,6 +331,7 @@ void Terminal::printInputAfterInsertion(std::list<unsigned char>::iterator iter)
         fflush(stdout);
         cursorY++;
         updateCursorPos();
+        printCursor();
     }
     cursorY = cursorY_Temp;
     iterator++;
@@ -368,7 +365,9 @@ void Terminal::printInputAfterDeletion()
     }
     cursorY = cursorY_Temp;
     iterator = iterator_Temp;
-    updateCursorPos();
+    if(cursorY == 0) {
+        cursorY = screenColumn;
+    }
     printCursor();
 }
 
