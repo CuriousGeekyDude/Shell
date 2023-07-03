@@ -79,7 +79,7 @@ void Terminal::processKeyPress()
         }
     }
     catch(int enterASCII_Code) {
-        
+        disableRawMode();   
     }
 
 }
@@ -91,6 +91,11 @@ void Terminal::disableRawMode()
     if(tcsetattr(fd, TCSAFLUSH, &original_termios) == -1)
         perror("tcsetattr()");
     std::cout << std::endl;
+}
+
+void Terminal::emptyInput()
+{
+    input.clear();
 }
 
 Terminal::~Terminal()
@@ -161,7 +166,7 @@ std::string Terminal::printCurrentDir()
 
 void Terminal::updateBegin_cursorY(const std::string& pwd)
 {
-    cursorY = 7 + pwd.size();   //FAN$ and : along with necessary spaces amount to 7 chars
+    cursorY = 6 + pwd.size();   //FAN$ and : along with necessary spaces amount to 7 chars
     updateCursorPos();
     cursorY_begin = cursorY;
 }
@@ -174,10 +179,11 @@ void Terminal::clearScreen()
     WRITE("\x1b[H", 4);
     std::string pwd = printCurrentDir();
     updateBegin_cursorY(pwd);
+    cursorX = 1;
 }
 
 
-void Terminal::scrollingDown()
+/*void Terminal::scrollingDown()
 {
     if(cursorX == screenRow+1) {
         if(ENTER_KEY_PRESSED == true) {
@@ -192,7 +198,7 @@ void Terminal::scrollingDown()
             WRITE("\x1b[H", 4);
         }
     }
-}
+}*/
 
 void Terminal::updateCursorPos()
 {
@@ -210,8 +216,6 @@ void Terminal::updateCursorPos()
             cursorX--;
         }
     }
-
-    scrollingDown();
 }
         
 void Terminal::printCursor()
@@ -317,27 +321,13 @@ int Terminal::checkForArrowKeys(const char key)
 
 void Terminal::enterKeyAction()
 {
-    ENTER_KEY_PRESSED = true;
-    input.clear();
-    iterator = input.begin();
-    scrollingDown();
-    ENTER_KEY_PRESSED = false;
-    std::string pwd = getenviron("PWD");
-    cursorX++;
-    updateCursorPos();
-    cursorX_begin = cursorX;
-    cursorY = 1;
-    printCursor();
-    printCurrentDir();
-    updateBegin_cursorY(pwd);
-    printCursor();
 
     throw 13;
 }
 
 void Terminal::printInputAfterInsertion(std::list<unsigned char>::iterator iter)
 {
-    int cursorY_Temp = cursorY-1;
+    int cursorY_Temp = cursorY;
     cursorY -= 1;
 
     for(; iter != input.end(); ++iter) {
@@ -346,8 +336,9 @@ void Terminal::printInputAfterInsertion(std::list<unsigned char>::iterator iter)
         cursorY++;
         updateCursorPos();
     }
-    cursorY = cursorY_Temp+1;
+    cursorY = cursorY_Temp;
     iterator++;
+    updateCursorPos();
     printCursor();
 }
 
@@ -360,7 +351,6 @@ void Terminal::printInputAfterDeletion()
     auto iterator_Temp = iterator;
 
     int cursorY_Temp = cursorY-1;
-    int cursorX_Temp = cursorX;
     cursorY = cursorY_begin;
     cursorX = cursorX_begin;
     printCursor();
@@ -377,7 +367,6 @@ void Terminal::printInputAfterDeletion()
         printCursor();
     }
     cursorY = cursorY_Temp;
-    cursorX = cursorX_Temp;
     iterator = iterator_Temp;
     updateCursorPos();
     printCursor();
@@ -487,8 +476,6 @@ void Terminal::printPrintableKeys(const char key)
                 case BACKSPACE: printInputAfterDeletion(); break;
              }
              
-            updateCursorPos();
-            printCursor();
             
 }
 

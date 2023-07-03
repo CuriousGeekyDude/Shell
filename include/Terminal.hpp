@@ -18,6 +18,8 @@ class Terminal
 
         void disableRawMode();
 
+        void emptyInput();
+
         ~Terminal();
 
     private:
