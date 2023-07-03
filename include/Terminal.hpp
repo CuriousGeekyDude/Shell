@@ -42,11 +42,11 @@ class Terminal
         void WRITE(const char* string, const int count);
 
         std::string getenviron(const std::string& env);
-        std::string printCurrentDir();
+        void printCurrentDir();
+        void updateBegin_cursorX();
         void updateBegin_cursorY(const std::string& pwd);
         void clearScreen();
 
-        void scrollingDown();
 
         void updateCursorPos();
         void printCursor();
