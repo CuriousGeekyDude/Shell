@@ -1,9 +1,14 @@
 #include <Shell_Terminal.hpp>
 #include <list>
+extern "C" {
+    #include <basic.h>
+}
 
 void Shell_Terminal::transferInputTo_InputWords()
 {
     std::list<unsigned char> input = terminal.getInput();
+    initializeCharBuffer(inputWords, BUFFSIZE);
+
 
     auto iter = input.cbegin();
     size_t spaceCount = 0, loopCount = 1, index_inputWords = 0;
