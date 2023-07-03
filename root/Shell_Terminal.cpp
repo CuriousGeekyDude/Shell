@@ -24,8 +24,10 @@ void Shell_Terminal::transferInputTo_InputWords()
                     inputWords[index_inputWords] = c;
                     ++index_inputWords;
                 }
-                else
+                else {
+                    ++iter;
                     continue;
+                }
             }
             else {
                 inputWords[index_inputWords] = c;
