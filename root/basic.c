@@ -153,7 +153,6 @@ void initializeArgv(int Argc)
 
 void readInput(void)
 {
-    initializeCharBuffer(inputWords, BUFFSIZE);
     initializePointerBuffer((void*)argv, BUFFSIZE);
 
  // storeInputWords();
