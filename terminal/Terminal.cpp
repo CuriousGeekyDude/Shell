@@ -104,6 +104,20 @@ Terminal::~Terminal()
 }
 
 
+
+
+void Terminal::copyHistoryToInput()
+{
+    input.clear();
+    std::string hisCommand = iteratorHistory->command;
+    auto sizeOfHisCommand = hisCommand.size();
+
+    for(size_t = 0; i < sizeOfHisCommand; ++i) {
+        input.push_back(hisCommand[i]);
+    }
+    iterator = input.end();
+}
+
 void Terminal::updateScreenSize()    //Main use in constructor and also when screen size is updated
 {
     struct winsize window = {0};

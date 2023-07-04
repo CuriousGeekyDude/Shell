@@ -42,7 +42,8 @@ class Terminal
             PAGE_UP,
             PAGE_DOWN
         };
-        
+        void copyHistoryToInput();
+
         void updateScreenSize();
 
         char readKeyPress();
