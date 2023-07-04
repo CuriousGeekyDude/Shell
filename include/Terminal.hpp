@@ -3,6 +3,7 @@
 
 #include <string>
 #include <list>
+#include <vector>
 #include <termios.h>
 
 class Terminal 
@@ -71,8 +72,7 @@ class Terminal
         int cursorX_begin, cursorY_begin;
         std::list<unsigned char> input;
         std::list<unsigned char>::iterator iterator = input.begin();
-
-
+        std::vector<unsigned char> historyCommand;
 
 };
 
