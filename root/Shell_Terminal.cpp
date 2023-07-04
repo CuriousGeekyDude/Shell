@@ -50,5 +50,8 @@ void Shell_Terminal::transferInputTo_InputWords()
 
 void Shell_Terminal::transferHistoryTo_Terminal()
 {
-    terminal.historyCommands.push_back(currentHistoryBlock);
+    if(currentHistoryBlock != nullptr) {
+        terminal.historyCommands.push_back(*currentHistoryBlock);
+        terminal.iteratorHistory = terminal.historyCommands.end();
+    }
 }

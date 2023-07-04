@@ -245,9 +245,10 @@ void Terminal::upArrowAction()
     cursorY = cursorY_begin;
     printCursor();
     printf("\x1b[0J");
-
-    for(size_t i = 0; (iteratorHistory->command)[i] != '\0'; ++i) {
-        printf("%c", (iteratorHistory->command)[i]);
+    std::string hisCommand = iteratorHistory->command;
+    size_t sizeOfHisCommand = hisCommand.size();
+    for(size_t i = 0; i < sizeOfHisCommand; ++i) {
+        WRITE(&hisCommand[i], 1);
         cursorY++;
         updateCursorPos();
         printCursor();
@@ -276,7 +277,8 @@ void Terminal::leftArrowAction()
 void Terminal::arrowKeysAction(const ArrowKeys key)
 {            
     switch(key) {
-        case ARROW_UP:            
+        case ARROW_UP:     
+            upArrowAction();       
             break;
 
         case ARROW_DOWN:            
