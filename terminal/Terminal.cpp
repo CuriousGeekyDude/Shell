@@ -348,6 +348,7 @@ void Terminal::printInputAfterDeletion()
     auto iterator_Temp = iterator;
 
     int cursorY_Temp = cursorY-1;
+    int cursorX_Temp = cursorX;
     cursorY = cursorY_begin;
     cursorX = cursorX_begin;
     printCursor();
@@ -365,9 +366,15 @@ void Terminal::printInputAfterDeletion()
     }
     cursorY = cursorY_Temp;
     iterator = iterator_Temp;
+    cursorX = cursorX_Temp;
+
     if(cursorY == 0) {
         cursorY = screenColumn;
+        cursorX--;
     }
+        
+    
+
     printCursor();
 }
 
