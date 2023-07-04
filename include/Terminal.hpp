@@ -69,9 +69,9 @@ class Terminal
         int screenRow, screenColumn;
         int cursorX = 1,  cursorY;
         int cursorX_begin, cursorY_begin;
-        bool ENTER_KEY_PRESSED = false;
         std::list<unsigned char> input;
         std::list<unsigned char>::iterator iterator = input.begin();
+
 
 
 };
