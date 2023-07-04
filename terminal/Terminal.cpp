@@ -112,10 +112,10 @@ void Terminal::copyHistoryToInput()
     std::string hisCommand = iteratorHistory->command;
     auto sizeOfHisCommand = hisCommand.size();
 
-    for(size_t = 0; i < sizeOfHisCommand; ++i) {
+    for(size_t i = 0; i < sizeOfHisCommand; ++i) {
         input.push_back(hisCommand[i]);
     }
-    iterator = input.end();
+    iterator = input.begin();
 }
 
 void Terminal::updateScreenSize()    //Main use in constructor and also when screen size is updated
@@ -254,19 +254,20 @@ void Terminal::upArrowAction()
     else {
         return;
     }
+    copyHistoryToInput();
 
     cursorX = cursorX_begin;
     cursorY = cursorY_begin;
     printCursor();
     printf("\x1b[0J");
-    std::string hisCommand = iteratorHistory->command;
-    size_t sizeOfHisCommand = hisCommand.size();
-    for(size_t i = 0; i < sizeOfHisCommand; ++i) {
-        WRITE(&hisCommand[i], 1);
+    
+    for(; iterator != input.end(); ++iterator) {
+        printf("%c", *iterator);
         cursorY++;
         updateCursorPos();
         printCursor();
     }
+    fflush(stdout);
 
 }
 void Terminal::rightArrowAction()
