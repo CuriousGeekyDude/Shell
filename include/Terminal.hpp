@@ -60,6 +60,7 @@ class Terminal
 
         char Ctrl_Key(char key);
 
+        void upArrowAction();
         void rightArrowAction();
         void leftArrowAction();
         void arrowKeysAction(const ArrowKeys key);

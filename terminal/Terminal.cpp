@@ -228,6 +228,32 @@ char Terminal::Ctrl_Key(char key)
         
 
 //--------------------------------------------------------------------------------------
+void Terminal::upArrowAction()
+{
+    if(historyCommands.size() == 0) {
+        return;
+    }
+
+    if(iteratorHistory != historyCommands.begin()) {
+        iteratorHistory--;
+    }
+    else {
+        return;
+    }
+
+    cursorX = cursorX_begin;
+    cursorY = cursorY_begin;
+    printCursor();
+    printf("\x1b[0J");
+
+    for(size_t i = 0; (iteratorHistory->command)[i] != '\0'; ++i) {
+        printf("%c", (iteratorHistory->command)[i]);
+        cursorY++;
+        updateCursorPos();
+        printCursor();
+    }
+
+}
 void Terminal::rightArrowAction()
 {
     if(iterator == input.end() || input.empty())
