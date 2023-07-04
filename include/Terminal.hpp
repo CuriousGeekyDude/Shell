@@ -18,6 +18,7 @@ class Terminal
         void enterRawMode();
 
         std::list<unsigned char> getInput();
+        std::vector<historyBlock> getHistoryCommands();
 
         void processKeyPress();
 
@@ -77,7 +78,7 @@ class Terminal
         std::list<unsigned char> input;
         std::list<unsigned char>::iterator iterator = input.begin();
         std::vector<historyBlock> historyCommands;
-        
+
 };
 
 #endif

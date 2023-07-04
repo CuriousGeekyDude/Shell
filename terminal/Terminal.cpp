@@ -54,6 +54,11 @@ std::list<unsigned char> Terminal::getInput()
     return input;
 }
 
+
+std::vector<historyBlock> Terminal::getHistoryCommands()
+{
+    return historyCommands;
+}
         
 void Terminal::processKeyPress()
 {
@@ -372,7 +377,6 @@ void Terminal::printInputAfterDeletion()
         cursorY = screenColumn;
         cursorX--;
     }
-        
     
 
     printCursor();
