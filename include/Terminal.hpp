@@ -78,6 +78,7 @@ class Terminal
         int cursorX_begin, cursorY_begin;
         std::list<unsigned char> input;
         std::list<unsigned char>::iterator iterator = input.begin();
+        std::vector<historyBlock>::iterator iteratorHistory = historyCommands.end();
 
 };
 
