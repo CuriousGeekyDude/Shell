@@ -273,12 +273,10 @@ void Terminal::upArrowAction()
 void Terminal::downArrowAction()
 {
     auto iter = iteratorHistory;
-    if(historyCommands.size() == 0) {
+    if(historyCommands.size() == 0 || iteratorHistory == historyCommands.end()) {
         return;
     }
 
-    if(iteratorHistory == historyCommands.end())
-        return;
     if(iteratorHistory != historyCommands.end() && (++iter) != historyCommands.end()) {
         iteratorHistory++;
     }
