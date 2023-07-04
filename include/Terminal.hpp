@@ -6,6 +6,10 @@
 #include <vector>
 #include <termios.h>
 
+extern "C" {
+    #include <history.h>
+}
+
 class Terminal 
 {
     public:
@@ -72,8 +76,8 @@ class Terminal
         int cursorX_begin, cursorY_begin;
         std::list<unsigned char> input;
         std::list<unsigned char>::iterator iterator = input.begin();
-        std::vector<unsigned char> historyCommand;
-
+        std::vector<historyBlock> historyCommands;
+        
 };
 
 #endif
