@@ -13,12 +13,13 @@ extern "C" {
 class Terminal 
 {
     public:
+        std::vector<historyBlock> historyCommands;
+
         Terminal(const int Fd);
 
         void enterRawMode();
 
         std::list<unsigned char> getInput();
-        std::vector<historyBlock> getHistoryCommands();
 
         void processKeyPress();
 
@@ -77,7 +78,6 @@ class Terminal
         int cursorX_begin, cursorY_begin;
         std::list<unsigned char> input;
         std::list<unsigned char>::iterator iterator = input.begin();
-        std::vector<historyBlock> historyCommands;
 
 };
 
