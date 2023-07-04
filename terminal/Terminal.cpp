@@ -259,16 +259,11 @@ void Terminal::printHisCommand()
 
 void Terminal::upArrowAction()
 {
-    if(historyCommands.size() == 0) {
+    if(historyCommands.size() == 0 || iteratorHistory == historyCommands.begin()) {
         return;
     }
 
-    if(iteratorHistory != historyCommands.begin()) {
-        iteratorHistory--;
-    }
-    else {
-        return;
-    }
+    iteratorHistory--;
     copyHistoryToInput();
 
     printHisCommand();
