@@ -242,6 +242,21 @@ char Terminal::Ctrl_Key(char key)
         
 
 //--------------------------------------------------------------------------------------
+void Terminal::printHisCommand()
+{
+    cursorX = cursorX_begin;
+    cursorY = cursorY_begin;
+    printCursor();
+    printf("\x1b[0J");
+    
+    for(; iterator != input.end(); ++iterator) {
+        printf("%c", *iterator);
+        cursorY++;
+        updateCursorPos();
+        printCursor();
+    }
+}
+
 void Terminal::upArrowAction()
 {
     if(historyCommands.size() == 0) {
@@ -256,19 +271,36 @@ void Terminal::upArrowAction()
     }
     copyHistoryToInput();
 
-    cursorX = cursorX_begin;
-    cursorY = cursorY_begin;
-    printCursor();
-    printf("\x1b[0J");
-    
-    for(; iterator != input.end(); ++iterator) {
-        printf("%c", *iterator);
-        cursorY++;
+    printHisCommand();
+
+}
+
+void Terminal::downArrowAction()
+{
+    auto iter = iteratorHistory;
+    if(historyCommands.size() == 0) {
+        return;
+    }
+
+    if(iteratorHistory == historyCommands.end())
+        return;
+    if(iteratorHistory != historyCommands.end() && (++iter) != historyCommands.end()) {
+        iteratorHistory++;
+    }
+    else {
+        ++iteratorHistory;
+        input.clear();
+        cursorX = cursorX_begin;
+        cursorY = cursorY_begin;
         updateCursorPos();
         printCursor();
+        printf("\x1b[0J");
+        fflush(stdout);
+        return;
     }
-    fflush(stdout);
+    copyHistoryToInput();
 
+    printHisCommand();
 }
 void Terminal::rightArrowAction()
 {
@@ -296,7 +328,8 @@ void Terminal::arrowKeysAction(const ArrowKeys key)
             upArrowAction();       
             break;
 
-        case ARROW_DOWN:            
+        case ARROW_DOWN:
+            downArrowAction();            
             break;
 
         case ARROW_RIGHT:
