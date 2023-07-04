@@ -47,3 +47,8 @@ void Shell_Terminal::transferInputTo_InputWords()
     }
 }
 
+
+void Shell_Terminal::transferHistoryTo_Terminal()
+{
+    terminal.historyCommands.push_back(currentHistoryBlock);
+}

@@ -17,7 +17,8 @@ class Shell_Terminal
 
         void transferInputTo_InputWords();
 
-
+        void transferHistoryTo_Terminal();
+        
         Terminal terminal = Terminal(STDIN_FILENO);
         
 };
