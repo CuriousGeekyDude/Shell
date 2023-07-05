@@ -1,2 +1,1 @@
-gcc -I /home/feri/Desktop/repos/shell/Shell/include -Wall root/basic.c  builtInCommands/builtInC.c userInterface/color.c commandBlock_structure/commandBlock.c errorHandling/error_functions.c executeInput/executeCommand.c executeInput/executeCommandBlock.c history/history.c executeInput/lists.c executeInput/nonBuiltInC.c executeInput/pipe_redirection.c builtInCommands/weather.c shell_start.c main.c -g -o SHELL.out
-
+g++ -g -o main main.o shell_start.o Shell_Terminal.o Terminal.o executeCommandBlock.o pipe_redirection.o executeCommand.o weather.o color.o  nonBuiltInC.o builtInC.o  lists.o history.o commandBlock.o basic.o error_functions.o
