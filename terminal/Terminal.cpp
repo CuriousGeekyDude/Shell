@@ -415,24 +415,12 @@ void Terminal::printInputAfterDeletion()
     iterator--;
     iterator = input.erase(iterator);
     auto iterator_Temp = iterator;
+    iterator = input.begin();
 
     int cursorY_Temp = cursorY-1;
     int cursorX_Temp = cursorX;
-    cursorY = cursorY_begin;
-    cursorX = cursorX_begin;
-    printCursor();
-            
-    WRITE("\x1b[0J", 5);
-            
-    iterator = input.begin();
-
-            
-    for(; iterator != input.end(); ++iterator) {
-        printf("%c", *iterator);
-        cursorY++;
-        updateCursorPos();
-        printCursor();
-    }
+    
+    printHisCommand();
     cursorY = cursorY_Temp;
     iterator = iterator_Temp;
     cursorX = cursorX_Temp;
