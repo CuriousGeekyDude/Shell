@@ -73,9 +73,9 @@ int main(void)
         return -1;            
     }
     catch(std::string& error) {
-        std::cerr << "Error2: " << error << "\nAborting..." << std::endl;
+        std::cerr << error << "\nAborting..." << std::endl;
     }
 
     freeAllBlocks();
-    exit(EXIT_SUCCESS);
+    return 0;
 }
