@@ -1,7 +1,7 @@
 #ifndef BUILT_IN_C_H
 #define BUILT_IN_C_H
 
-
+#include <stddef.h>
 
 
 //-----------------------------CD_COMMAND---------------------------------
@@ -18,6 +18,12 @@ int cdCommand(char** argv ,size_t indexArgv, int argc);
 void run_execvp(char** argv,size_t indexArgv, char** newArgv);
 void execCommand(char** argv ,size_t indexArgv, int argc);
 //-----------------------------EXEC_COMMAND---------------------------------
+
+
+//-----------------------------EXECUTABLES----------------------------------
+int executable();
+//-----------------------------EXECUTABLES----------------------------------
+
 
 
 //-----------------------------PWD_COMMAND---------------------------------

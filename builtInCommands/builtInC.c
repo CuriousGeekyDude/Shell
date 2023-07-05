@@ -6,6 +6,7 @@
 #include <history.h>
 #include <error_functions.h>
 #include <builtInC.h>
+#include <executeCommand.h>
 
 
 size_t numOfAllTheSlashesInPath(const char* currentPath)
@@ -226,6 +227,16 @@ void execCommand(char** argv ,size_t indexArgv, int argc)
 }
 
 
+
+int executable()
+{
+    if(argc <= 2) {
+        return -1;
+    }
+    else {
+        executeCommand(2, 1, "N", true);
+    }
+}
 
 
 
