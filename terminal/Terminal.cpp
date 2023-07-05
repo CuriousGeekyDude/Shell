@@ -274,6 +274,21 @@ void Terminal::pageDownAction()
     }
 }
 
+void Terminal::deleteAction()
+{
+    if(input.empty()) {
+        return;
+    }
+    
+    cursorX= cursorX_begin;
+    cursorY = cursorY_begin;
+    printCursor();
+    printf("\x1b[0J");
+    fflush(stdout);
+    input.clear();
+    iterator = input.begin();
+}
+
 void Terminal::upArrowAction()
 {
     if(historyCommands.size() == 0 || iteratorHistory == historyCommands.begin()) {
@@ -355,6 +370,9 @@ void Terminal::arrowKeysAction(const ArrowKeys key)
             break;
         case PAGE_DOWN:
             pageDownAction();
+            break;
+        case DELETE_KEY:
+            deleteAction();
             break;
                     
     }
