@@ -257,6 +257,14 @@ void Terminal::printHisCommand()
     }
 }
 
+void Terminal::pageUpAction()
+{
+    for(; iterator != input.begin(); --iterator) {
+        cursorY--;
+        updateCursorPos();
+        printCursor();
+    }
+}
 void Terminal::pageDownAction()
 {
     for(; iterator != input.end(); ++iterator) {
@@ -343,6 +351,7 @@ void Terminal::arrowKeysAction(const ArrowKeys key)
             break;
 
         case PAGE_UP:
+            pageUpAction();
             break;
         case PAGE_DOWN:
             pageDownAction();
