@@ -39,7 +39,8 @@ class Terminal
             ARROW_LEFT,
             ARROW_RIGHT,
             PAGE_UP,
-            PAGE_DOWN
+            PAGE_DOWN,
+            DELETE_KEY
         };
         void copyHistoryToInput();
 
