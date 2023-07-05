@@ -257,6 +257,15 @@ void Terminal::printHisCommand()
     }
 }
 
+void Terminal::pageDownAction()
+{
+    for(; iterator != input.end(); ++iterator) {
+        cursorY++;
+        updateCursorPos();
+        printCursor();
+    }
+}
+
 void Terminal::upArrowAction()
 {
     if(historyCommands.size() == 0 || iteratorHistory == historyCommands.begin()) {
@@ -334,9 +343,11 @@ void Terminal::arrowKeysAction(const ArrowKeys key)
             break;
 
         case PAGE_UP:
+            break;
         case PAGE_DOWN:
+            pageDownAction();
+            break;
                     
-            return;
     }
                 
 }
@@ -357,13 +368,13 @@ int Terminal::checkForArrowKeys(const char key)
                 case 'B':   arrowKeysAction(ARROW_DOWN);    return 0;
                 case 'C':   arrowKeysAction(ARROW_RIGHT);   return 0;
                 case 'D':   arrowKeysAction(ARROW_LEFT);    return 0;
-                case  5 :
+                case  53 ://53 = '5'
                     if(read(STDIN_FILENO, seq.data() + 2, 1) != 1)
                         throw std::system_error(errno, std::generic_category());
                     if(seq[2] == '~')   
                         arrowKeysAction(PAGE_UP);
                     return 0;
-                case  6 :
+                case  54 ://54 = '6'
                     if(read(STDIN_FILENO, seq.data() + 2, 1) != 1)
                         throw std::system_error(errno, std::generic_category());
                             if(seq[2] == '~')
@@ -419,7 +430,7 @@ void Terminal::printInputAfterDeletion()
 
     int cursorY_Temp = cursorY-1;
     int cursorX_Temp = cursorX;
-    
+
     printHisCommand();
     cursorY = cursorY_Temp;
     iterator = iterator_Temp;
