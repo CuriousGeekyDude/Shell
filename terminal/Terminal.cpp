@@ -555,7 +555,7 @@ void Terminal::printPrintableKeys(const char key)
                 case 124:     cursorY++; if(iterator == input.end()){input.push_back(124); iterator = input.end(); WRITE("|",1);} else {iterator = input.insert(iterator,124);printInputAfterInsertion(iterator);}break;
                 case 125:     cursorY++; if(iterator == input.end()){input.push_back(125); iterator = input.end(); WRITE("}",1);} else {iterator = input.insert(iterator,125);printInputAfterInsertion(iterator);}break;
                 case 126:     cursorY++; if(iterator == input.end()){input.push_back(126); iterator = input.end(); WRITE("~",1);} else {iterator = input.insert(iterator,126);printInputAfterInsertion(iterator);}break;
-                case BACKSPACE: printInputAfterDeletion(); break;
+                case 127:     printInputAfterDeletion(); break;
              }
              
             

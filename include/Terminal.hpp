@@ -34,7 +34,6 @@ class Terminal
 
         enum ArrowKeys
         {
-            BACKSPACE = 127,
             ARROW_UP = 130,
             ARROW_DOWN,
             ARROW_LEFT,
