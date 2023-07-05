@@ -1,1 +1,1 @@
-g++ -g -o main main.o shell_start.o Shell_Terminal.o Terminal.o executeCommandBlock.o pipe_redirection.o executeCommand.o weather.o color.o  nonBuiltInC.o builtInC.o  lists.o history.o commandBlock.o basic.o error_functions.o
+g++ -g -o main main.o shell_start.o Shell_Terminal.o Terminal.o executeCommandBlock.o pipe_redirection.o weather.o color.o  nonBuiltInC.o builtInC.o  lists.o history.o commandBlock.o basic.o error_functions.o executeCommand.o
