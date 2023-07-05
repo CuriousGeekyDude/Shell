@@ -377,13 +377,19 @@ int Terminal::checkForArrowKeys(const char key)
                 case 'B':   arrowKeysAction(ARROW_DOWN);    return 0;
                 case 'C':   arrowKeysAction(ARROW_RIGHT);   return 0;
                 case 'D':   arrowKeysAction(ARROW_LEFT);    return 0;
-                case  53 ://53 = '5'
+                case 51://51='3'
+                if(read(STDIN_FILENO, seq.data() + 2, 1) != 1)
+                        throw std::system_error(errno, std::generic_category());
+                    if(seq[2] == '~')   
+                        arrowKeysAction(DELETE_KEY);
+                    return 0;
+                case 53 ://53 = '5'
                     if(read(STDIN_FILENO, seq.data() + 2, 1) != 1)
                         throw std::system_error(errno, std::generic_category());
                     if(seq[2] == '~')   
                         arrowKeysAction(PAGE_UP);
                     return 0;
-                case  54 ://54 = '6'
+                case 54 ://54 = '6'
                     if(read(STDIN_FILENO, seq.data() + 2, 1) != 1)
                         throw std::system_error(errno, std::generic_category());
                             if(seq[2] == '~')
