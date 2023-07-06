@@ -59,6 +59,7 @@ void Terminal::processKeyPress()
 {
     try {   //Exception handling is not the goal here. Breaking out of the while loop when enter is pressed is the goal of try/catch
         while(1) {
+            checkLimitOfHistory();
             updateScreenSize();
             char c = readKeyPress();
             updateScreenSize();
@@ -254,6 +255,18 @@ void Terminal::printHisCommand()
         cursorY++;
         updateCursorPos();
         printCursor();
+    }
+}
+
+void Terminal::checkLimitOfHistory()
+{
+    if(historyCommands.empty()) {
+        return;
+    }
+
+    if(historyCommands.size() == 200) { //Hard limit for number of history commands it can store
+        historyCommands.erase(historyCommands.begin());
+        iteratorHistory = historyCommands.end();
     }
 }
 

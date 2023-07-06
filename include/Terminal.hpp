@@ -63,6 +63,7 @@ class Terminal
         char Ctrl_Key(char key);
 
         void printHisCommand();
+        void checkLimitOfHistory();
         void deleteAction();
         void pageUpAction();
         void pageDownAction();
