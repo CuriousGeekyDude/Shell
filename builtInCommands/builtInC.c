@@ -236,7 +236,7 @@ int executable()
 
 
 
-void pwdCommand(int argc)
+void pwdCommand()
 {
     if(argc > 1)
         return;
@@ -257,7 +257,7 @@ void pwdCommand(int argc)
 
 
 
-void exitCommand(int argc)
+void exitCommand()
 {
     if(argc > 1)
         return;

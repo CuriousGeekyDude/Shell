@@ -29,7 +29,7 @@ int executable();
 //-----------------------------PWD_COMMAND---------------------------------
 
 //argc must not exceed 1
-void pwdCommand(int argc);
+void pwdCommand();
 //-----------------------------PWD_COMMAND---------------------------------
 
 
@@ -37,7 +37,7 @@ void pwdCommand(int argc);
 //-----------------------------EXIT_COMMAND---------------------------------
 
 //argc must not exceed 1
-void exitCommand(int argc);
+void exitCommand();
 //-----------------------------EXIT_COMMAND---------------------------------
 
 #endif
