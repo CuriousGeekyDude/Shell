@@ -236,9 +236,9 @@ int executable()
 
 
 
-void pwdCommand()
+void pwdCommand(size_t numOfStringsInCommand)
 {
-    if(argc > 1)
+    if(numOfStringsInCommand > 1)
         return;
 
     char* PWD = getenv("PWD");
@@ -257,9 +257,9 @@ void pwdCommand()
 
 
 
-void exitCommand()
+void exitCommand(size_t numOfStringsInCommand)
 {
-    if(argc > 1)
+    if(numOfStringsInCommand > 1)
         return;
 
     freeAllBlocks();

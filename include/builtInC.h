@@ -29,7 +29,7 @@ int executable();
 //-----------------------------PWD_COMMAND---------------------------------
 
 //argc must not exceed 1
-void pwdCommand();
+void pwdCommand(size_t numOfStringsInCommand);
 //-----------------------------PWD_COMMAND---------------------------------
 
 
@@ -37,7 +37,7 @@ void pwdCommand();
 //-----------------------------EXIT_COMMAND---------------------------------
 
 //argc must not exceed 1
-void exitCommand();
+void exitCommand(size_t numOfStringsInCommand);
 //-----------------------------EXIT_COMMAND---------------------------------
 
 #endif
