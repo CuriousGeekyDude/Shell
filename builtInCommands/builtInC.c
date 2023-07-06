@@ -224,15 +224,6 @@ void execCommand(size_t indexArgv)
 
 
 
-int executable()
-{
-    if(argc <= 2) {
-        return -1;
-    }
-    else {
-        executeCommand(2, 1, "N", true);
-    }
-}
 
 
 
