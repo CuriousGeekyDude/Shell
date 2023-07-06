@@ -81,10 +81,6 @@ char* returnUpPath(const char* currentPath)
 
 }
 
-
-
-
-
 void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD)
 {
     if(setenv("PWD", newPWD, 1) == -1)
@@ -93,7 +89,7 @@ void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD)
         errExit("setenv() for OLDPWD in update_PWD_OLDPWD()");
 }
 
-int cdCommand(char** argv,size_t indexArgv, int argc)
+int cdCommand(size_t indexArgv)
 {
     if(argc > 2)
         return -1;
@@ -187,12 +183,12 @@ int cdCommand(char** argv,size_t indexArgv, int argc)
 
 
 
-void run_execvp(char** argv, size_t indexArgv, char** newArgv)
+void run_execvp(size_t indexArgv, char** newArgv)
 {
     if(newArgv == NULL) {
-        if(execvp(argv[indexArgv+1], newArgv) == -1) {
+        if(execlp(argv[indexArgv+1], argv[indexArgv+1], NULL) == -1) {
             freeAllBlocks();
-            errExit("execvp");
+            errExit("execlp");
         }
     }
     else {
@@ -204,13 +200,13 @@ void run_execvp(char** argv, size_t indexArgv, char** newArgv)
         }
     }
 }
-void execCommand(char** argv ,size_t indexArgv, int argc)
+void execCommand(size_t indexArgv)
 {
     if(argc == 0 || argc == 1)
         return;
 
     if(argc == 2) {
-        run_execvp(argv ,indexArgv, NULL);
+        run_execvp(indexArgv, NULL);
     }
         
     else {
@@ -221,7 +217,7 @@ void execCommand(char** argv ,size_t indexArgv, int argc)
         for(size_t i = 0; i < sizeOfNewArgv-1 && i < BUFFSIZE; ++i)
             newArgv[i] = argv[indexArgv+ i + 1];
 
-        run_execvp(argv, indexArgv, newArgv);
+        run_execvp(indexArgv, newArgv);
     }
 
 }
