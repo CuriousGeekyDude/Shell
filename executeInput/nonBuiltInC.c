@@ -8,10 +8,10 @@
 
 
 
-void exec_nonBuiltInCommand(size_t indexArgv, int argc)
+void exec_nonBuiltInCommand(size_t indexArgv, size_t numOfStringsInCommand)
 {
-    if(argc == 1) {
-            if(execvp(argv[indexArgv], NULL) == -1) {
+    if(numOfStringsInCommand == 1) {
+            if(execvp(argv[indexArgv], argv) == -1) {
                 freeAllBlocks();
                 errExit("execvp");
             }
@@ -19,7 +19,7 @@ void exec_nonBuiltInCommand(size_t indexArgv, int argc)
         }
         
     else {
-        size_t sizeOfNewArgv = argc+1;
+        size_t sizeOfNewArgv = numOfStringsInCommand+1;
         char** newArgv = malloc(sizeOfNewArgv*(sizeof(char*)));
         initializePointerBuffer((void*)newArgv, sizeOfNewArgv);
 
@@ -34,12 +34,12 @@ void exec_nonBuiltInCommand(size_t indexArgv, int argc)
     }
 }
 
-pid_t nonBuiltInCommand(size_t indexArgv, int argc)
+pid_t nonBuiltInCommand(size_t indexArgv, size_t numOfStringsInCommand)
 {
     pid_t childPID = 0;
     switch(fork()) {
         case 0:
-            exec_nonBuiltInCommand(indexArgv, argc);
+            exec_nonBuiltInCommand(indexArgv, numOfStringsInCommand);
             break;
         default:
             childPID = wait(NULL);
