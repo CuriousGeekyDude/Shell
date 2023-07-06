@@ -110,7 +110,7 @@ Terminal::~Terminal()
 void Terminal::copyHistoryToInput()
 {
     input.clear();
-    std::string hisCommand = iteratorHistory->command;
+    std::string hisCommand = *iteratorHistory;
     auto sizeOfHisCommand = hisCommand.size();
 
     for(size_t i = 0; i < sizeOfHisCommand; ++i) {

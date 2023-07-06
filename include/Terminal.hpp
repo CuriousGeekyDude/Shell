@@ -13,8 +13,8 @@ extern "C" {
 class Terminal 
 {
     public:
-        std::list<historyBlock> historyCommands;
-        std::list<historyBlock>::iterator iteratorHistory = historyCommands.end();
+        std::list<char*> historyCommands;
+        std::list<char*>::iterator iteratorHistory = historyCommands.end();
 
         Terminal(const int Fd);
 
