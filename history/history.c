@@ -124,20 +124,6 @@ char* storeCommands(char* commandToStore)
 }
 
 
-char* showPreviousCommand(void)
-{
-    if(currentHistoryBlock == NULL)
-        return NULL;
-    char* command = currentHistoryBlock->command;
-
-    if(currentHistoryBlock->next == NULL) {
-        return command;
-    }
-
-    currentHistoryBlock = currentHistoryBlock->next;
-    return command;
-
-}
 
 void freeAllBlocks(void)
 {

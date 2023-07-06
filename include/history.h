@@ -25,7 +25,6 @@ historyBlock* add(char* command);
 
 char* storeCommands(char* commandToStore);
 
-char* showPreviousCommand(void);
 void freeAllBlocks(void);
 
 
