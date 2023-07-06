@@ -89,12 +89,12 @@ void update_PWD_OLDPWD(const char* newPWD, const char* newOLDPWD)
         errExit("setenv() for OLDPWD in update_PWD_OLDPWD()");
 }
 
-int cdCommand(size_t indexArgv)
+int cdCommand(size_t indexArgv, size_t numOfStringsInCommand)
 {
-    if(argc > 2)
+    if(numOfStringsInCommand > 2)
         return -1;
         
-    if(argc == 1) {
+    if(numOfStringsInCommand == 1) {
         char* newPWD = getenv("HOME");
         if(newPWD == NULL)
             return -2;
