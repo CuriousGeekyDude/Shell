@@ -11,23 +11,23 @@
 pid_t executeCommand(size_t begIndexOfCommand, size_t numOfStringsInCommand, const char* commandType, bool toFork)
 {
     if(strcmp(argv[begIndexOfCommand], "cd") == 0) {
-        if(cdCommand(argv ,begIndexOfCommand, numOfStringsInCommand) == -1)
+        if(cdCommand(begIndexOfCommand) == -1)
             return -1;
         return 0;
     }
 
     if(strcmp(argv[begIndexOfCommand], "exit") == 0) {
-        exitCommand(numOfStringsInCommand);
+        exitCommand();
         return -1;
     }
 
     if(strcmp(argv[begIndexOfCommand], "exec") == 0) {
-        execCommand(argv, begIndexOfCommand, numOfStringsInCommand);
+        execCommand(begIndexOfCommand);
         return 0;
     }
     
     if(strcmp(argv[begIndexOfCommand], "pwd") == 0) {
-        pwdCommand(numOfStringsInCommand);
+        pwdCommand();
         return 0;
     }
 
