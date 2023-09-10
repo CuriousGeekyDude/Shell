@@ -9,7 +9,7 @@ C++11
 ## How to build
 After forking the repository in a directory that I shall call REPOS, delete all the files in the objects folder. Then compile every .cpp or .c file of 
 the repository in this object folder by the following command: <br /><br />
-$ g++ -I $(REPOS)/Shell/include -g -c <.cpp/.c file address relative to where you are currently in the terminal> <br />
+$ g++ -I $(REPOS)/Shell/include -g -c <.cpp/.c file address relative to where you are currently in the terminal> <br /><br />
 You should then link the object files. For this refer to the FakeMakeFile. The order of the files is laid out in there.
 
 ## Features
