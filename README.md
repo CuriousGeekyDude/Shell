@@ -14,12 +14,12 @@ You should then link the object files. For this refer to the FakeMakeFile. The o
 
 ## Features
 The FAN shell enables one to use redirection from command execution to a file only, indefinite pipelines, & and | features like any other shell,
- view the last 200 commands by pressing up and down just like most other shells, and finally one can also call any of the programs in PATH by calling 
- their name e.g ls. It also has a builtin cd, exit commands. For cd, it has the following features: <br />
+view the last 200 commands by pressing up and down just like most other shells, and finally one can also call any of the programs in PATH by calling 
+their name e.g ls. It also has a builtin cd, exit commands. For cd, it has the following features: <br />
  1. cd - <br />
  2. cd <br />
  3. cd .. <br />
- 4. cd "absolute path" <br /><br/> 
+ 4. cd "absolute path" <br/>
 Whenever you execute a command the shell executes it and then escapes to the next page. You have to scroll up to view the result of your command. This complication was due to having to turn on raw mode in order to be able to enable the history commands feature mentioned above.<br/><br/> 
 
  You can also exit the shell by typing exit or Ctr-q.
