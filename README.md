@@ -20,5 +20,6 @@ The FAN shell enables one to use redirection from command execution to a file on
  2. cd <br />
  3. cd .. <br />
  4. cd "absolute path" <br />
+<br/> Whenever you execute a command the shell executes it and then escapes to the next page. You have to scroll up to view the result of your command. This complication was due to having to turn on raw mode in order to be able to enable the history commands feature mentioned above.<br/>
 
  <br/> You can also exit the shell by typing exit or Ctr-q.
