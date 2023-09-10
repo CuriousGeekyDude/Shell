@@ -19,7 +19,7 @@ their name e.g ls. It also has a builtin cd, exit commands. For cd, it has the f
  1. cd - <br />
  2. cd <br />
  3. cd .. <br />
- 4. cd "absolute path" <br/>
+ 4. cd "absolute path" 
 Whenever you execute a command the shell executes it and then escapes to the next page. You have to scroll up to view the result of your command. This complication was due to having to turn on raw mode in order to be able to enable the history commands feature mentioned above.<br/><br/> 
 
  You can also exit the shell by typing exit or Ctr-q.
