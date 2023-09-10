@@ -20,3 +20,5 @@ The FAN shell enables one to use redirection from command execution to a file on
  2. cd <br />
  3. cd .. <br />
  4. cd "absolute path" <br />
+
+ <br/> You can also exit the shell by typing exit or Ctr-q.
