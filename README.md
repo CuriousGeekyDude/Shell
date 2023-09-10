@@ -1,10 +1,14 @@
 # FAN Shell
 
+## About
 FAN is a customized shell that I have written from scratch in C and C++. The main objective was not to add to the broad swath of available shells 
 but rather to acquire a deeper understanding of how system calls work and of course also how does the shell itself function.
 
 ## Language version
 C++11
+
+## OS
+Linux
 
 ## How to build
 After forking the repository in a directory that I shall call REPOS, delete all the files in the objects folder. Then compile every .cpp or .c file of 
