@@ -494,139 +494,31 @@ void Terminal::printInputAfterDeletion()
 
 void Terminal::printPrintableKeys(const char key)
 {
-            switch(key)
-            {
-                case 13:      enterKeyAction(); break;
-                case 32:      cursorY++; if(iterator == input.end()){input.push_back(32); iterator = input.end(); WRITE(" ", 1);} else {iterator = input.insert(iterator, 32);printInputAfterInsertion(iterator);}break;
-                case 33:      cursorY++; if(iterator == input.end()){input.push_back(33); iterator = input.end(); WRITE("!", 1);} else {iterator = input.insert(iterator, 33);printInputAfterInsertion(iterator);}break;
-                case 34:      cursorY++; if(iterator == input.end()){input.push_back(34); iterator = input.end(); WRITE("\"",1);} else {iterator = input.insert(iterator, 34);printInputAfterInsertion(iterator);}break;
-                case 35:      cursorY++; if(iterator == input.end()){input.push_back(35); iterator = input.end(); WRITE("#", 1);} else {iterator = input.insert(iterator, 35);printInputAfterInsertion(iterator);}break;
-                case 36:      cursorY++; if(iterator == input.end()){input.push_back(36); iterator = input.end(); WRITE("$", 1);} else {iterator = input.insert(iterator, 36);printInputAfterInsertion(iterator);}break;
-                case 37:      cursorY++; if(iterator == input.end()){input.push_back(37); iterator = input.end(); WRITE("%%",1);} else {iterator = input.insert(iterator, 37);printInputAfterInsertion(iterator);}break;
-                case 38:      cursorY++; if(iterator == input.end()){input.push_back(38); iterator = input.end(); WRITE("&", 1);} else {iterator = input.insert(iterator, 38);printInputAfterInsertion(iterator);}break;
-                case 39:      cursorY++; if(iterator == input.end()){input.push_back(39); iterator = input.end(); WRITE("'", 1);} else {iterator = input.insert(iterator, 39);printInputAfterInsertion(iterator);}break;
-                case 40:      cursorY++; if(iterator == input.end()){input.push_back(40); iterator = input.end(); WRITE("(", 1);} else {iterator = input.insert(iterator, 40);printInputAfterInsertion(iterator);}break;
-                case 41:      cursorY++; if(iterator == input.end()){input.push_back(41); iterator = input.end(); WRITE(")", 1);} else {iterator = input.insert(iterator, 41);printInputAfterInsertion(iterator);}break;
-                case 42:      cursorY++; if(iterator == input.end()){input.push_back(42); iterator = input.end(); WRITE("*", 1);} else {iterator = input.insert(iterator, 42);printInputAfterInsertion(iterator);}break;
-                case 43:      cursorY++; if(iterator == input.end()){input.push_back(43); iterator = input.end(); WRITE("+", 1);} else {iterator = input.insert(iterator, 43);printInputAfterInsertion(iterator);}break;
-                case 44:      cursorY++; if(iterator == input.end()){input.push_back(44); iterator = input.end(); WRITE(",", 1);} else {iterator = input.insert(iterator, 44);printInputAfterInsertion(iterator);}break;
-                case 45:      cursorY++; if(iterator == input.end()){input.push_back(45); iterator = input.end(); WRITE("-", 1);} else {iterator = input.insert(iterator, 45);printInputAfterInsertion(iterator);}break;
-                case 46:      cursorY++; if(iterator == input.end()){input.push_back(46); iterator = input.end(); WRITE(".", 1);} else {iterator = input.insert(iterator, 46);printInputAfterInsertion(iterator);}break;
-                case 47:      cursorY++; if(iterator == input.end()){input.push_back(47); iterator = input.end(); WRITE("/", 1);} else {iterator = input.insert(iterator, 47);printInputAfterInsertion(iterator);}break;
-                case 48:      cursorY++; if(iterator == input.end()){input.push_back(48); iterator = input.end(); WRITE("0", 1);} else {iterator = input.insert(iterator, 48);printInputAfterInsertion(iterator);}break;
-                case 49:      cursorY++; if(iterator == input.end()){input.push_back(49); iterator = input.end(); WRITE("1", 1);} else {iterator = input.insert(iterator, 49);printInputAfterInsertion(iterator);}break;
-                case 50:      cursorY++; if(iterator == input.end()){input.push_back(50); iterator = input.end(); WRITE("2", 1);} else {iterator = input.insert(iterator, 50);printInputAfterInsertion(iterator);}break;
-                case 51:      cursorY++; if(iterator == input.end()){input.push_back(51); iterator = input.end(); WRITE("3", 1);} else {iterator = input.insert(iterator, 51);printInputAfterInsertion(iterator);}break;
-                case 52:      cursorY++; if(iterator == input.end()){input.push_back(52); iterator = input.end(); WRITE("4", 1);} else {iterator = input.insert(iterator, 52);printInputAfterInsertion(iterator);}break;
-                case 53:      cursorY++; if(iterator == input.end()){input.push_back(53); iterator = input.end(); WRITE("5", 1);} else {iterator = input.insert(iterator, 53);printInputAfterInsertion(iterator);}break;
-                case 54:      cursorY++; if(iterator == input.end()){input.push_back(54); iterator = input.end(); WRITE("6", 1);} else {iterator = input.insert(iterator, 54);printInputAfterInsertion(iterator);}break;
-                case 55:      cursorY++; if(iterator == input.end()){input.push_back(55); iterator = input.end(); WRITE("7", 1);} else {iterator = input.insert(iterator, 55);printInputAfterInsertion(iterator);}break;
-                case 56:      cursorY++; if(iterator == input.end()){input.push_back(56); iterator = input.end(); WRITE("8", 1);} else {iterator = input.insert(iterator, 56);printInputAfterInsertion(iterator);}break;
-                case 57:      cursorY++; if(iterator == input.end()){input.push_back(57); iterator = input.end(); WRITE("9", 1);} else {iterator = input.insert(iterator, 57);printInputAfterInsertion(iterator);}break;
-                case 58:      cursorY++; if(iterator == input.end()){input.push_back(58); iterator = input.end(); WRITE(":", 1);} else {iterator = input.insert(iterator, 58);printInputAfterInsertion(iterator);}break;
-                case 59:      cursorY++; if(iterator == input.end()){input.push_back(59); iterator = input.end(); WRITE(";", 1);} else {iterator = input.insert(iterator, 59);printInputAfterInsertion(iterator);}break;
-                case 60:      cursorY++; if(iterator == input.end()){input.push_back(60); iterator = input.end(); WRITE("<", 1);} else {iterator = input.insert(iterator, 60);printInputAfterInsertion(iterator);}break;
-                case 61:      cursorY++; if(iterator == input.end()){input.push_back(61); iterator = input.end(); WRITE("=", 1);} else {iterator = input.insert(iterator, 61);printInputAfterInsertion(iterator);}break;
-                case 62:      cursorY++; if(iterator == input.end()){input.push_back(62); iterator = input.end(); WRITE(">", 1);} else {iterator = input.insert(iterator, 62);printInputAfterInsertion(iterator);}break;
-                case 63:      cursorY++; if(iterator == input.end()){input.push_back(63); iterator = input.end(); WRITE("?", 1);} else {iterator = input.insert(iterator, 63);printInputAfterInsertion(iterator);}break;
-                case 64:      cursorY++; if(iterator == input.end()){input.push_back(64); iterator = input.end(); WRITE("@", 1);} else {iterator = input.insert(iterator, 64);printInputAfterInsertion(iterator);}break;
-                case 65:      cursorY++; if(iterator == input.end()){input.push_back(65); iterator = input.end(); WRITE("A", 1);} else {iterator = input.insert(iterator, 65);printInputAfterInsertion(iterator);}break;
-                case 66:      cursorY++; if(iterator == input.end()){input.push_back(66); iterator = input.end(); WRITE("B", 1);} else {iterator = input.insert(iterator, 66);printInputAfterInsertion(iterator);}break;
-                case 67:      cursorY++; if(iterator == input.end()){input.push_back(67); iterator = input.end(); WRITE("C", 1);} else {iterator = input.insert(iterator, 67);printInputAfterInsertion(iterator);}break;
-                case 68:      cursorY++; if(iterator == input.end()){input.push_back(68); iterator = input.end(); WRITE("D", 1);} else {iterator = input.insert(iterator, 68);printInputAfterInsertion(iterator);}break;
-                case 69:      cursorY++; if(iterator == input.end()){input.push_back(69); iterator = input.end(); WRITE("E", 1);} else {iterator = input.insert(iterator, 69);printInputAfterInsertion(iterator);}break;
-                case 70:      cursorY++; if(iterator == input.end()){input.push_back(70); iterator = input.end(); WRITE("F", 1);} else {iterator = input.insert(iterator, 70);printInputAfterInsertion(iterator);}break;
-                case 71:      cursorY++; if(iterator == input.end()){input.push_back(71); iterator = input.end(); WRITE("G", 1);} else {iterator = input.insert(iterator, 71);printInputAfterInsertion(iterator);}break;
-                case 72:      cursorY++; if(iterator == input.end()){input.push_back(72); iterator = input.end(); WRITE("H", 1);} else {iterator = input.insert(iterator, 72);printInputAfterInsertion(iterator);}break;
-                case 73:      cursorY++; if(iterator == input.end()){input.push_back(73); iterator = input.end(); WRITE("I", 1);} else {iterator = input.insert(iterator, 73);printInputAfterInsertion(iterator);}break;
-                case 74:      cursorY++; if(iterator == input.end()){input.push_back(74); iterator = input.end(); WRITE("J", 1);} else {iterator = input.insert(iterator, 74);printInputAfterInsertion(iterator);}break;
-                case 75:      cursorY++; if(iterator == input.end()){input.push_back(75); iterator = input.end(); WRITE("K", 1);} else {iterator = input.insert(iterator, 75);printInputAfterInsertion(iterator);}break;
-                case 76:      cursorY++; if(iterator == input.end()){input.push_back(76); iterator = input.end(); WRITE("L", 1);} else {iterator = input.insert(iterator, 76);printInputAfterInsertion(iterator);}break;
-                case 77:      cursorY++; if(iterator == input.end()){input.push_back(77); iterator = input.end(); WRITE("M", 1);} else {iterator = input.insert(iterator, 77);printInputAfterInsertion(iterator);}break;
-                case 78:      cursorY++; if(iterator == input.end()){input.push_back(78); iterator = input.end(); WRITE("N", 1);} else {iterator = input.insert(iterator, 78);printInputAfterInsertion(iterator);}break;
-                case 79:      cursorY++; if(iterator == input.end()){input.push_back(79); iterator = input.end(); WRITE("O", 1);} else {iterator = input.insert(iterator, 79);printInputAfterInsertion(iterator);}break;
-                case 80:      cursorY++; if(iterator == input.end()){input.push_back(80); iterator = input.end(); WRITE("P", 1);} else {iterator = input.insert(iterator, 80);printInputAfterInsertion(iterator);}break;
-                case 81:      cursorY++; if(iterator == input.end()){input.push_back(81); iterator = input.end(); WRITE("Q", 1);} else {iterator = input.insert(iterator, 81);printInputAfterInsertion(iterator);}break;
-                case 82:      cursorY++; if(iterator == input.end()){input.push_back(82); iterator = input.end(); WRITE("R", 1);} else {iterator = input.insert(iterator, 82);printInputAfterInsertion(iterator);}break;
-                case 83:      cursorY++; if(iterator == input.end()){input.push_back(83); iterator = input.end(); WRITE("S", 1);} else {iterator = input.insert(iterator, 83);printInputAfterInsertion(iterator);}break;
-                case 84:      cursorY++; if(iterator == input.end()){input.push_back(84); iterator = input.end(); WRITE("T", 1);} else {iterator = input.insert(iterator, 84);printInputAfterInsertion(iterator);}break;
-                case 85:      cursorY++; if(iterator == input.end()){input.push_back(85); iterator = input.end(); WRITE("U", 1);} else {iterator = input.insert(iterator, 85);printInputAfterInsertion(iterator);}break;
-                case 86:      cursorY++; if(iterator == input.end()){input.push_back(86); iterator = input.end(); WRITE("V", 1);} else {iterator = input.insert(iterator, 86);printInputAfterInsertion(iterator);}break;
-                case 87:      cursorY++; if(iterator == input.end()){input.push_back(87); iterator = input.end(); WRITE("W", 1);} else {iterator = input.insert(iterator, 87);printInputAfterInsertion(iterator);}break;
-                case 88:      cursorY++; if(iterator == input.end()){input.push_back(88); iterator = input.end(); WRITE("X", 1);} else {iterator = input.insert(iterator, 88);printInputAfterInsertion(iterator);}break;
-                case 89:      cursorY++; if(iterator == input.end()){input.push_back(89); iterator = input.end(); WRITE("Y", 1);} else {iterator = input.insert(iterator, 89);printInputAfterInsertion(iterator);}break;
-                case 90:      cursorY++; if(iterator == input.end()){input.push_back(90); iterator = input.end(); WRITE("Z", 1);} else {iterator = input.insert(iterator, 90);printInputAfterInsertion(iterator);}break;
-                case 91:      cursorY++; if(iterator == input.end()){input.push_back(91); iterator = input.end(); WRITE("[", 1);} else {iterator = input.insert(iterator, 91);printInputAfterInsertion(iterator);}break;
-                case 92:      cursorY++; if(iterator == input.end()){input.push_back(92); iterator = input.end(); WRITE("\\", 1);}else {iterator = input.insert(iterator, 92);printInputAfterInsertion(iterator);}break;
-                case 93:      cursorY++; if(iterator == input.end()){input.push_back(93); iterator = input.end(); WRITE("]", 1);} else {iterator = input.insert(iterator, 93);printInputAfterInsertion(iterator);}break;
-                case 94:      cursorY++; if(iterator == input.end()){input.push_back(94); iterator = input.end(); WRITE("^", 1);} else {iterator = input.insert(iterator, 94);printInputAfterInsertion(iterator);}break;
-                case 95:      cursorY++; if(iterator == input.end()){input.push_back(95); iterator = input.end(); WRITE("_", 1);} else {iterator = input.insert(iterator, 95);printInputAfterInsertion(iterator);}break;
-                case 96:      cursorY++; if(iterator == input.end()){input.push_back(96); iterator = input.end(); WRITE("`", 1);} else {iterator = input.insert(iterator, 96);printInputAfterInsertion(iterator);}break;
-                case 97:      cursorY++; if(iterator == input.end()){input.push_back(97); iterator = input.end(); WRITE("a", 1);} else {iterator = input.insert(iterator, 97);printInputAfterInsertion(iterator);}break;
-                case 98:      cursorY++; if(iterator == input.end()){input.push_back(98); iterator = input.end(); WRITE("b", 1);} else {iterator = input.insert(iterator, 98);printInputAfterInsertion(iterator);}break;
-                case 99:      cursorY++; if(iterator == input.end()){input.push_back(99); iterator = input.end(); WRITE("c", 1);} else {iterator = input.insert(iterator, 99);printInputAfterInsertion(iterator);}break;
-                case 100:     cursorY++; if(iterator == input.end()){input.push_back(100); iterator = input.end(); WRITE("d",1);} else {iterator = input.insert(iterator,100);printInputAfterInsertion(iterator);}break;
-                case 101:     cursorY++; if(iterator == input.end()){input.push_back(101); iterator = input.end(); WRITE("e",1);} else {iterator = input.insert(iterator,101);printInputAfterInsertion(iterator);}break;
-                case 102:     cursorY++; if(iterator == input.end()){input.push_back(102); iterator = input.end(); WRITE("f",1);} else {iterator = input.insert(iterator,102);printInputAfterInsertion(iterator);}break;
-                case 103:     cursorY++; if(iterator == input.end()){input.push_back(103); iterator = input.end(); WRITE("g",1);} else {iterator = input.insert(iterator,103);printInputAfterInsertion(iterator);}break;
-                case 104:     cursorY++; if(iterator == input.end()){input.push_back(104); iterator = input.end(); WRITE("h",1);} else {iterator = input.insert(iterator,104);printInputAfterInsertion(iterator);}break;
-                case 105:     cursorY++; if(iterator == input.end()){input.push_back(105); iterator = input.end(); WRITE("i",1);} else {iterator = input.insert(iterator,105);printInputAfterInsertion(iterator);}break;
-                case 106:     cursorY++; if(iterator == input.end()){input.push_back(106); iterator = input.end(); WRITE("j",1);} else {iterator = input.insert(iterator,106);printInputAfterInsertion(iterator);}break;
-                case 107:     cursorY++; if(iterator == input.end()){input.push_back(107); iterator = input.end(); WRITE("k",1);} else {iterator = input.insert(iterator,107);printInputAfterInsertion(iterator);}break;
-                case 108:     cursorY++; if(iterator == input.end()){input.push_back(108); iterator = input.end(); WRITE("l",1);} else {iterator = input.insert(iterator,108);printInputAfterInsertion(iterator);}break;
-                case 109:     cursorY++; if(iterator == input.end()){input.push_back(109); iterator = input.end(); WRITE("m",1);} else {iterator = input.insert(iterator,109);printInputAfterInsertion(iterator);}break;
-                case 110:     cursorY++; if(iterator == input.end()){input.push_back(110); iterator = input.end(); WRITE("n",1);} else {iterator = input.insert(iterator,110);printInputAfterInsertion(iterator);}break;
-                case 111:     cursorY++; if(iterator == input.end()){input.push_back(111); iterator = input.end(); WRITE("o",1);} else {iterator = input.insert(iterator,111);printInputAfterInsertion(iterator);}break;
-                case 112:     cursorY++; if(iterator == input.end()){input.push_back(112); iterator = input.end(); WRITE("p",1);} else {iterator = input.insert(iterator,112);printInputAfterInsertion(iterator);}break;
-                case 113:     cursorY++; if(iterator == input.end()){input.push_back(113); iterator = input.end(); WRITE("q",1);} else {iterator = input.insert(iterator,113);printInputAfterInsertion(iterator);}break;
-                case 114:     cursorY++; if(iterator == input.end()){input.push_back(114); iterator = input.end(); WRITE("r",1);} else {iterator = input.insert(iterator,114);printInputAfterInsertion(iterator);}break;
-                case 115:     cursorY++; if(iterator == input.end()){input.push_back(115); iterator = input.end(); WRITE("s",1);} else {iterator = input.insert(iterator,115);printInputAfterInsertion(iterator);}break;
-                case 116:     cursorY++; if(iterator == input.end()){input.push_back(116); iterator = input.end(); WRITE("t",1);} else {iterator = input.insert(iterator,116);printInputAfterInsertion(iterator);}break;
-                case 117:     cursorY++; if(iterator == input.end()){input.push_back(117); iterator = input.end(); WRITE("u",1);} else {iterator = input.insert(iterator,117);printInputAfterInsertion(iterator);}break;
-                case 118:     cursorY++; if(iterator == input.end()){input.push_back(118); iterator = input.end(); WRITE("v",1);} else {iterator = input.insert(iterator,118);printInputAfterInsertion(iterator);}break;
-                case 119:     cursorY++; if(iterator == input.end()){input.push_back(119); iterator = input.end(); WRITE("w",1);} else {iterator = input.insert(iterator,119);printInputAfterInsertion(iterator);}break;
-                case 120:     cursorY++; if(iterator == input.end()){input.push_back(120); iterator = input.end(); WRITE("x",1);} else {iterator = input.insert(iterator,120);printInputAfterInsertion(iterator);}break;
-                case 121:     cursorY++; if(iterator == input.end()){input.push_back(121); iterator = input.end(); WRITE("y",1);} else {iterator = input.insert(iterator,121);printInputAfterInsertion(iterator);}break;
-                case 122:     cursorY++; if(iterator == input.end()){input.push_back(122); iterator = input.end(); WRITE("z",1);} else {iterator = input.insert(iterator,122);printInputAfterInsertion(iterator);}break;
-                case 123:     cursorY++; if(iterator == input.end()){input.push_back(123); iterator = input.end(); WRITE("{",1);} else {iterator = input.insert(iterator,123);printInputAfterInsertion(iterator);}break;
-                case 124:     cursorY++; if(iterator == input.end()){input.push_back(124); iterator = input.end(); WRITE("|",1);} else {iterator = input.insert(iterator,124);printInputAfterInsertion(iterator);}break;
-                case 125:     cursorY++; if(iterator == input.end()){input.push_back(125); iterator = input.end(); WRITE("}",1);} else {iterator = input.insert(iterator,125);printInputAfterInsertion(iterator);}break;
-                case 126:     cursorY++; if(iterator == input.end()){input.push_back(126); iterator = input.end(); WRITE("~",1);} else {iterator = input.insert(iterator,126);printInputAfterInsertion(iterator);}break;
-                case 127:     printInputAfterDeletion(); break;
-             }
-             
+    if(key == 13) {
+        enterKeyAction();
+        return;
+    }
+
+    if(32 <= key && key <= 126) {
+        cursorY++; 
+        if(iterator == input.end()){
+            input.push_back(static_cast<unsigned char>(key)); 
+            iterator = input.end(); 
+            const char* string_key = &key;
+            WRITE(string_key, 1);
+        } 
+        else {
+            iterator = input.insert(iterator, static_cast<unsigned char>(key));
+            printInputAfterInsertion(iterator);
+        }
+        return;
+    }
+
+    if(key == 127) {
+        printInputAfterDeletion();
+        return;
+    }        
             
 }
 
 //--------------------------------------------------------------------------------------
-
-        
-        
-        
-
-
-
-
-
-/*int main()
-{
-    
-    try {
-        Terminal terminal(STDIN_FILENO);
-        terminal.enterRawMode();
-        terminal.processKeyPress();
-        //terminal.debugWindowSize();
-        
-    }
-
-    catch(std::system_error& error) {
-        std::cerr << "Error1: " << error.code().message() << ".\nAborting..." << std::endl;
-        return -1;            
-    }
-    catch(std::string& error) {
-        std::cerr << "Error2: " << error << "\nAborting..." << std::endl;
-    }
-    
-
-    return 0;
-}*/
