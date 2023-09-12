@@ -1,7 +1,7 @@
 # FAN Shell
 
 ## About
-FAN is a customized shell that I have written from scratch in C and C++. The main objective was not to add to the broad swath of available shells 
+FAN is a customized shell that I have written from scratch in C and C++. The main objective was not to add yet another shell to the broad swath of available shells 
 but rather to acquire a deeper understanding of how system calls work and of course also how does the shell itself function.
 
 ## Language version
