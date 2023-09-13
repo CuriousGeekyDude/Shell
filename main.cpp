@@ -68,11 +68,11 @@ int main()
         }
     }
 
-    catch(std::system_error& error) {
+    catch(const std::system_error& error) {
         std::cerr << "Error1: " << error.code().message() << ".\nAborting..." << std::endl;
         return -1;            
     }
-    catch(std::string& error) {
+    catch(const std::string& error) {
         std::cerr << error << "\nAborting..." << std::endl;
     }
 
