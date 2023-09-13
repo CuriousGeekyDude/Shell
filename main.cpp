@@ -46,7 +46,7 @@ void signalHandler(int signal)
 
 
 
-int main(void)
+int main()
 {
     struct sigaction sig;
     memset(&sig, 0, sizeof(struct sigaction));
