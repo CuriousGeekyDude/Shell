@@ -18,8 +18,8 @@ You should then link the object files. For this refer to the FakeMakeFile. The o
 
 ## Features
 The FAN shell enables one to use redirection from command execution to a file only, indefinite pipelines, & and | features like any other shell,
-view the last 200 commands by pressing up and down just like most other shells, and finally one can also call any of the programs in PATH by calling 
-their name e.g ls. It also has a builtin cd, exit commands. For cd, it has the following features: <br />
+view the last 200 commands by pressing up and down just like most other shells, one can also call any of the programs in PATH by calling 
+their name e.g ls, and finally you can go to the end or at the beginning of the command you have written by pressing "pg dn" and "pg up" respectively. It also has a builtin cd, exit commands. For cd, it has the following features: <br />
  1. cd - <br />
  2. cd <br />
  3. cd .. <br />
